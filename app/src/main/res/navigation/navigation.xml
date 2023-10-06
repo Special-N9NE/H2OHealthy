@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/splash">
+
+    <fragment
+    android:id="@+id/splash"
+    android:name="org.n9ne.h2ohealthy.ui.login.SplashFragment"
+    android:label="splash"
+    tools:layout="@layout/fragment_splash">
+
+</fragment>
+</navigation>

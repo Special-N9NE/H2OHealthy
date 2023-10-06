@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">H2O Healthy</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="h2o">H2O</string>
+    <string name="healthy">Healthy</string>
+    <string name="slogan">Stay hydrated</string>
+</resources>

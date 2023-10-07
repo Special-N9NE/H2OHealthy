@@ -6,10 +6,18 @@
     app:startDestination="@id/splash">
 
     <fragment
-    android:id="@+id/splash"
-    android:name="org.n9ne.h2ohealthy.ui.login.SplashFragment"
-    android:label="splash"
-    tools:layout="@layout/fragment_splash">
+        android:id="@+id/splash"
+        android:name="org.n9ne.h2ohealthy.ui.login.SplashFragment"
+        android:label="splash"
+        tools:layout="@layout/fragment_splash">
 
-</fragment>
+        <action
+            android:id="@+id/action_splash_to_register"
+            app:destination="@id/register" />
+    </fragment>
+    <fragment
+        android:id="@+id/register"
+        android:name="org.n9ne.h2ohealthy.ui.login.RegisterFragment"
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register" />
 </navigation>

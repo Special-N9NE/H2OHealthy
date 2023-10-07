@@ -5,4 +5,11 @@
     <string name="h2o">H2O</string>
     <string name="healthy">Healthy</string>
     <string name="slogan">Stay hydrated</string>
+    <string name="hi">Hey there,</string>
+    <string name="create_account">Create an Account</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="policy_text">By continuing you accept our Privacy Policy and Term of Use</string>
+    <string name="get_started">Get Started</string>
 </resources>

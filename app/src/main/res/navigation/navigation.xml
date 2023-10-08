@@ -21,12 +21,25 @@
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register">
         <action
-            android:id="@+id/action_register_self"
-            app:destination="@id/register" />
+            android:id="@+id/action_register_to_completeProfile"
+            app:destination="@id/completeProfile" />
+        <action
+            android:id="@+id/action_register_to_login"
+            app:destination="@id/login" />
     </fragment>
     <fragment
         android:id="@+id/login"
         android:name="org.n9ne.h2ohealthy.ui.login.LoginFragment"
         android:label="LoginFragment"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/register" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/completeProfile"
+        android:name="org.n9ne.h2ohealthy.ui.login.CompleteProfileFragment"
+        android:label="CompleteProfileFragment"
+        tools:layout="@layout/fragment_complete_profile" />
 </navigation>

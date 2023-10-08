@@ -19,4 +19,7 @@
     <string name="register">Register</string>
     <string name="have_account">Already have an account?</string>
     <string name="or">Or</string>
+    <string name="next">Next</string>
+    <string name="complete_profile_title">Let’s complete your profile</string>
+    <string name="complete_profile_description">It will help us to know more about you!</string>
 </resources>

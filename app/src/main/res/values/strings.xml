@@ -12,4 +12,11 @@
     <string name="password">Password</string>
     <string name="policy_text">By continuing you accept our Privacy Policy and Term of Use</string>
     <string name="get_started">Get Started</string>
+    <string name="login_title">Welcome Back</string>
+    <string name="forgot_password"><u>Forgot your password?</u></string>
+    <string name="login">Login</string>
+    <string name="don_t_have_account">Don’t have an account yet?</string>
+    <string name="register">Register</string>
+    <string name="have_account">Already have an account?</string>
+    <string name="or">Or</string>
 </resources>

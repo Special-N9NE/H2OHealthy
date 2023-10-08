@@ -21,10 +21,11 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_bold"
-        android:text="@string/create_account"
+        android:text="@string/login_title"
         android:textColor="@color/blackText"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,31 +35,11 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/etName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/shape_et"
-        android:drawableStart="@drawable/ic_profile"
-        android:drawablePadding="16dp"
-        android:fontFamily="@font/poppins_regular"
-        android:hint="@string/name"
-        android:inputType="textPersonName"
-        android:padding="16dp"
-        android:textColor="@color/blackText"
-        app:layout_constraintBottom_toTopOf="@+id/bRegister"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/gTop"
-        app:layout_constraintVertical_bias="0.25" />
-
-    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/shape_et"
         android:drawableStart="@drawable/ic_email"
@@ -68,10 +49,10 @@
         android:inputType="textEmailAddress"
         android:padding="16dp"
         android:textColor="@color/blackText"
-        app:layout_constraintBottom_toTopOf="@+id/bRegister"
+        app:layout_constraintBottom_toTopOf="@+id/bLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etName"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:layout_constraintVertical_bias="0.0" />
 
 
@@ -93,7 +74,7 @@
         android:paddingEnd="48dp"
         android:paddingBottom="16dp"
         android:textColor="@color/blackText"
-        app:layout_constraintBottom_toTopOf="@+id/bRegister"
+        app:layout_constraintBottom_toTopOf="@+id/bLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,14 +82,14 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/bRegister"
+        android:id="@+id/bLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
         android:background="@drawable/shape_button_blue"
         android:fontFamily="@font/poppins_bold"
         android:padding="16dp"
-        android:text="@string/register"
+        android:text="@string/login"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
@@ -131,19 +112,18 @@
         app:layout_constraintStart_toStartOf="@+id/etPassword"
         app:layout_constraintTop_toTopOf="@+id/etPassword" />
 
-    <CheckBox
-        android:id="@+id/cbPolicy"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/tvForgot"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:padding="8dp"
-        android:text="@string/policy_text"
+        android:text="@string/forgot_password"
         android:textColor="@color/gray"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/bRegister"
-        app:layout_constraintEnd_toEndOf="@+id/etPassword"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/etPassword"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/bLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPassword"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -156,7 +136,7 @@
 
 
     <LinearLayout
-        android:id="@+id/llLogin"
+        android:id="@+id/llRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -171,7 +151,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
             android:padding="8dp"
-            android:text="@string/have_account"
+            android:text="@string/don_t_have_account"
             android:textColor="@color/blackText"
             android:textSize="14sp" />
 
@@ -180,7 +160,7 @@
             android:layout_height="match_parent"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center"
-            android:text="@string/login"
+            android:text="@string/register"
             android:textColor="@color/linearPurpleEnd"
             android:textSize="14sp" />
 
@@ -233,7 +213,7 @@
         android:background="@drawable/shape_round"
         android:padding="12dp"
         android:src="@drawable/ic_google"
-        app:layout_constraintBottom_toTopOf="@+id/llLogin"
+        app:layout_constraintBottom_toTopOf="@+id/llRegister"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/gTop"

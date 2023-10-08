@@ -19,5 +19,14 @@
         android:id="@+id/register"
         android:name="org.n9ne.h2ohealthy.ui.login.RegisterFragment"
         android:label="RegisterFragment"
-        tools:layout="@layout/fragment_register" />
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_register_self"
+            app:destination="@id/register" />
+    </fragment>
+    <fragment
+        android:id="@+id/login"
+        android:name="org.n9ne.h2ohealthy.ui.login.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login" />
 </navigation>

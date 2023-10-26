@@ -25,4 +25,7 @@
     <string name="welcome">Welcome,</string>
     <string name="go_to_home">Go To Home</string>
     <string name="login_done_text">You are all set now, let’s reach your \n goals together with us</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="add">add</string>
 </resources>

@@ -13,7 +13,8 @@
 
         <action
             android:id="@+id/splash_to_register"
-            app:destination="@id/register" />
+            app:destination="@id/register"
+            app:enterAnim="@anim/slide_left" />
     </fragment>
     <fragment
         android:id="@+id/register"
@@ -22,10 +23,12 @@
         tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/register_to_completeProfile"
-            app:destination="@id/completeProfile" />
+            app:destination="@id/completeProfile"
+            app:enterAnim="@anim/slide_left"  />
         <action
             android:id="@+id/register_to_login"
-            app:destination="@id/login" />
+            app:destination="@id/login"
+            app:enterAnim="@anim/slide_left"  />
     </fragment>
     <fragment
         android:id="@+id/login"
@@ -34,10 +37,12 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/login_to_register"
-            app:destination="@id/register" />
+            app:destination="@id/register"
+            app:enterAnim="@anim/slide_left"  />
         <action
             android:id="@+id/login_to_loginDone"
-            app:destination="@id/loginDone" />
+            app:destination="@id/loginDone"
+            app:enterAnim="@anim/slide_left"  />
     </fragment>
 
     <fragment
@@ -47,7 +52,8 @@
         tools:layout="@layout/fragment_complete_profile">
         <action
             android:id="@+id/completeProfile_to_loginDone"
-            app:destination="@id/loginDone" />
+            app:destination="@id/loginDone"
+            app:enterAnim="@anim/slide_left" />
     </fragment>
     <fragment
         android:id="@+id/loginDone"

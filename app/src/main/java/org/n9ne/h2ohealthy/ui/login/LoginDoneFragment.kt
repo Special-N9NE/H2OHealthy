@@ -26,7 +26,7 @@ class LoginDoneFragment : Fragment() {
 
 
         b.bGo.setOnClickListener {
-            //TODO validation
+            //TODO navigate to home
         }
 
     }

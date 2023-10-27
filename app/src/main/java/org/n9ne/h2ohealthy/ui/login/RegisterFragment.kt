@@ -9,14 +9,17 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.CompoundButtonCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.FragmentRegisterBinding
+import org.n9ne.h2ohealthy.ui.login.viewModel.RegisterViewModel
 
 
 class RegisterFragment : Fragment() {
 
     private lateinit var b: FragmentRegisterBinding
-    private var passwordIsVisible = false
+    private lateinit var viewModel: RegisterViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,9 +32,14 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupClicks()
+        init()
 
+        setupClicks()
         setCheckboxColor()
+    }
+
+    private fun init() {
+        viewModel = ViewModelProvider(this)[RegisterViewModel::class.java]
     }
 
     private fun setCheckboxColor() {
@@ -55,7 +63,7 @@ class RegisterFragment : Fragment() {
             //TODO register with google
         }
         b.llLogin.setOnClickListener {
-            //TODO go to login
+            findNavController().navigate(R.id.register_to_login)
         }
         b.ivPassword.setOnClickListener {
             togglePasswordVisibility()
@@ -64,8 +72,8 @@ class RegisterFragment : Fragment() {
     }
 
     private fun togglePasswordVisibility() {
-        passwordIsVisible = !passwordIsVisible
-        if (passwordIsVisible) {
+        viewModel.passwordIsVisible = !viewModel.passwordIsVisible
+        if (viewModel.passwordIsVisible) {
 
             b.ivPassword.setImageResource(R.drawable.ic_show_password)
             b.etPassword.transformationMethod = null
@@ -77,5 +85,4 @@ class RegisterFragment : Fragment() {
 
         b.etPassword.setSelection(b.etPassword.text.toString().length)
     }
-
 }

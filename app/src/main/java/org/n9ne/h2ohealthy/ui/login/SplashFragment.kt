@@ -1,16 +1,14 @@
 package org.n9ne.h2ohealthy.ui.login
 
-import android.graphics.Color
-import android.graphics.LinearGradient
-import android.graphics.Shader
-import android.graphics.Shader.TileMode
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.FragmentSplashBinding
+import org.n9ne.h2ohealthy.util.setGradient
 
 
 class SplashFragment : Fragment() {
@@ -29,33 +27,17 @@ class SplashFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setTextColors()
+        setupClicks()
     }
 
-    private fun setTextColors(){
-        val textShader: Shader = LinearGradient(
-            0f,
-            0f,
-            100f,
-            0f,
-            intArrayOf(
-                requireContext().getColor(R.color.linearBlueStart),
-                requireContext().getColor(R.color.linearBlueEnd)),
-            floatArrayOf(0f, 1f),
-            TileMode.CLAMP
-        )
-        b.tvTitle1.paint.shader = textShader
+    private fun setTextColors() {
+        b.tvTitle1.setGradient(requireContext(), R.color.linearBlueStart, R.color.linearBlueEnd)
+        b.tvTitle2.setGradient(requireContext(), R.color.linearPurpleStart, R.color.linearPurpleEnd)
+    }
 
-        val textShader2: Shader = LinearGradient(
-            0f,
-            0f,
-            100f,
-            0f,
-            intArrayOf(
-                requireContext().getColor(R.color.linearPurpleStart),
-                requireContext().getColor(R.color.linearPurpleEnd)),
-            floatArrayOf(0f, 1f),
-            TileMode.CLAMP
-        )
-        b.tvTitle2.paint.shader = textShader2
+    private fun setupClicks() {
+        b.bStart.setOnClickListener {
+            findNavController().navigate(R.id.splash_to_register)
+        }
     }
 }

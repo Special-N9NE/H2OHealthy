@@ -6,14 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.FragmentLoginBinding
+import org.n9ne.h2ohealthy.ui.login.viewModel.LoginViewModel
 
 
 class LoginFragment : Fragment() {
 
     private lateinit var b: FragmentLoginBinding
-    private var passwordIsVisible = false
+    private lateinit var viewModel: LoginViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,10 +29,14 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        init()
         setupClicks()
 
     }
 
+    private fun init() {
+        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+    }
 
     private fun setupClicks() {
         b.ivPassword.setOnClickListener {
@@ -45,14 +52,13 @@ class LoginFragment : Fragment() {
             //TODO login with google
         }
         b.llRegister.setOnClickListener {
-            //TODO go to Register
+            findNavController().navigate(R.id.login_to_register)
         }
     }
 
     private fun togglePasswordVisibility() {
-        passwordIsVisible = !passwordIsVisible
-        if (passwordIsVisible) {
-
+        viewModel.passwordIsVisible = !viewModel.passwordIsVisible
+        if (viewModel.passwordIsVisible) {
             b.ivPassword.setImageResource(R.drawable.ic_show_password)
             b.etPassword.transformationMethod = null
 

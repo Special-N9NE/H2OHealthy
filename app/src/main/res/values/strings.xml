@@ -28,4 +28,5 @@
     <string name="home">Home</string>
     <string name="profile">Profile</string>
     <string name="add">add</string>
+    <string name="today_target">Today Target</string>
 </resources>

@@ -5,16 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.FragmentSplashBinding
+import org.n9ne.h2ohealthy.ui.login.viewModel.SplashViewModel
+import org.n9ne.h2ohealthy.util.interfaces.Navigator
 import org.n9ne.h2ohealthy.util.setGradient
 
 
-class SplashFragment : Fragment() {
+class SplashFragment : Fragment(), Navigator {
 
     private lateinit var b: FragmentSplashBinding
-
+    private lateinit var viewModel: SplashViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,8 +29,14 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        init()
         setTextColors()
-        setupClicks()
+    }
+
+    private fun init() {
+        viewModel = ViewModelProvider(this)[SplashViewModel::class.java]
+        viewModel.navigator = this
+        b.viewModel = viewModel
     }
 
     private fun setTextColors() {
@@ -35,9 +44,7 @@ class SplashFragment : Fragment() {
         b.tvTitle2.setGradient(requireContext(), R.color.linearPurpleStart, R.color.linearPurpleEnd)
     }
 
-    private fun setupClicks() {
-        b.bStart.setOnClickListener {
-            findNavController().navigate(R.id.splash_to_register)
-        }
+    override fun shouldNavigate(destination: Int) {
+        findNavController().navigate(destination)
     }
 }

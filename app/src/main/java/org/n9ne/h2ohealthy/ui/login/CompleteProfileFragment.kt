@@ -6,15 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.FragmentCompleteProfileBinding
+import org.n9ne.h2ohealthy.ui.login.viewModel.CompleteProfileViewModel
+import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
 
-class CompleteProfileFragment : Fragment() {
+class CompleteProfileFragment : Fragment(), Navigator {
 
     private lateinit var b: FragmentCompleteProfileBinding
-    private val genders = arrayListOf("Male", "Female")
-    private val activityLevels = arrayListOf("Never", "Low", "Sometimes", "High", "Athlete")
+    private lateinit var viewModel: CompleteProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,32 +32,33 @@ class CompleteProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        init()
         setupSpinners()
-        setupClicks()
 
+    }
+
+    private fun init() {
+        viewModel = ViewModelProvider(this)[CompleteProfileViewModel::class.java]
+        viewModel.navigator = this
+        b.viewModel = viewModel
     }
 
     private fun setupSpinners() {
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
             requireContext(),
-            R.layout.view_drop_down, activityLevels
+            R.layout.view_drop_down, viewModel.activityLevels
         )
         b.spActivity.setAdapter(adapter)
 
         val adapterGender: ArrayAdapter<String> = ArrayAdapter<String>(
             requireContext(),
-            R.layout.view_drop_down, genders
+            R.layout.view_drop_down, viewModel.genders
         )
         b.spGender.setAdapter(adapterGender)
     }
 
-    private fun setupClicks() {
-        b.etBirthday.setOnClickListener {
-            //TODO open date dialog
-        }
-        b.bNext.setOnClickListener {
-            //TODO validation
-        }
+    override fun shouldNavigate(destination: Int) {
+        findNavController().navigate(destination)
     }
 
 }

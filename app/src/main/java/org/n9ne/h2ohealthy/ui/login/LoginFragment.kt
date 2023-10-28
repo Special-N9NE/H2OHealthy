@@ -11,9 +11,10 @@ import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.FragmentLoginBinding
 import org.n9ne.h2ohealthy.ui.login.viewModel.LoginViewModel
+import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
 
-class LoginFragment : Fragment() {
+class LoginFragment : Fragment(), Navigator {
 
     private lateinit var b: FragmentLoginBinding
     private lateinit var viewModel: LoginViewModel
@@ -30,44 +31,31 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         init()
-        setupClicks()
-
+        setupObserver()
     }
 
     private fun init() {
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+        viewModel.navigator = this
+        b.viewModel = viewModel
     }
 
-    private fun setupClicks() {
-        b.ivPassword.setOnClickListener {
-            togglePasswordVisibility()
-        }
-        b.tvForgot.setOnClickListener {
-            //TODO send recovery email or something
-        }
-        b.bLogin.setOnClickListener {
-            //TODO process login
-        }
-        b.ivGoogle.setOnClickListener {
-            //TODO login with google
-        }
-        b.llRegister.setOnClickListener {
-            findNavController().navigate(R.id.login_to_register)
+    private fun setupObserver() {
+        viewModel.ldPasswordClick.observe(viewLifecycleOwner) {
+            if (it) {
+                b.ivPassword.setImageResource(R.drawable.ic_show_password)
+                b.etPassword.transformationMethod = null
+
+            } else {
+                b.ivPassword.setImageResource(R.drawable.ic_hide)
+                b.etPassword.transformationMethod = PasswordTransformationMethod()
+            }
+            b.etPassword.setSelection(b.etPassword.text.toString().length)
         }
     }
 
-    private fun togglePasswordVisibility() {
-        viewModel.passwordIsVisible = !viewModel.passwordIsVisible
-        if (viewModel.passwordIsVisible) {
-            b.ivPassword.setImageResource(R.drawable.ic_show_password)
-            b.etPassword.transformationMethod = null
-
-        } else {
-            b.ivPassword.setImageResource(R.drawable.ic_hide)
-            b.etPassword.transformationMethod = PasswordTransformationMethod()
-        }
-
-        b.etPassword.setSelection(b.etPassword.text.toString().length)
+    override fun shouldNavigate(destination: Int) {
+        findNavController().navigate(destination)
     }
 
 }

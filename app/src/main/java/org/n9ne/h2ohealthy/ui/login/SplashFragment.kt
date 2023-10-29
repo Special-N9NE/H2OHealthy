@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.FragmentSplashBinding
-import org.n9ne.h2ohealthy.ui.login.viewModel.SplashViewModel
+import org.n9ne.h2ohealthy.ui.home.viewModel.HomeViewModel
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 import org.n9ne.h2ohealthy.util.setGradient
 
@@ -17,7 +17,7 @@ import org.n9ne.h2ohealthy.util.setGradient
 class SplashFragment : Fragment(), Navigator {
 
     private lateinit var b: FragmentSplashBinding
-    private lateinit var viewModel: SplashViewModel
+    private lateinit var viewModel: HomeViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,7 +34,7 @@ class SplashFragment : Fragment(), Navigator {
     }
 
     private fun init() {
-        viewModel = ViewModelProvider(this)[SplashViewModel::class.java]
+        viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         viewModel.navigator = this
         b.viewModel = viewModel
     }

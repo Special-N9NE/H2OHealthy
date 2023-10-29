@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import org.n9ne.h2ohealthy.databinding.ActivityMainBinding
+import org.n9ne.h2ohealthy.ui.addDialog
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,8 +27,8 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.add -> {
                     //TODO add data
-                    navController.popBackStack()
-                    //navController.navigate()
+                    val dialog = this.addDialog(layoutInflater)
+                    dialog.show()
                 }
 
                 R.id.profile -> {

@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="org.n9ne.h2ohealthy.ui.home.viewModel.HomeViewModel" />
+            type="org.n9ne.h2ohealthy.ui.login.viewModel.SplashViewModel" />
 
     </data>
 

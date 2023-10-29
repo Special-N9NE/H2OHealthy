@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
+import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.databinding.ActivityMainBinding
 import org.n9ne.h2ohealthy.ui.addDialog
+import org.n9ne.h2ohealthy.ui.cupDialog
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +29,20 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.add -> {
                     //TODO add data
-                    val dialog = this.addDialog(layoutInflater)
+                    //TODO get cups
+                    val cups = listOf(
+                        Cup("My cup", 100, R.color.linearBlueEnd),
+                        Cup("bottle", 500, R.color.linearPurpleEnd),
+                        Cup("My cup", 2000, R.color.linearBlueStart),
+                        Cup("My cup", 300, R.color.linearPurpleStart),
+                        Cup("title", 400, R.color.white),
+                        Cup("My cup", 100, R.color.gray),
+                    )
+                    val cupDialog = this.cupDialog(layoutInflater, cups)
+
+                    val dialog = this.addDialog(layoutInflater) {
+                        cupDialog.show()
+                    }
                     dialog.show()
                 }
 

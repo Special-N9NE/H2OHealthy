@@ -6,6 +6,7 @@ import android.graphics.Shader
 import android.widget.TextView
 import androidx.annotation.ColorRes
 
+
 fun TextView.setGradient(context: Context, @ColorRes startColor: Int, @ColorRes endColor: Int) {
     val textShader: Shader = LinearGradient(
         0f,

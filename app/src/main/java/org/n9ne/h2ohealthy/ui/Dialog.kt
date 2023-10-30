@@ -7,13 +7,20 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View.OnClickListener
 import android.widget.FrameLayout
+import androidx.core.content.res.ResourcesCompat
+import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.databinding.DialogAddBinding
 import org.n9ne.h2ohealthy.databinding.DialogCupBinding
-import org.n9ne.h2ohealthy.ui.home.adpter.CupsAdapter
+import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
 
 
-fun Activity.addDialog(layoutInflater: LayoutInflater, listener: OnClickListener): Dialog {
+fun Activity.addDialog(
+    layoutInflater: LayoutInflater,
+    selectedCup: Cup? = null,
+    doneListener: CupClickListener? = null,
+    selectListener: OnClickListener
+): Dialog {
     val dialog = Dialog(this)
     val binding = DialogAddBinding.inflate(layoutInflater)
     dialog.setCanceledOnTouchOutside(true)
@@ -27,13 +34,36 @@ fun Activity.addDialog(layoutInflater: LayoutInflater, listener: OnClickListener
         dialog.dismiss()
     }
     binding.cvCup.setOnClickListener {
-        listener.onClick(binding.cvCup)
+        selectListener.onClick(binding.cvCup)
+        dialog.dismiss()
+    }
+    binding.bDone.setOnClickListener {
+        doneListener?.let { click ->
+            selectedCup?.let { cup ->
+                click.onClick(cup)
+                dialog.dismiss()
+            }
+        }
+    }
+    val blue = ResourcesCompat.getColor(this.resources, R.color.linearBlueEnd, this.theme)
+    val white = ResourcesCompat.getColor(this.resources, R.color.white, this.theme)
+
+    if (selectedCup == null) {
+        binding.etAmount.setText("")
+        binding.cvCup.setCardBackgroundColor(white)
+        binding.tvCup.text = "Select Cup"
+    } else {
+        binding.etAmount.setText(selectedCup.capacity.toString())
+        binding.cvCup.setCardBackgroundColor(blue)
+        binding.tvCup.text = "Cup Selected"
     }
 
     return dialog
 }
 
-fun Activity.cupDialog(layoutInflater: LayoutInflater, cups: List<Cup>): Dialog {
+fun Activity.cupDialog(
+    layoutInflater: LayoutInflater
+): Dialog {
     val dialog = Dialog(this)
     val binding = DialogCupBinding.inflate(layoutInflater)
     dialog.setCanceledOnTouchOutside(true)
@@ -46,9 +76,5 @@ fun Activity.cupDialog(layoutInflater: LayoutInflater, cups: List<Cup>): Dialog 
     binding.ivBack.setOnClickListener {
         dialog.dismiss()
     }
-
-    binding.rvCup.adapter = CupsAdapter(cups)
-
-
     return dialog
 }

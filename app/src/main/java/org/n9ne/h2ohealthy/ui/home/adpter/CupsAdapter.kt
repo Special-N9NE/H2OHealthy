@@ -1,16 +1,21 @@
 package org.n9ne.h2ohealthy.ui.home.adpter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.databinding.ItemCupBinding
+import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
 
 class CupsAdapter(
     private val list: List<Cup>,
+    private val listener: CupClickListener
 ) : RecyclerView.Adapter<CupsAdapter.ViewHolder>() {
 
     lateinit var context: Context
@@ -28,7 +33,9 @@ class CupsAdapter(
         }
 
         private fun setupClick(item: Cup) {
-            //TODO select item
+            b.clRoot.setOnClickListener {
+                listener.onClick(item)
+            }
         }
     }
 

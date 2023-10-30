@@ -29,4 +29,9 @@
         <item name="android:textColor">@color/gray</item>
         <item name="android:textSize">12sp</item>
     </style>
+
+    <style name="circleImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

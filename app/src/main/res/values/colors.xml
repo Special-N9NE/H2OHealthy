@@ -12,4 +12,8 @@
     <color name="linearBlueEnd">#92A3FD</color>
     <color name="linearPurpleStart">#EEA4CE</color>
     <color name="linearPurpleEnd">#C58BF2</color>
+
+
+    <color name="blueAlpha">#e9eefe</color>
+    <color name="purpleAlpha">#f4e0f6</color>
 </resources>

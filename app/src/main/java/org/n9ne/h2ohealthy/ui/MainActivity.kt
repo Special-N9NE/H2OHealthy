@@ -41,9 +41,8 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.profile -> {
-                    //TODO go to profile
                     navController.popBackStack()
-                    //navController.navigate()
+                    navController.navigate(R.id.profile)
                 }
 
                 else -> {}

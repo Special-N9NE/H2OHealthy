@@ -14,8 +14,10 @@ import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.databinding.FragmentProfileBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.createLeagueDialog
+import org.n9ne.h2ohealthy.ui.joinLeagueDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.SettingAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.ProfileViewModel
+import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 import org.n9ne.h2ohealthy.util.setGradient
 
@@ -25,6 +27,7 @@ class ProfileFragment : Fragment(), Navigator {
     private lateinit var b: FragmentProfileBinding
     private lateinit var viewModel: ProfileViewModel
     private lateinit var createLeagueDialog: Dialog
+    private lateinit var joinLeagueDialog: Dialog
 
 
     override fun onCreateView(
@@ -72,6 +75,7 @@ class ProfileFragment : Fragment(), Navigator {
         //TODO calculate age
         b.tvAge.text = "21"
     }
+
     private fun setupObserver() {
         viewModel.ldInLeague.observe(viewLifecycleOwner) {
             if (it) {
@@ -82,13 +86,22 @@ class ProfileFragment : Fragment(), Navigator {
         }
     }
 
-    private fun openLeagueDialogs(){
+    private fun openLeagueDialogs() {
         val joinClick = OnClickListener {
-            //TODO open join dialog
+            joinLeagueDialog = requireActivity().joinLeagueDialog(object : AddLeagueListener {
+                override fun addLeague(input: String) {
+                    //TODO validation for join
+                    createLeagueDialog.dismiss()
+                    joinLeagueDialog.dismiss()
+                }
+            })
+            joinLeagueDialog.show()
         }
-        val createClick = OnClickListener {
-            //TODO validation
-            createLeagueDialog.dismiss()
+        val createClick = object : AddLeagueListener {
+            override fun addLeague(input: String) {
+                //TODO validation
+                createLeagueDialog.dismiss()
+            }
         }
         createLeagueDialog = requireActivity().createLeagueDialog(joinClick, createClick)
 

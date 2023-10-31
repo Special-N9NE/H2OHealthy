@@ -13,6 +13,8 @@ import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.databinding.DialogAddBinding
 import org.n9ne.h2ohealthy.databinding.DialogCreateLeagueBinding
 import org.n9ne.h2ohealthy.databinding.DialogCupBinding
+import org.n9ne.h2ohealthy.databinding.DialogJoinLeagueBinding
+import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
 import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
 
 
@@ -82,7 +84,7 @@ fun Activity.cupDialog(
 
 fun Activity.createLeagueDialog(
     joinListener: OnClickListener,
-    createListener: OnClickListener
+    createListener: AddLeagueListener
 ): Dialog {
     val dialog = Dialog(this)
     val binding = DialogCreateLeagueBinding.inflate(layoutInflater)
@@ -98,10 +100,30 @@ fun Activity.createLeagueDialog(
     }
     binding.tvJoin.setOnClickListener {
         joinListener.onClick(binding.tvJoin)
-        dialog.dismiss()
     }
     binding.bCreate.setOnClickListener {
-        createListener.onClick(binding.bCreate)
+        createListener.addLeague(binding.etName.text.toString())
+    }
+    return dialog
+}
+
+fun Activity.joinLeagueDialog(
+    listener: AddLeagueListener
+): Dialog {
+    val dialog = Dialog(this)
+    val binding = DialogJoinLeagueBinding.inflate(layoutInflater)
+    dialog.setCanceledOnTouchOutside(true)
+    dialog.setContentView(binding.root)
+    dialog.window?.setLayout(
+        FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT
+    )
+    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    dialog.setCanceledOnTouchOutside(false)
+    binding.ivBack.setOnClickListener {
+        dialog.dismiss()
+    }
+    binding.bJoin.setOnClickListener {
+        listener.addLeague(binding.etCode.text.toString())
     }
     return dialog
 }

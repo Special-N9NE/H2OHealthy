@@ -55,4 +55,6 @@
     <string name="enter_league_name">Enter league name</string>
     <string name="join_league">Join League</string>
     <string name="create">Create</string>
+    <string name="enter_league_code">Enter league code</string>
+    <string name="join">Join</string>
 </resources>

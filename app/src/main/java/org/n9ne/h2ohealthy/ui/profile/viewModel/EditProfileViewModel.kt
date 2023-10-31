@@ -3,13 +3,14 @@ package org.n9ne.h2ohealthy.ui.profile.viewModel
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import org.n9ne.h2ohealthy.util.Response
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
 class EditProfileViewModel : ViewModel() {
 
     lateinit var navigator: Navigator
-    val ldPickImage = MutableLiveData<Boolean>()
-    val ldSubmit = MutableLiveData<Boolean>()
+    val ldPickImage = MutableLiveData<Response<Boolean>>()
+    val ldSubmit = MutableLiveData<Response<Boolean>>()
 
     val genders = arrayListOf("Male", "Female")
     val activityLevels = arrayListOf("Never", "Low", "Sometimes", "High", "Athlete")
@@ -17,7 +18,7 @@ class EditProfileViewModel : ViewModel() {
 
     fun submitClick(@Suppress("UNUSED_PARAMETER") v: View) {
         //TODO validation
-        ldSubmit.postValue(true)
+        ldSubmit.postValue(Response(true))
     }
 
     fun dateClick(@Suppress("UNUSED_PARAMETER") v: View) {
@@ -25,6 +26,6 @@ class EditProfileViewModel : ViewModel() {
     }
 
     fun profileClick(@Suppress("UNUSED_PARAMETER") v: View) {
-        ldPickImage.postValue(true)
+        ldPickImage.postValue(Response(true))
     }
 }

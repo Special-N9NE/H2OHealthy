@@ -24,11 +24,11 @@
         <action
             android:id="@+id/register_to_completeProfile"
             app:destination="@id/completeProfile"
-            app:enterAnim="@anim/slide_left"  />
+            app:enterAnim="@anim/slide_left" />
         <action
             android:id="@+id/register_to_login"
             app:destination="@id/login"
-            app:enterAnim="@anim/slide_left"  />
+            app:enterAnim="@anim/slide_left" />
     </fragment>
     <fragment
         android:id="@+id/login"
@@ -38,11 +38,11 @@
         <action
             android:id="@+id/login_to_register"
             app:destination="@id/register"
-            app:enterAnim="@anim/slide_left"  />
+            app:enterAnim="@anim/slide_left" />
         <action
             android:id="@+id/login_to_loginDone"
             app:destination="@id/loginDone"
-            app:enterAnim="@anim/slide_left"  />
+            app:enterAnim="@anim/slide_left" />
     </fragment>
 
     <fragment
@@ -59,7 +59,7 @@
         android:id="@+id/loginDone"
         android:name="org.n9ne.h2ohealthy.ui.login.LoginDoneFragment"
         android:label="LoginDoneFragment"
-        tools:layout="@layout/fragment_login_done" >
+        tools:layout="@layout/fragment_login_done">
         <action
             android:id="@+id/loginDone_to_home"
             app:destination="@id/home" />
@@ -77,10 +77,18 @@
         <action
             android:id="@+id/profile_to_editProfile"
             app:destination="@id/editProfile" />
+        <action
+            android:id="@+id/profile_to_league"
+            app:destination="@id/league" />
     </fragment>
     <fragment
         android:id="@+id/editProfile"
         android:name="org.n9ne.h2ohealthy.ui.profile.EditProfileFragment"
         android:label="EditProfileFragment"
-        tools:layout="@layout/fragment_edit_profile"/>
+        tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/league"
+        android:name="org.n9ne.h2ohealthy.ui.profile.LeagueFragment"
+        android:label="LeagueFragment"
+        tools:layout="@layout/fragment_league" />
 </navigation>

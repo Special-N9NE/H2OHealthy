@@ -57,4 +57,8 @@
     <string name="create">Create</string>
     <string name="enter_league_code">Enter league code</string>
     <string name="join">Join</string>
+    <string name="league_settings">League Settings</string>
+    <string name="rename_league">Rename League</string>
+    <string name="share">Share</string>
+    <string name="leave_league">Leave League</string>
 </resources>

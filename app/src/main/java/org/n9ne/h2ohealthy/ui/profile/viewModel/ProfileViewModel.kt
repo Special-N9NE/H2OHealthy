@@ -7,12 +7,13 @@ import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Setting
 import org.n9ne.h2ohealthy.data.model.SettingItem
 import org.n9ne.h2ohealthy.data.model.User
+import org.n9ne.h2ohealthy.util.Response
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
 class ProfileViewModel : ViewModel() {
 
     lateinit var navigator: Navigator
-    val ldInLeague = MutableLiveData<Boolean>()
+    val ldInLeague = MutableLiveData<Response<Boolean>>()
 
     val user = User("1", "Amir Hossein", "65", "180", "2002/11/30", 219)
     val settings = listOf(
@@ -28,7 +29,7 @@ class ProfileViewModel : ViewModel() {
 
     fun leagueClick(@Suppress("UNUSED_PARAMETER") v: View) {
         //TODO check if user is joined in a league
-        ldInLeague.postValue(false)
+        ldInLeague.postValue(Response(true))
     }
 
     fun contactUsClick(@Suppress("UNUSED_PARAMETER") v: View) {

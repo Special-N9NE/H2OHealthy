@@ -78,10 +78,12 @@ class ProfileFragment : Fragment(), Navigator {
 
     private fun setupObserver() {
         viewModel.ldInLeague.observe(viewLifecycleOwner) {
-            if (it) {
-                //shouldNavigate(R.id.profile_to_league)
-            } else {
-                openLeagueDialogs()
+            if (it.notHandled) {
+                if (it.response) {
+                    shouldNavigate(R.id.profile_to_league)
+                } else {
+                    openLeagueDialogs()
+                }
             }
         }
     }

@@ -69,10 +69,12 @@ class EditProfileFragment : Fragment(), Navigator {
 
     private fun setupObserver() {
         viewModel.ldPickImage.observe(viewLifecycleOwner) {
-            galleryLauncher.launch("image/*")
+            if (it.notHandled)
+                galleryLauncher.launch("image/*")
         }
         viewModel.ldSubmit.observe(viewLifecycleOwner) {
-            findNavController().navigateUp()
+            if (it.notHandled)
+                findNavController().navigateUp()
         }
     }
 

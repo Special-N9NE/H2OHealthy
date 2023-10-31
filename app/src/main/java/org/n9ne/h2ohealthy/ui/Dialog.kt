@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.View.OnClickListener
 import android.widget.FrameLayout
 import androidx.core.content.res.ResourcesCompat
@@ -14,6 +15,7 @@ import org.n9ne.h2ohealthy.databinding.DialogAddBinding
 import org.n9ne.h2ohealthy.databinding.DialogCreateLeagueBinding
 import org.n9ne.h2ohealthy.databinding.DialogCupBinding
 import org.n9ne.h2ohealthy.databinding.DialogJoinLeagueBinding
+import org.n9ne.h2ohealthy.databinding.DialogLeagueSettingBinding
 import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
 import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
 
@@ -124,6 +126,49 @@ fun Activity.joinLeagueDialog(
     }
     binding.bJoin.setOnClickListener {
         listener.addLeague(binding.etCode.text.toString())
+    }
+    return dialog
+}
+
+fun Activity.leagueSettingDialog(
+    name: String,
+    code: String,
+    renameListener: OnClickListener?,
+    shareListener: OnClickListener,
+    removeListener: OnClickListener
+): Dialog {
+    val dialog = Dialog(this)
+    val binding = DialogLeagueSettingBinding.inflate(layoutInflater)
+    dialog.setCanceledOnTouchOutside(true)
+    dialog.setContentView(binding.root)
+    dialog.window?.setLayout(
+        FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT
+    )
+    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    dialog.setCanceledOnTouchOutside(false)
+    binding.ivClose.setOnClickListener {
+        dialog.dismiss()
+    }
+
+    binding.tvName.text = name
+    binding.tvCode.text = "@${code}"
+
+
+    binding.cvRename.visibility = if (renameListener == null) View.GONE else View.VISIBLE
+
+    binding.cvRename.setOnClickListener {
+        renameListener?.let {
+            it.onClick(binding.cvRename)
+            dialog.dismiss()
+        }
+    }
+    binding.cvShare.setOnClickListener {
+        shareListener.onClick(binding.cvShare)
+        dialog.dismiss()
+    }
+    binding.cvLeave.setOnClickListener {
+        removeListener.onClick(binding.cvLeave)
+        dialog.dismiss()
     }
     return dialog
 }

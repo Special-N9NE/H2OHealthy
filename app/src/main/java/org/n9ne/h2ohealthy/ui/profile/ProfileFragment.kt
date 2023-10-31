@@ -1,8 +1,10 @@
 package org.n9ne.h2ohealthy.ui.profile
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +13,7 @@ import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.databinding.FragmentProfileBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
+import org.n9ne.h2ohealthy.ui.createLeagueDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.SettingAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.ProfileViewModel
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
@@ -21,11 +24,11 @@ class ProfileFragment : Fragment(), Navigator {
 
     private lateinit var b: FragmentProfileBinding
     private lateinit var viewModel: ProfileViewModel
+    private lateinit var createLeagueDialog: Dialog
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         b = FragmentProfileBinding.inflate(inflater)
         return b.root
@@ -37,8 +40,8 @@ class ProfileFragment : Fragment(), Navigator {
         (requireActivity() as MainActivity).showNavigation()
         init()
 
-
         setUser(viewModel.user)
+        setupObserver()
     }
 
     private fun init() {
@@ -68,6 +71,28 @@ class ProfileFragment : Fragment(), Navigator {
 
         //TODO calculate age
         b.tvAge.text = "21"
+    }
+    private fun setupObserver() {
+        viewModel.ldInLeague.observe(viewLifecycleOwner) {
+            if (it) {
+                //shouldNavigate(R.id.profile_to_league)
+            } else {
+                openLeagueDialogs()
+            }
+        }
+    }
+
+    private fun openLeagueDialogs(){
+        val joinClick = OnClickListener {
+            //TODO open join dialog
+        }
+        val createClick = OnClickListener {
+            //TODO validation
+            createLeagueDialog.dismiss()
+        }
+        createLeagueDialog = requireActivity().createLeagueDialog(joinClick, createClick)
+
+        createLeagueDialog.show()
     }
 
     override fun shouldNavigate(destination: Int) {

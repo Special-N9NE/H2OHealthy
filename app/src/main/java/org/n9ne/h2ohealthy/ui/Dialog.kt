@@ -11,6 +11,7 @@ import androidx.core.content.res.ResourcesCompat
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.databinding.DialogAddBinding
+import org.n9ne.h2ohealthy.databinding.DialogCreateLeagueBinding
 import org.n9ne.h2ohealthy.databinding.DialogCupBinding
 import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
 
@@ -75,6 +76,32 @@ fun Activity.cupDialog(
     dialog.setCanceledOnTouchOutside(false)
     binding.ivBack.setOnClickListener {
         dialog.dismiss()
+    }
+    return dialog
+}
+
+fun Activity.createLeagueDialog(
+    joinListener: OnClickListener,
+    createListener: OnClickListener
+): Dialog {
+    val dialog = Dialog(this)
+    val binding = DialogCreateLeagueBinding.inflate(layoutInflater)
+    dialog.setCanceledOnTouchOutside(true)
+    dialog.setContentView(binding.root)
+    dialog.window?.setLayout(
+        FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT
+    )
+    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    dialog.setCanceledOnTouchOutside(false)
+    binding.ivClose.setOnClickListener {
+        dialog.dismiss()
+    }
+    binding.tvJoin.setOnClickListener {
+        joinListener.onClick(binding.tvJoin)
+        dialog.dismiss()
+    }
+    binding.bCreate.setOnClickListener {
+        createListener.onClick(binding.bCreate)
     }
     return dialog
 }

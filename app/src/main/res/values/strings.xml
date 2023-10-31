@@ -51,4 +51,8 @@
     <string name="your_height">Your Height</string>
     <string name="kg">KG</string>
     <string name="cm">CM</string>
+    <string name="create_league">Create League</string>
+    <string name="enter_league_name">Enter league name</string>
+    <string name="join_league">Join League</string>
+    <string name="create">Create</string>
 </resources>

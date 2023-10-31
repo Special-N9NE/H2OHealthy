@@ -1,6 +1,7 @@
 package org.n9ne.h2ohealthy.ui.profile.viewModel
 
 import android.view.View
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Setting
@@ -11,6 +12,7 @@ import org.n9ne.h2ohealthy.util.interfaces.Navigator
 class ProfileViewModel : ViewModel() {
 
     lateinit var navigator: Navigator
+    val ldInLeague = MutableLiveData<Boolean>()
 
     val user = User("1", "Amir Hossein", "65", "180", "2002/11/30", 219)
     val settings = listOf(
@@ -22,6 +24,11 @@ class ProfileViewModel : ViewModel() {
 
     fun editClick(@Suppress("UNUSED_PARAMETER") v: View) {
         navigator.shouldNavigate(R.id.profile_to_editProfile)
+    }
+
+    fun leagueClick(@Suppress("UNUSED_PARAMETER") v: View) {
+        //TODO check if user is joined in a league
+        ldInLeague.postValue(false)
     }
 
     fun contactUsClick(@Suppress("UNUSED_PARAMETER") v: View) {

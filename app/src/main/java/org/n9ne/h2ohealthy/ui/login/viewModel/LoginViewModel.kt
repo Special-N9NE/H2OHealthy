@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.n9ne.h2ohealthy.R
+import org.n9ne.h2ohealthy.data.repo.network.AuthApi
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
 class LoginViewModel : ViewModel() {
@@ -18,6 +19,8 @@ class LoginViewModel : ViewModel() {
 
     fun loginClick(@Suppress("UNUSED_PARAMETER") v: View) {
         //TODO validation
+
+        AuthApi.getInstance().login("amir@gmail.come", "777")
     }
 
     fun googleClick(@Suppress("UNUSED_PARAMETER") v: View) {

@@ -9,10 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.Progress
+import org.n9ne.h2ohealthy.data.repo.HomeRepo
+import org.n9ne.h2ohealthy.data.repo.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentHomeBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.home.adpter.ActivityAdapter
 import org.n9ne.h2ohealthy.ui.home.viewModel.HomeViewModel
+import org.n9ne.h2ohealthy.ui.home.viewModel.HomeViewModelFactory
 import org.n9ne.h2ohealthy.util.interfaces.MenuClickListener
 import org.nine.linearprogressbar.LinearVerticalProgressBar
 
@@ -39,14 +42,18 @@ class HomeFragment : Fragment() {
         //TODO set latest activity list
 
         val daily = viewModel.dailyProgress.toCollection(ArrayList())
-        setProgress(viewModel.target, viewModel.progress, daily)
+        setProgress(viewModel.progress, daily)
+        setObservers()
 
         setActivityAdapter(viewModel.activities)
 
+
+        viewModel.getTarget()
     }
 
     private fun init() {
-        viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+        val repo = HomeRepo(AppDatabase.getDatabase(requireContext()).roomDao())
+        viewModel = ViewModelProvider(this, HomeViewModelFactory(repo))[HomeViewModel::class.java]
         b.viewModel = viewModel
     }
 
@@ -60,9 +67,8 @@ class HomeFragment : Fragment() {
         b.rvActivity.adapter = adapter
     }
 
-    private fun setProgress(target: Int, progress: Int, daily: ArrayList<Progress>) {
+    private fun setProgress(progress: Int, daily: ArrayList<Progress>) {
         b.pbTarget.setProgress(progress)
-        b.tvTarget.text = target.toString() + "L"
 
         while (daily.size < 7) {
             daily.add(Progress(0, ""))
@@ -76,7 +82,11 @@ class HomeFragment : Fragment() {
                 //           v.text = daily[i].day
             }
         }
+    }
 
-
+    private fun setObservers() {
+        viewModel.ldTarget.observe(viewLifecycleOwner) {
+            b.tvTarget.text = it.toString() + "L"
+        }
     }
 }

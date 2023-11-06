@@ -17,13 +17,13 @@ import org.n9ne.h2ohealthy.databinding.DialogCupBinding
 import org.n9ne.h2ohealthy.databinding.DialogJoinLeagueBinding
 import org.n9ne.h2ohealthy.databinding.DialogLeagueSettingBinding
 import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
-import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
+import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
 
 
 fun Activity.addDialog(
     layoutInflater: LayoutInflater,
     selectedCup: Cup? = null,
-    doneListener: CupClickListener? = null,
+    doneListener: AddWaterListener? = null,
     selectListener: OnClickListener
 ): Dialog {
     val dialog = Dialog(this)
@@ -44,8 +44,9 @@ fun Activity.addDialog(
     }
     binding.bDone.setOnClickListener {
         doneListener?.let { click ->
-            selectedCup?.let { cup ->
-                click.onClick(cup)
+            val amount = binding.etAmount.text.toString()
+            if (amount.isNotEmpty()) {
+                click.onAdd(amount)
                 dialog.dismiss()
             }
         }

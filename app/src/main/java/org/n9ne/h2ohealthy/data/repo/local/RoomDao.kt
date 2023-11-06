@@ -13,4 +13,10 @@ interface RoomDao {
 
     @Query("SELECT * FROM UserEntity")
     fun getUser(): List<UserEntity>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertWater(water: WaterEntity): Long
+    @Query("SELECT * FROM WaterEntity")
+    fun getProgress(): List<WaterEntity>
+
 }

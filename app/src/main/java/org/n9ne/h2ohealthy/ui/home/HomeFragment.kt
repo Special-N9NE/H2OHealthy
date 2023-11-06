@@ -38,15 +38,11 @@ class HomeFragment : Fragment() {
         (requireActivity() as MainActivity).showNavigation()
         init()
 
-        //TODO set progress bar's
         //TODO set latest activity list
 
-        val daily = viewModel.dailyProgress.toCollection(ArrayList())
-        setProgress(viewModel.progress, daily)
         setObservers()
 
         setActivityAdapter(viewModel.activities)
-
 
         viewModel.getTarget()
     }
@@ -67,26 +63,28 @@ class HomeFragment : Fragment() {
         b.rvActivity.adapter = adapter
     }
 
-    private fun setProgress(progress: Int, daily: ArrayList<Progress>) {
-        b.pbTarget.setProgress(progress)
-
-        while (daily.size < 7) {
-            daily.add(Progress(0, ""))
-        }
-        for (i in 0 until b.clProgress.childCount) {
+    private fun setProgress(daily: List<Progress>) {
+        for ((index, i) in (0 until b.clProgress.childCount step 2).withIndex()) {
             val v = b.clProgress.getChildAt(i)
-            if (v is LinearVerticalProgressBar) {
-                v.setProgress(daily[i].progress)
-            }
-            if (v is TextView) {
-                //           v.text = daily[i].day
-            }
+            (v as LinearVerticalProgressBar).setProgress(daily[index].progress)
+        }
+        for ((index, i) in (1 until b.clProgress.childCount step 2).withIndex()) {
+            val v = b.clProgress.getChildAt(i)
+            (v as TextView).text = daily[index].day
         }
     }
 
     private fun setObservers() {
         viewModel.ldTarget.observe(viewLifecycleOwner) {
             b.tvTarget.text = it.toString() + "L"
+
+            viewModel.getProgress()
+        }
+        viewModel.ldDayProgress.observe(viewLifecycleOwner) {
+            b.pbTarget.setProgress(it)
+        }
+        viewModel.ldWeekProgress.observe(viewLifecycleOwner) {
+            setProgress(it)
         }
     }
 }

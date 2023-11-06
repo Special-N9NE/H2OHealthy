@@ -176,6 +176,16 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.0" />
 
+                    <TextView
+                        android:id="@+id/tv1"
+                        style="@style/ProgressCaption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/pb1"
+                        app:layout_constraintStart_toStartOf="@+id/pb1"
+                        app:layout_constraintTop_toBottomOf="@+id/pb1" />
+
                     <org.nine.linearprogressbar.LinearVerticalProgressBar
                         android:id="@+id/pb2"
                         style="@style/VerticalProgressBarStyle"
@@ -188,6 +198,16 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/pb1"
                         app:layout_constraintTop_toTopOf="@+id/pb1" />
+
+                    <TextView
+                        android:id="@+id/tv2"
+                        style="@style/ProgressCaption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/pb2"
+                        app:layout_constraintStart_toStartOf="@+id/pb2"
+                        app:layout_constraintTop_toBottomOf="@+id/pb2" />
 
                     <org.nine.linearprogressbar.LinearVerticalProgressBar
                         android:id="@+id/pb3"
@@ -202,6 +222,16 @@
                         app:layout_constraintStart_toEndOf="@+id/pb2"
                         app:layout_constraintTop_toTopOf="@+id/pb2" />
 
+                    <TextView
+                        android:id="@+id/tv3"
+                        style="@style/ProgressCaption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/pb3"
+                        app:layout_constraintStart_toStartOf="@+id/pb3"
+                        app:layout_constraintTop_toBottomOf="@+id/pb3" />
+
                     <org.nine.linearprogressbar.LinearVerticalProgressBar
                         android:id="@+id/pb4"
                         style="@style/VerticalProgressBarStyle"
@@ -214,6 +244,16 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/pb3"
                         app:layout_constraintTop_toTopOf="@+id/pb3" />
+
+                    <TextView
+                        android:id="@+id/tv4"
+                        style="@style/ProgressCaption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/pb4"
+                        app:layout_constraintStart_toStartOf="@+id/pb4"
+                        app:layout_constraintTop_toBottomOf="@+id/pb4" />
 
                     <org.nine.linearprogressbar.LinearVerticalProgressBar
                         android:id="@+id/pb5"
@@ -228,6 +268,16 @@
                         app:layout_constraintStart_toEndOf="@+id/pb4"
                         app:layout_constraintTop_toTopOf="@+id/pb4" />
 
+                    <TextView
+                        android:id="@+id/tv5"
+                        style="@style/ProgressCaption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/pb5"
+                        app:layout_constraintStart_toStartOf="@+id/pb5"
+                        app:layout_constraintTop_toBottomOf="@+id/pb5" />
+
                     <org.nine.linearprogressbar.LinearVerticalProgressBar
                         android:id="@+id/pb6"
                         style="@style/VerticalProgressBarStyle"
@@ -240,6 +290,16 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/pb5"
                         app:layout_constraintTop_toTopOf="@+id/pb5" />
+
+                    <TextView
+                        android:id="@+id/tv6"
+                        style="@style/ProgressCaption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/pb6"
+                        app:layout_constraintStart_toStartOf="@+id/pb6"
+                        app:layout_constraintTop_toBottomOf="@+id/pb6" />
 
                     <org.nine.linearprogressbar.LinearVerticalProgressBar
                         android:id="@+id/pb7"
@@ -255,46 +315,6 @@
                         app:layout_constraintTop_toTopOf="@+id/pb6" />
 
                     <TextView
-                        android:id="@+id/tv1"
-                        style="@style/ProgressCaption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/pb1"
-                        app:layout_constraintStart_toStartOf="@+id/pb1"
-                        app:layout_constraintTop_toBottomOf="@+id/pb1" />
-
-                    <TextView
-                        android:id="@+id/tv4"
-                        style="@style/ProgressCaption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/pb4"
-                        app:layout_constraintStart_toStartOf="@+id/pb4"
-                        app:layout_constraintTop_toBottomOf="@+id/pb4" />
-
-                    <TextView
-                        android:id="@+id/tv5"
-                        style="@style/ProgressCaption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/pb5"
-                        app:layout_constraintStart_toStartOf="@+id/pb5"
-                        app:layout_constraintTop_toBottomOf="@+id/pb5" />
-
-                    <TextView
-                        android:id="@+id/tv6"
-                        style="@style/ProgressCaption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/pb6"
-                        app:layout_constraintStart_toStartOf="@+id/pb6"
-                        app:layout_constraintTop_toBottomOf="@+id/pb6" />
-
-                    <TextView
                         android:id="@+id/tv7"
                         style="@style/ProgressCaption"
                         android:layout_width="wrap_content"
@@ -303,26 +323,6 @@
                         app:layout_constraintEnd_toEndOf="@+id/pb7"
                         app:layout_constraintStart_toStartOf="@+id/pb7"
                         app:layout_constraintTop_toBottomOf="@+id/pb7" />
-
-                    <TextView
-                        android:id="@+id/tv3"
-                        style="@style/ProgressCaption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/pb3"
-                        app:layout_constraintStart_toStartOf="@+id/pb3"
-                        app:layout_constraintTop_toBottomOf="@+id/pb3" />
-
-                    <TextView
-                        android:id="@+id/tv2"
-                        style="@style/ProgressCaption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/pb2"
-                        app:layout_constraintStart_toStartOf="@+id/pb2"
-                        app:layout_constraintTop_toBottomOf="@+id/pb2" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>

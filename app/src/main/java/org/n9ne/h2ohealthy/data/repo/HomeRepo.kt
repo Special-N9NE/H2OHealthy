@@ -39,4 +39,22 @@ class HomeRepo(private val dao: RoomDao) {
             }
         }
     }
+
+    fun updateWater(id: Long, amount: String, callback: RepoCallback<Boolean>) {
+        runBlocking(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
+                dao.updateWater(id, amount)
+                callback.onSuccessful(true)
+            }
+        }
+    }
+
+    fun removeWater(id: Long, callback: RepoCallback<Boolean>) {
+        runBlocking(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
+                dao.removeWater(id)
+                callback.onSuccessful(true)
+            }
+        }
+    }
 }

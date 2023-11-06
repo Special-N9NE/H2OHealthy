@@ -61,4 +61,6 @@
     <string name="rename_league">Rename League</string>
     <string name="share">Share</string>
     <string name="leave_league">Leave League</string>
+    <string name="remove">Remove</string>
+    <string name="enter_new_value">Enter new value</string>
 </resources>

@@ -14,10 +14,13 @@ import org.n9ne.h2ohealthy.data.repo.HomeRepo
 import org.n9ne.h2ohealthy.data.repo.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentHomeBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
+import org.n9ne.h2ohealthy.ui.activityOptionDialog
 import org.n9ne.h2ohealthy.ui.home.adpter.ActivityAdapter
 import org.n9ne.h2ohealthy.ui.home.viewModel.HomeViewModel
 import org.n9ne.h2ohealthy.ui.home.viewModel.HomeViewModelFactory
+import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
 import org.n9ne.h2ohealthy.util.interfaces.MenuClickListener
+import org.n9ne.h2ohealthy.util.interfaces.RemoveActivityListener
 import org.nine.linearprogressbar.LinearVerticalProgressBar
 
 
@@ -25,6 +28,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var b: FragmentHomeBinding
     private lateinit var viewModel: HomeViewModel
+    private var activityList = arrayListOf<Activity>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,9 +57,21 @@ class HomeFragment : Fragment() {
     private fun setActivityAdapter(list: List<Activity>) {
         val adapter = ActivityAdapter(list, object : MenuClickListener {
             override fun onMenuClick(item: Activity) {
-                //TODO open options dialog
+                val editListener = object : AddWaterListener {
+                    override fun onAdd(amount: String) {
+                        item.amount = (amount.toDouble() / 1000).toString()
+                        viewModel.updateWater(item)
+                    }
+                }
+                val removeListener = object : RemoveActivityListener {
+                    override fun onRemove(activity: Activity) {
+                        viewModel.removeWater(item)
+                    }
+                }
+                val dialog =
+                    requireActivity().activityOptionDialog(item, editListener, removeListener)
+                dialog.show()
             }
-
         })
         b.rvActivity.adapter = adapter
     }
@@ -84,6 +100,7 @@ class HomeFragment : Fragment() {
             setProgress(it)
         }
         viewModel.ldActivities.observe(viewLifecycleOwner) {
+            activityList = it.toCollection(ArrayList())
             setActivityAdapter(it)
         }
         viewModel.ldError.observe(viewLifecycleOwner) {

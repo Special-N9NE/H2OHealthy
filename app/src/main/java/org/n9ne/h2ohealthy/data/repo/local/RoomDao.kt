@@ -16,7 +16,12 @@ interface RoomDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertWater(water: WaterEntity): Long
+
     @Query("SELECT * FROM WaterEntity")
     fun getProgress(): List<WaterEntity>
 
+    @Query("UPDATE WaterEntity SET amount = :amount WHERE id = :id")
+    fun updateWater(id: Long, amount: String)
+    @Query("DELETE FROM WaterEntity WHERE id = :id")
+    fun removeWater(id: Long)
 }

@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import androidx.core.content.res.ResourcesCompat
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Cup
+import org.n9ne.h2ohealthy.databinding.DialogActivityOptionsBinding
 import org.n9ne.h2ohealthy.databinding.DialogAddBinding
 import org.n9ne.h2ohealthy.databinding.DialogCreateLeagueBinding
 import org.n9ne.h2ohealthy.databinding.DialogCupBinding
@@ -18,6 +19,7 @@ import org.n9ne.h2ohealthy.databinding.DialogJoinLeagueBinding
 import org.n9ne.h2ohealthy.databinding.DialogLeagueSettingBinding
 import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
 import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
+import org.n9ne.h2ohealthy.util.interfaces.RemoveActivityListener
 
 
 fun Activity.addDialog(
@@ -169,6 +171,39 @@ fun Activity.leagueSettingDialog(
     }
     binding.cvLeave.setOnClickListener {
         removeListener.onClick(binding.cvLeave)
+        dialog.dismiss()
+    }
+    return dialog
+}
+
+fun Activity.activityOptionDialog(
+    item: org.n9ne.h2ohealthy.data.model.Activity,
+    listener: AddWaterListener,
+    removeListener: RemoveActivityListener
+): Dialog {
+    val dialog = Dialog(this)
+    val binding = DialogActivityOptionsBinding.inflate(layoutInflater)
+    dialog.setCanceledOnTouchOutside(true)
+    dialog.setContentView(binding.root)
+    dialog.window?.setLayout(
+        FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT
+    )
+    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    dialog.setCanceledOnTouchOutside(false)
+
+    binding.etAmount.setText(item.amount)
+    binding.ivClose.setOnClickListener {
+        dialog.dismiss()
+    }
+    binding.bSumbit.setOnClickListener {
+        val value = binding.etAmount.text.toString()
+        if (value.isNotEmpty()) {
+            listener.onAdd(value)
+            dialog.dismiss()
+        }
+    }
+    binding.cvRemove.setOnClickListener {
+        removeListener.onRemove(item)
         dialog.dismiss()
     }
     return dialog

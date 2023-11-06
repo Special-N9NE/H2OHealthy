@@ -29,7 +29,7 @@ object Utils {
 
                 val displayTime = DateUtils.getCurrentTimeDiff(it.time)
                 val amount = (it.amount.toDouble() * 1000).roundToInt()
-                val item = Activity(amount.toString(), it.date, displayTime)
+                val item = Activity(it.id, amount.toString(), it.date, displayTime)
                 result.add(item)
             }
         }

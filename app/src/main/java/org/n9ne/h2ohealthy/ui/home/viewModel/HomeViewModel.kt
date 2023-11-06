@@ -9,6 +9,7 @@ import org.n9ne.h2ohealthy.data.repo.HomeRepo
 import org.n9ne.h2ohealthy.data.repo.local.WaterEntity
 import org.n9ne.h2ohealthy.util.RepoCallback
 import org.n9ne.h2ohealthy.util.Utils
+import kotlin.math.roundToInt
 
 class HomeViewModel(private val repo: HomeRepo) : ViewModel() {
     var target: Int? = null
@@ -54,6 +55,60 @@ class HomeViewModel(private val repo: HomeRepo) : ViewModel() {
             }
         })
     }
+
+    fun updateWater(activity: Activity) {
+
+        repo.updateWater(activity.id, activity.amount, object : RepoCallback<Boolean> {
+            override fun onSuccessful(response: Boolean) {
+
+                val activities = ldActivities.value!!
+
+                activities.forEach { item ->
+                    if (item.id == activity.id) item.amount =
+                        (activity.amount.toDouble() * 1000).roundToInt().toString()
+                }
+
+                var progress = 0.0
+                activities.forEach { item ->
+                    progress += item.amount.toDouble()
+                }
+                progress /= 1000
+                progress = (100 * progress) / target!!
+                ldDayProgress.postValue(progress.roundToInt())
+                ldActivities.postValue(activities)
+            }
+
+            override fun onError(error: String, isNetwork: Boolean) {
+                ldError.postValue(error)
+            }
+        })
+    }
+
+    fun removeWater(activity: Activity) {
+
+        repo.removeWater(activity.id, object : RepoCallback<Boolean> {
+            override fun onSuccessful(response: Boolean) {
+                val activities = ldActivities.value!!.toCollection(ArrayList())
+
+                activities.forEach { item ->
+                    if (item.id == activity.id) activities.remove(item)
+                }
+
+                val list = arrayListOf<WaterEntity>()
+                activities.forEach {
+                    list.add(WaterEntity(it.id, it.date, it.amount, ""))
+                }
+                val progress = Utils.calculateDayProgress(list.toList())
+                ldDayProgress.postValue(progress)
+                ldActivities.postValue(activities)
+            }
+
+            override fun onError(error: String, isNetwork: Boolean) {
+                ldError.postValue(error)
+            }
+        })
+    }
+
 }
 
 @Suppress("UNCHECKED_CAST")

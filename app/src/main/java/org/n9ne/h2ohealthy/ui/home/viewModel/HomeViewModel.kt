@@ -12,14 +12,11 @@ import org.n9ne.h2ohealthy.util.Utils
 
 class HomeViewModel(private val repo: HomeRepo) : ViewModel() {
     var target: Int? = null
-    val activities = listOf(
-        Activity("300", "2023/10/30", "3 minutes ago"),
-        Activity("300", "2023/10/30", "3 minutes ago")
-    )
 
     val ldTarget = MutableLiveData<Int>()
     val ldDayProgress = MutableLiveData<Int>()
     val ldWeekProgress = MutableLiveData<List<Progress>>()
+    val ldActivities = MutableLiveData<List<Activity>>()
     val ldError = MutableLiveData<String>()
 
     fun getTarget() {
@@ -41,16 +38,15 @@ class HomeViewModel(private val repo: HomeRepo) : ViewModel() {
 
                 val dayProgress = Utils.calculateDayProgress(response)
                 val progress = (100 * dayProgress) / target!!
-
                 ldDayProgress.postValue(progress)
 
                 val weekProgress = Utils.calculateWeekProgress(response)
-
                 weekProgress.forEach {
                     it.progress = (100 * it.progress) / target!!
                 }
                 ldWeekProgress.postValue(weekProgress)
 
+                ldActivities.postValue(Utils.calculateActivities(response))
             }
 
             override fun onError(error: String, isNetwork: Boolean) {

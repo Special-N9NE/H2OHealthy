@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import org.n9ne.h2ohealthy.data.model.Activity
@@ -38,11 +39,7 @@ class HomeFragment : Fragment() {
         (requireActivity() as MainActivity).showNavigation()
         init()
 
-        //TODO set latest activity list
-
         setObservers()
-
-        setActivityAdapter(viewModel.activities)
 
         viewModel.getTarget()
     }
@@ -85,6 +82,12 @@ class HomeFragment : Fragment() {
         }
         viewModel.ldWeekProgress.observe(viewLifecycleOwner) {
             setProgress(it)
+        }
+        viewModel.ldActivities.observe(viewLifecycleOwner) {
+            setActivityAdapter(it)
+        }
+        viewModel.ldError.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         }
     }
 }

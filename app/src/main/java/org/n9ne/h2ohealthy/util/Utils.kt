@@ -1,5 +1,6 @@
 package org.n9ne.h2ohealthy.util
 
+import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.Progress
 import org.n9ne.h2ohealthy.data.repo.local.WaterEntity
 import java.text.SimpleDateFormat
@@ -17,6 +18,23 @@ object Utils {
         }
 
         return amount.roundToInt()
+    }
+
+    fun calculateActivities(list: List<WaterEntity>): List<Activity> {
+        val result = arrayListOf<Activity>()
+
+        val today = DateUtils.getDate()
+        list.forEach {
+            if (it.date == today) {
+
+                val displayTime = DateUtils.getCurrentTimeDiff(it.time)
+                val amount = (it.amount.toDouble() * 1000).roundToInt()
+                val item = Activity(amount.toString(), it.date, displayTime)
+                result.add(item)
+            }
+        }
+
+        return result.reversed()
     }
 
     fun calculateWeekProgress(list: List<WaterEntity>): List<Progress> {

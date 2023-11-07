@@ -6,17 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.User
+import org.n9ne.h2ohealthy.data.repo.ProfileRepo
+import org.n9ne.h2ohealthy.data.repo.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentProfileBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.createLeagueDialog
 import org.n9ne.h2ohealthy.ui.joinLeagueDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.SettingAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.ProfileViewModel
+import org.n9ne.h2ohealthy.ui.profile.viewModel.ProfileViewModelFactory
 import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 import org.n9ne.h2ohealthy.util.setGradient
@@ -43,12 +48,14 @@ class ProfileFragment : Fragment(), Navigator {
         (requireActivity() as MainActivity).showNavigation()
         init()
 
-        setUser(viewModel.user)
+        viewModel.getUser()
         setupObserver()
     }
 
     private fun init() {
-        viewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
+        val repo = ProfileRepo(AppDatabase.getDatabase(requireContext()).roomDao())
+        viewModel =
+            ViewModelProvider(this, ProfileViewModelFactory(repo))[ProfileViewModel::class.java]
 
         viewModel.navigator = this
         b.viewModel = viewModel
@@ -72,8 +79,19 @@ class ProfileFragment : Fragment(), Navigator {
         b.tvWeight.text = "${user.weight}${getString(R.string.kg)}"
         b.tvHeight.text = "${user.height}${getString(R.string.cm)}"
 
-        //TODO calculate age
-        b.tvAge.text = "21"
+        b.tvAge.text = user.age
+
+        if (user.profile.isNotEmpty()) {
+            Glide.with(requireContext())
+                .load(user.profile)
+                .into(b.ivProfile)
+                .onLoadFailed(
+                    AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.image_profile
+                    )
+                )
+        }
     }
 
     private fun setupObserver() {
@@ -85,6 +103,9 @@ class ProfileFragment : Fragment(), Navigator {
                     openLeagueDialogs()
                 }
             }
+        }
+        viewModel.ldUser.observe(viewLifecycleOwner) {
+            setUser(it)
         }
     }
 

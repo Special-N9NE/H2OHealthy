@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "org.n9ne.h2ohealthy"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -42,6 +42,10 @@ android {
 
 dependencies {
     testImplementation("junit:junit:4.12")
+
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+
     val roomVersion = "2.5.2"
     implementation("androidx.room:room-ktx:$roomVersion")
     implementation("androidx.room:room-runtime:$roomVersion")

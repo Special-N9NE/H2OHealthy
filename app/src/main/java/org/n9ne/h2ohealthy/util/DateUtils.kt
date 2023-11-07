@@ -1,6 +1,10 @@
 package org.n9ne.h2ohealthy.util
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.Period
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
@@ -45,5 +49,13 @@ object DateUtils {
         val time = Calendar.getInstance().time
         val formatter = SimpleDateFormat("hh:mm")
         return formatter.format(time)
+    }
+
+    fun calculateAge(birthdate: String): Int {
+        val values = birthdate.split("/")
+        return Period.between(
+            LocalDate.of(values[0].toInt(), values[1].toInt(), values[2].toInt()),
+            LocalDate.now()
+        ).years
     }
 }

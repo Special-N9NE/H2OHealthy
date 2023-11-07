@@ -43,6 +43,9 @@ android {
 dependencies {
     testImplementation("junit:junit:4.12")
 
+    implementation("me.saket.cascade:cascade:2.3.0")
+    implementation("me.saket.cascade:cascade-compose:2.3.0")
+
     implementation("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 

@@ -4,13 +4,11 @@ import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.databinding.ItemCupBinding
+import org.n9ne.h2ohealthy.databinding.ItemCupDialogBinding
 import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
 
 class CupsAdapter(
@@ -20,12 +18,12 @@ class CupsAdapter(
 
     lateinit var context: Context
 
-    inner class ViewHolder(private val b: ItemCupBinding) :
+    inner class ViewHolder(private val b: ItemCupDialogBinding) :
         RecyclerView.ViewHolder(b.root) {
         fun setData(item: Cup) {
             b.item = item
             b.ivCup.setColorFilter(
-                ContextCompat.getColor(context, item.color),
+                Color.parseColor(item.color),
                 android.graphics.PorterDuff.Mode.MULTIPLY
             )
             b.tvCapacity.text = item.capacity.toString()
@@ -43,8 +41,8 @@ class CupsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
         val inflater = LayoutInflater.from(context)
-        val binding: ItemCupBinding =
-            ItemCupBinding.inflate(inflater, parent, false)
+        val binding: ItemCupDialogBinding =
+            ItemCupDialogBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
 

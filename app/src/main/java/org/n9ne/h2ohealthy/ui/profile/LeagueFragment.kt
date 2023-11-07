@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import org.n9ne.h2ohealthy.databinding.FragmentLeagueBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
-import org.n9ne.h2ohealthy.ui.leagueSettingDialog
+import org.n9ne.h2ohealthy.ui.dialog.leagueSettingDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.MemberAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.LeagueViewModel
 

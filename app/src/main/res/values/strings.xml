@@ -39,7 +39,7 @@
     <string name="contact_us">Contact Us</string>
     <string name="other">Other</string>
     <string name="add_water">Add water</string>
-    <string name="enter_amount">Enter amount</string>
+    <string name="enter_amount">Enter amount (ml)</string>
     <string name="select_cup">Select cup</string>
     <string name="done">Done</string>
     <string name="edit_profile">Edit Profile</string>
@@ -63,4 +63,8 @@
     <string name="leave_league">Leave League</string>
     <string name="remove">Remove</string>
     <string name="enter_new_value">Enter new value</string>
+    <string name="my_cups">My Cups</string>
+    <string name="add_cup">Add Cup</string>
+    <string name="enter_cup_name">Enter cup name</string>
+    <string name="select_color">Select color</string>
 </resources>

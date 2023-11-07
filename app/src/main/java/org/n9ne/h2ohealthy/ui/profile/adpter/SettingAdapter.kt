@@ -6,9 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.n9ne.h2ohealthy.data.model.Setting
 import org.n9ne.h2ohealthy.databinding.ItemSettingBinding
+import org.n9ne.h2ohealthy.util.interfaces.SettingClickListener
 
 class SettingAdapter(
-    private val list: List<Setting>
+    private val list: List<Setting>,
+    private val listener: SettingClickListener
 ) : RecyclerView.Adapter<SettingAdapter.ViewHolder>() {
 
     lateinit var context: Context
@@ -22,7 +24,7 @@ class SettingAdapter(
 
         private fun setupClick(item: Setting) {
             b.clRoot.setOnClickListener {
-
+                listener.settingClicked(item)
             }
         }
     }

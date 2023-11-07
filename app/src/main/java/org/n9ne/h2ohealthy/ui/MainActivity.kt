@@ -13,10 +13,11 @@ import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.repo.HomeRepo
 import org.n9ne.h2ohealthy.data.repo.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.ActivityMainBinding
+import org.n9ne.h2ohealthy.ui.dialog.addWaterDialog
+import org.n9ne.h2ohealthy.ui.dialog.cupDialog
 import org.n9ne.h2ohealthy.ui.home.adpter.CupsAdapter
 import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
 import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
-import kotlin.math.roundToInt
 
 
 class MainActivity : AppCompatActivity() {
@@ -84,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         val cupDialog = this.cupDialog(layoutInflater)
-        var dialog = this.addDialog(layoutInflater, null, doneListener) {
+        var dialog = this.addWaterDialog(layoutInflater, null, doneListener) {
             cupDialog.show()
         }
 
@@ -96,7 +97,7 @@ class MainActivity : AppCompatActivity() {
                 cupDialog.dismiss()
 
                 dialog =
-                    this@MainActivity.addDialog(layoutInflater, item, doneListener) {
+                    this@MainActivity.addWaterDialog(layoutInflater, item, doneListener) {
                         cupDialog.show()
                     }
                 dialog.show()

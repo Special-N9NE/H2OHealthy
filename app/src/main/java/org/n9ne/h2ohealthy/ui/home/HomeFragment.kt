@@ -14,7 +14,7 @@ import org.n9ne.h2ohealthy.data.repo.HomeRepo
 import org.n9ne.h2ohealthy.data.repo.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentHomeBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
-import org.n9ne.h2ohealthy.ui.activityOptionDialog
+import org.n9ne.h2ohealthy.ui.dialog.activityOptionDialog
 import org.n9ne.h2ohealthy.ui.home.adpter.ActivityAdapter
 import org.n9ne.h2ohealthy.ui.home.viewModel.HomeViewModel
 import org.n9ne.h2ohealthy.ui.home.viewModel.HomeViewModelFactory

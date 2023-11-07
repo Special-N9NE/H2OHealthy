@@ -12,18 +12,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import org.n9ne.h2ohealthy.R
+import org.n9ne.h2ohealthy.data.model.Setting
+import org.n9ne.h2ohealthy.data.model.SettingItem
 import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.repo.ProfileRepo
 import org.n9ne.h2ohealthy.data.repo.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentProfileBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
-import org.n9ne.h2ohealthy.ui.createLeagueDialog
-import org.n9ne.h2ohealthy.ui.joinLeagueDialog
+import org.n9ne.h2ohealthy.ui.dialog.createLeagueDialog
+import org.n9ne.h2ohealthy.ui.dialog.joinLeagueDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.SettingAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.ProfileViewModel
 import org.n9ne.h2ohealthy.ui.profile.viewModel.ProfileViewModelFactory
 import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
+import org.n9ne.h2ohealthy.util.interfaces.SettingClickListener
 import org.n9ne.h2ohealthy.util.setGradient
 
 
@@ -59,7 +62,17 @@ class ProfileFragment : Fragment(), Navigator {
 
         viewModel.navigator = this
         b.viewModel = viewModel
-        b.rvSettings.adapter = SettingAdapter(viewModel.settings)
+        b.rvSettings.adapter = SettingAdapter(viewModel.settings, object : SettingClickListener {
+            override fun settingClicked(setting: Setting) {
+                when (setting.type) {
+                    SettingItem.PASSWORD -> TODO()
+                    SettingItem.HISTORY -> TODO()
+                    SettingItem.PROGRESS -> TODO()
+                    SettingItem.GLASS -> shouldNavigate(R.id.profile_to_cups)
+                }
+            }
+
+        })
 
         setGradients()
     }

@@ -80,6 +80,9 @@
         <action
             android:id="@+id/profile_to_league"
             app:destination="@id/league" />
+        <action
+            android:id="@+id/profile_to_cups"
+            app:destination="@id/cups" />
     </fragment>
     <fragment
         android:id="@+id/editProfile"
@@ -91,4 +94,9 @@
         android:name="org.n9ne.h2ohealthy.ui.profile.LeagueFragment"
         android:label="LeagueFragment"
         tools:layout="@layout/fragment_league" />
+    <fragment
+        android:id="@+id/cups"
+        android:name="org.n9ne.h2ohealthy.ui.profile.CupsFragment"
+        android:label="CupsFragment"
+        tools:layout="@layout/fragment_cups"/>
 </navigation>

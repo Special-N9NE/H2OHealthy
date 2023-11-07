@@ -90,15 +90,14 @@ class HomeViewModel(private val repo: HomeRepo) : ViewModel() {
             override fun onSuccessful(response: Boolean) {
                 val activities = ldActivities.value!!.toCollection(ArrayList())
 
-                activities.forEach { item ->
-                    if (item.id == activity.id) activities.remove(item)
-                }
+                activities.removeIf { it.id == activity.id }
 
                 val list = arrayListOf<WaterEntity>()
                 activities.forEach {
-                    list.add(WaterEntity(it.id, it.date, it.amount, ""))
+                    list.add(WaterEntity(it.id, it.date, (it.amount.toDouble() / 1000).toString(), ""))
                 }
-                val progress = Utils.calculateDayProgress(list.toList())
+                var progress = Utils.calculateDayProgress(list.toList())
+                progress = (100 * progress) / target!!
                 ldDayProgress.postValue(progress)
                 ldActivities.postValue(activities)
             }

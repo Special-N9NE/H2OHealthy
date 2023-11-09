@@ -5,15 +5,13 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.FrameLayout
-import androidx.core.content.res.ResourcesCompat
-import org.n9ne.h2ohealthy.R
+import com.github.dhaval2404.colorpicker.ColorPickerDialog
+import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
+import com.github.dhaval2404.colorpicker.model.ColorShape
 import org.n9ne.h2ohealthy.data.model.Cup
-import org.n9ne.h2ohealthy.databinding.DialogAddBinding
 import org.n9ne.h2ohealthy.databinding.DialogAddCupBinding
 import org.n9ne.h2ohealthy.databinding.DialogCupBinding
-import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
 import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
 import kotlin.math.roundToInt
 
@@ -59,20 +57,26 @@ fun Activity.addCupDialog(
     binding.ivClose.setOnClickListener {
         dialog.dismiss()
     }
-    binding.cvColor.setOnClickListener {
-        //TODO open color picker
+    var color = "#92A3FD"
+    binding.etColor.setOnClickListener {
+        MaterialColorPickerDialog.Builder(this)
+            .setTitle("Pick Color")
+            .setColorShape(ColorShape.SQAURE)
+            .setDefaultColor(color)
+            .setColorListener { _, colorHex ->
+                color = colorHex
+                binding.cvColor.strokeColor = Color.parseColor(color)
+            }.show()
     }
     binding.bDone.setOnClickListener {
         //TODO validation
         val name = binding.etName.text.toString()
         val amount = binding.etAmount.text.toString()
-        val color = "#92A3FD"
 
         //TODO change id user
-        val result = Cup(cup?.id,1L , name, amount.toDouble().roundToInt(), color)
+        val result = Cup(cup?.id, 1L, name, amount.toDouble().roundToInt(), color)
         listener.onClick(result)
         dialog.dismiss()
     }
-
     return dialog
 }

@@ -40,13 +40,13 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="4dp"
-        app:strokeWidth="2dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/_textView3"
-        app:strokeColor="@color/transparent">
+        app:strokeColor="@color/transparent"
+        app:strokeWidth="2dp">
 
         <EditText
             android:id="@+id/etName"
@@ -70,12 +70,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="4dp"
         app:cardCornerRadius="16dp"
-        app:strokeWidth="2dp"
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cvName"
-        app:strokeColor="@color/transparent">
+        app:strokeColor="@color/transparent"
+        app:strokeWidth="2dp">
 
         <EditText
             android:id="@+id/etAmount"
@@ -99,20 +99,20 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="4dp"
+        android:clickable="true"
         app:cardCornerRadius="16dp"
-        app:strokeWidth="2dp"
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cvAmount"
-        app:strokeColor="@color/transparent">
+        app:strokeColor="@color/transparent"
+        app:strokeWidth="2dp">
 
         <EditText
             android:id="@+id/etColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:enabled="false"
             android:focusable="false"
             android:fontFamily="@font/poppins_regular"
             android:importantForAutofill="no"

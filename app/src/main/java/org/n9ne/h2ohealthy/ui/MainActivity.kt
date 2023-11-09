@@ -10,18 +10,23 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Cup
-import org.n9ne.h2ohealthy.data.repo.HomeRepo
-import org.n9ne.h2ohealthy.data.repo.HomeRepoLocalImpl
+import org.n9ne.h2ohealthy.data.repo.MainRepo
+import org.n9ne.h2ohealthy.data.repo.MainRepoLocalImpl
 import org.n9ne.h2ohealthy.data.repo.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.ActivityMainBinding
 import org.n9ne.h2ohealthy.ui.dialog.addWaterDialog
 import org.n9ne.h2ohealthy.ui.dialog.cupDialog
 import org.n9ne.h2ohealthy.ui.home.adpter.CupsAdapter
+import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
 import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
 
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var localRepo: MainRepo
+
+    private var cups = listOf<Cup>()
     private lateinit var b: ActivityMainBinding
     private lateinit var cupAdapter: CupsAdapter
     private var selectedCup: Cup? = null
@@ -35,6 +40,10 @@ class MainActivity : AppCompatActivity() {
 
         init()
         setObserver()
+
+        makeRequest {
+            viewModel.getCups()
+        }
 
         b.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -59,11 +68,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        val repo = HomeRepoLocalImpl(AppDatabase.getDatabase(this).roomDao())
-        viewModel = ViewModelProvider(this, MainViewModelFactory(repo))[MainViewModel::class.java]
+        localRepo = MainRepoLocalImpl(AppDatabase.getDatabase(this).roomDao())
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
         navController = navHostFragment.navController
+    }
+
+    private fun makeRequest(request: () -> Unit) {
+        val repo = if (isOnline()) {
+            //TODO pass apiRepo
+            localRepo
+        } else {
+            localRepo
+        }
+        viewModel.repo = repo
+        request.invoke()
     }
 
     private fun setObserver() {
@@ -74,17 +94,22 @@ class MainActivity : AppCompatActivity() {
         viewModel.ldError.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
         }
+        viewModel.ldCups.observe(this) {
+            cups = it
+        }
     }
 
     private fun navigationAddClick() {
-        //TODO get cups
         val doneListener = object : AddWaterListener {
             override fun onAdd(amount: String) {
                 //TODO change id
                 val liter = amount.toDouble() / 1000
-                viewModel.insertWater(liter.toString(), 1L)
+                makeRequest {
+                    viewModel.insertWater(liter.toString(), 1L)
+                }
             }
         }
+
         val cupDialog = this.cupDialog(layoutInflater)
         var dialog = this.addWaterDialog(layoutInflater, null, doneListener) {
             cupDialog.show()
@@ -92,18 +117,19 @@ class MainActivity : AppCompatActivity() {
 
         dialog.show()
 
-        cupAdapter = CupsAdapter(viewModel.cups, object : CupClickListener {
-            override fun onClick(item: Cup) {
-                selectedCup = item
-                cupDialog.dismiss()
+        cupAdapter = CupsAdapter(cups,
+            object : CupClickListener {
+                override fun onClick(item: Cup) {
+                    selectedCup = item
+                    cupDialog.dismiss()
 
-                dialog =
-                    this@MainActivity.addWaterDialog(layoutInflater, item, doneListener) {
-                        cupDialog.show()
-                    }
-                dialog.show()
-            }
-        })
+                    dialog =
+                        this@MainActivity.addWaterDialog(layoutInflater, item, doneListener) {
+                            cupDialog.show()
+                        }
+                    dialog.show()
+                }
+            })
         val rvCup = cupDialog.findViewById<RecyclerView>(R.id.rvCup)
         rvCup.adapter = cupAdapter
 

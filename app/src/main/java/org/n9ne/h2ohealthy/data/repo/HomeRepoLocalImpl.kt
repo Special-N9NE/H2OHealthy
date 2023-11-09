@@ -34,14 +34,6 @@ class HomeRepoLocalImpl(private val dao: RoomDao) : HomeRepo {
         }
     }
 
-    override fun insertWater(water: Activity, callback: RepoCallback<Boolean>) {
-        runBlocking(Dispatchers.IO) {
-
-            dao.insertWater(water.toWater())
-            callback.onSuccessful(true)
-        }
-    }
-
     override fun updateWater(id: Long, amount: String, callback: RepoCallback<Boolean>) {
         runBlocking(Dispatchers.IO) {
             dao.updateWater(id, amount)

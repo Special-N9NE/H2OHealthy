@@ -6,13 +6,17 @@ import androidx.lifecycle.ViewModelProvider
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.repo.HomeRepo
+import org.n9ne.h2ohealthy.data.repo.MainRepo
 import org.n9ne.h2ohealthy.util.DateUtils
 import org.n9ne.h2ohealthy.util.RepoCallback
 
-class MainViewModel(private val repo: HomeRepo) : ViewModel() {
+class MainViewModel : ViewModel() {
 
-    val cups = listOf<Cup>()
+    var repo: MainRepo? = null
+
+    val ldCups = MutableLiveData<List<Cup>>()
     val ldInsertWater = MutableLiveData<Boolean>()
+
     val ldError = MutableLiveData<String>()
 
     fun insertWater(amount: String, id: Long) {
@@ -21,7 +25,7 @@ class MainViewModel(private val repo: HomeRepo) : ViewModel() {
 
         //TODO change id user
         val water = Activity(id, 1L, amount, date, time)
-        repo.insertWater(water, object : RepoCallback<Boolean> {
+        repo?.insertWater(water, object : RepoCallback<Boolean> {
             override fun onSuccessful(response: Boolean) {
                 ldInsertWater.postValue(response)
             }
@@ -32,13 +36,17 @@ class MainViewModel(private val repo: HomeRepo) : ViewModel() {
         })
     }
 
-}
+    fun getCups() {
+        repo?.getCups(object : RepoCallback<List<Cup>> {
+            override fun onSuccessful(response: List<Cup>) {
+                ldCups.postValue(response)
+            }
 
-class MainViewModelFactory(private val repo: HomeRepo) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            return MainViewModel(repo) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
+            override fun onError(error: String, isNetwork: Boolean) {
+                ldError.postValue(error)
+            }
+
+        })
     }
+
 }

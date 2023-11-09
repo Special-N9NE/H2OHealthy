@@ -69,7 +69,7 @@ fun Activity.addCupDialog(
         val color = "#92A3FD"
 
         //TODO change id user
-        val result = Cup(null,1L , name, amount.toDouble().roundToInt(), color)
+        val result = Cup(cup?.id,1L , name, amount.toDouble().roundToInt(), color)
         listener.onClick(result)
         dialog.dismiss()
     }

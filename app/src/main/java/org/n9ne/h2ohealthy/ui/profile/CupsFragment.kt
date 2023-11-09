@@ -71,7 +71,9 @@ class CupsFragment : Fragment() {
                 if (edit) {
                     requireActivity().addCupDialog(cup, object : CupClickListener {
                         override fun onClick(item: Cup) {
-                            //TODO update database
+                            makeRequest {
+                                viewModel.updateCup(item)
+                            }
                         }
                     }).show()
                 } else {

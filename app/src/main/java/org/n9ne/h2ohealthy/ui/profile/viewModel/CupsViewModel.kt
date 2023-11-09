@@ -61,4 +61,26 @@ class CupsViewModel : ViewModel() {
 
         })
     }
+
+    fun updateCup(cup: Cup){
+        repo?.updateCup(cup, object : RepoCallback<Boolean> {
+            override fun onSuccessful(response: Boolean) {
+
+                val cups = ldCups.value!!.toCollection(ArrayList())
+                cups.forEach {
+                    if (it.id == cup.id){
+                        it.title = cup.title
+                        it.capacity = cup.capacity
+                        it.color = cup.color
+                    }
+                }
+                ldCups.postValue(cups)
+            }
+
+            override fun onError(error: String, isNetwork: Boolean) {
+                ldError.postValue(error)
+            }
+
+        })
+    }
 }

@@ -11,7 +11,6 @@ import org.n9ne.h2ohealthy.util.Mapper.toCupList
 import org.n9ne.h2ohealthy.util.Mapper.toGlass
 import org.n9ne.h2ohealthy.util.Mapper.toUser
 import org.n9ne.h2ohealthy.util.RepoCallback
-import org.n9ne.h2ohealthy.util.Response
 
 class ProfileRepoLocalImpl(private val dao: RoomDao) : ProfileRepo {
 
@@ -45,7 +44,10 @@ class ProfileRepoLocalImpl(private val dao: RoomDao) : ProfileRepo {
     }
 
     override fun updateCup(cup: Cup, callback: RepoCallback<Boolean>) {
-        TODO("Not yet implemented")
+        runBlocking(Dispatchers.IO) {
+            dao.updateCup(cup.id!!, cup.title, cup.capacity.toString(), cup.color)
+            callback.onSuccessful(true)
+        }
     }
 
     override fun removeCup(cup: Cup, callback: RepoCallback<Boolean>) {

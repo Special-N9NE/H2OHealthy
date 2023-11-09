@@ -4,9 +4,13 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.n9ne.h2ohealthy.data.model.Cup
+import org.n9ne.h2ohealthy.data.repo.ProfileRepo
 import org.n9ne.h2ohealthy.util.Response
 
 class CupsViewModel : ViewModel() {
+
+
+    var repo: ProfileRepo? = null
 
     val cups = listOf(
         Cup("My cup", 100, "#92A3FD"),
@@ -19,5 +23,9 @@ class CupsViewModel : ViewModel() {
     val ldAddClick = MutableLiveData<Response<Boolean>>()
     fun addCupCLick(@Suppress("UNUSED_PARAMETER") v: View) {
         ldAddClick.postValue(Response(true))
+    }
+
+    fun updateCup(cup: Cup){
+
     }
 }

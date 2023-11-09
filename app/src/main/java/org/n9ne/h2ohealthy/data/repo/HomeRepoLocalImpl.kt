@@ -4,8 +4,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.repo.local.RoomDao
-import org.n9ne.h2ohealthy.data.repo.local.WaterEntity
+import org.n9ne.h2ohealthy.util.Mapper.toActivityList
+import org.n9ne.h2ohealthy.util.Mapper.toWater
 import org.n9ne.h2ohealthy.util.RepoCallback
 
 class HomeRepoLocalImpl(private val dao: RoomDao) : HomeRepo {
@@ -21,18 +23,21 @@ class HomeRepoLocalImpl(private val dao: RoomDao) : HomeRepo {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getProgress(callback: RepoCallback<List<WaterEntity>>) {
+    override fun getProgress(callback: RepoCallback<List<Activity>>) {
         runBlocking(Dispatchers.IO) {
             val progress = async { dao.getProgress() }
             progress.invokeOnCompletion {
-                callback.onSuccessful(progress.getCompleted())
+                val result = progress.getCompleted().toActivityList()
+
+                callback.onSuccessful(result)
             }
         }
     }
 
-    override fun insertWater(water: WaterEntity, callback: RepoCallback<Boolean>) {
+    override fun insertWater(water: Activity, callback: RepoCallback<Boolean>) {
         runBlocking(Dispatchers.IO) {
-            dao.insertWater(water)
+
+            dao.insertWater(water.toWater())
             callback.onSuccessful(true)
         }
     }

@@ -53,6 +53,8 @@ class CupsFragment : Fragment() {
                             //TODO update database
                         }
                     }).show()
+                }else{
+                    //TODO remove database
                 }
             }
         })

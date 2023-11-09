@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.Progress
 import org.n9ne.h2ohealthy.data.repo.HomeRepo
-import org.n9ne.h2ohealthy.data.repo.local.WaterEntity
 import org.n9ne.h2ohealthy.util.RepoCallback
 import org.n9ne.h2ohealthy.util.Utils
 import kotlin.math.roundToInt
@@ -34,8 +33,8 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getProgress() {
-        repo?.getProgress(object : RepoCallback<List<WaterEntity>> {
-            override fun onSuccessful(response: List<WaterEntity>) {
+        repo?.getProgress(object : RepoCallback<List<Activity>> {
+            override fun onSuccessful(response: List<Activity>) {
 
                 val dayProgress = Utils.calculateDayProgress(response)
                 val progress = (100 * dayProgress) / target!!
@@ -64,15 +63,14 @@ class HomeViewModel : ViewModel() {
                 val activities = ldActivities.value!!
 
                 activities.forEach { item ->
-                    if (item.id == activity.id) item.amount =
-                        (activity.amount.toDouble() * 1000).roundToInt().toString()
+                    if (item.id == activity.id)
+                        item.amount = activity.amount.toDouble().roundToInt().toString()
                 }
 
                 var progress = 0.0
                 activities.forEach { item ->
-                    progress += item.amount.toDouble()
+                    progress += (item.amount.toDouble() / 1000)
                 }
-                progress /= 1000
                 progress = (100 * progress) / target!!
                 ldDayProgress.postValue(progress.roundToInt())
                 ldActivities.postValue(activities)
@@ -92,13 +90,14 @@ class HomeViewModel : ViewModel() {
 
                 activities.removeIf { it.id == activity.id }
 
-                val list = arrayListOf<WaterEntity>()
+                val list = arrayListOf<Activity>()
                 activities.forEach {
                     list.add(
-                        WaterEntity(
+                        Activity(
                             it.id,
-                            it.date,
+                            it.idUser,
                             (it.amount.toDouble() / 1000).toString(),
+                            it.date,
                             ""
                         )
                     )

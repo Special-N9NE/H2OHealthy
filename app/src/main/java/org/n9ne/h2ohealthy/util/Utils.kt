@@ -5,7 +5,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.Progress
-import org.n9ne.h2ohealthy.data.repo.local.WaterEntity
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import kotlin.math.roundToInt
@@ -34,7 +33,7 @@ object Utils {
         return false
     }
 
-    fun calculateDayProgress(list: List<WaterEntity>): Int {
+    fun calculateDayProgress(list: List<Activity>): Int {
         val today = DateUtils.getDate()
         var amount = 0.0
         list.forEach {
@@ -46,7 +45,7 @@ object Utils {
         return amount.roundToInt()
     }
 
-    fun calculateActivities(list: List<WaterEntity>): List<Activity> {
+    fun calculateActivities(list: List<Activity>): List<Activity> {
         val result = arrayListOf<Activity>()
 
         val today = DateUtils.getDate()
@@ -55,7 +54,7 @@ object Utils {
 
                 val displayTime = DateUtils.getCurrentTimeDiff(it.time)
                 val amount = (it.amount.toDouble() * 1000).roundToInt()
-                val item = Activity(it.id, amount.toString(), it.date, displayTime)
+                val item = Activity(it.id , it.idUser, amount.toString(), it.date, displayTime)
                 result.add(item)
             }
         }
@@ -63,7 +62,7 @@ object Utils {
         return result.reversed()
     }
 
-    fun calculateWeekProgress(list: List<WaterEntity>): List<Progress> {
+    fun calculateWeekProgress(list: List<Activity>): List<Progress> {
         val time = Calendar.getInstance()
 
         val result = arrayListOf<Progress>()

@@ -3,14 +3,11 @@ package org.n9ne.h2ohealthy.ui.profile.viewModel
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import org.n9ne.h2ohealthy.R
-import org.n9ne.h2ohealthy.data.model.ActivityType
 import org.n9ne.h2ohealthy.data.model.Setting
 import org.n9ne.h2ohealthy.data.model.SettingItem
 import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.repo.ProfileRepo
-import org.n9ne.h2ohealthy.data.repo.local.UserEntity
 import org.n9ne.h2ohealthy.util.DateUtils
 import org.n9ne.h2ohealthy.util.RepoCallback
 import org.n9ne.h2ohealthy.util.Response
@@ -26,27 +23,14 @@ class ProfileViewModel : ViewModel() {
     val ldError = MutableLiveData<String>()
 
 
-
     fun getUser() {
-        repo?.getUser(object : RepoCallback<UserEntity> {
-            override fun onSuccessful(response: UserEntity) {
+        repo?.getUser(object : RepoCallback<User> {
+            override fun onSuccessful(response: User) {
 
-                val activityType = ActivityType.entries[response.idActivity.toInt()]
-                val age = DateUtils.calculateAge(response.birthdate)
-                val user = User(
-                    response.id,
-                    activityType,
-                    response.idLeague,
-                    response.email,
-                    response.name,
-                    age.toString(),
-                    response.weight,
-                    response.height,
-                    response.score,
-                    response.profile
-                )
+                val age = DateUtils.calculateAge(response.birthDate)
+                response.age = age.toString()
 
-                ldUser.postValue(user)
+                ldUser.postValue(response)
             }
 
             override fun onError(error: String, isNetwork: Boolean) {
@@ -54,12 +38,6 @@ class ProfileViewModel : ViewModel() {
             }
         })
     }
-
-
-
-
-
-
 
 
     val settings = listOf(

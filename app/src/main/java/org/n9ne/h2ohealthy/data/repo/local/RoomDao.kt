@@ -22,6 +22,10 @@ interface RoomDao {
 
     @Query("UPDATE WaterEntity SET amount = :amount WHERE id = :id")
     fun updateWater(id: Long, amount: String)
+
     @Query("DELETE FROM WaterEntity WHERE id = :id")
     fun removeWater(id: Long)
+
+    @Query("SELECT * FROM GlassEntity")
+    fun getCups(): List<GlassEntity>
 }

@@ -73,7 +73,7 @@ class HomeFragment : Fragment() {
             override fun onMenuClick(item: Activity) {
                 val editListener = object : AddWaterListener {
                     override fun onAdd(amount: String) {
-                        item.amount = (amount.toDouble() / 1000).toString()
+                        item.amount = amount.toDouble().toString()
 
                         makeRequest {
                             viewModel.updateWater(item)

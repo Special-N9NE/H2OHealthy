@@ -86,10 +86,18 @@ class MainActivity : AppCompatActivity() {
         request.invoke()
     }
 
+    fun goHome() {
+        navController.popBackStack()
+        navController.navigate(R.id.home)
+    }
+
+    fun reloadCups(list: List<Cup>) {
+        cups = list
+    }
+
     private fun setObserver() {
         viewModel.ldInsertWater.observe(this) {
-            navController.popBackStack()
-            navController.navigate(R.id.home)
+            goHome()
         }
         viewModel.ldError.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
@@ -100,6 +108,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigationAddClick() {
+        makeRequest {
+            viewModel.getCups()
+        }
         val doneListener = object : AddWaterListener {
             override fun onAdd(amount: String) {
                 //TODO change id

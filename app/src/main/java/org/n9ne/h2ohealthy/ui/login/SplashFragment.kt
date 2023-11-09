@@ -9,7 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.FragmentSplashBinding
+import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.login.viewModel.SplashViewModel
+import org.n9ne.h2ohealthy.util.Saver.isFirstTime
+import org.n9ne.h2ohealthy.util.Saver.setFirstTime
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 import org.n9ne.h2ohealthy.util.setGradient
 
@@ -29,11 +32,14 @@ class SplashFragment : Fragment(), Navigator {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (requireActivity() as MainActivity).hideNavigation()
         init()
         setTextColors()
 
-        viewModel.initDatabase(requireContext())
-
+        if (requireActivity().isFirstTime()) {
+            viewModel.initDatabase(requireContext())
+            requireActivity().setFirstTime(false)
+        }
     }
 
     private fun init() {
@@ -48,6 +54,10 @@ class SplashFragment : Fragment(), Navigator {
     }
 
     override fun shouldNavigate(destination: Int) {
-        findNavController().navigate(destination)
+        //TODO remove this
+        (requireActivity() as MainActivity).goHome()
+
+        //TODO remove from comment
+        //findNavController().navigate(destination)
     }
 }

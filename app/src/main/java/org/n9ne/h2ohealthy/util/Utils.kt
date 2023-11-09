@@ -38,7 +38,7 @@ object Utils {
         var amount = 0.0
         list.forEach {
             if (it.date == today) {
-                amount += it.amount.toDouble()
+                amount += (it.amount.toDouble() * 1000)
             }
         }
 
@@ -54,7 +54,7 @@ object Utils {
 
                 val displayTime = DateUtils.getCurrentTimeDiff(it.time)
                 val amount = (it.amount.toDouble() * 1000).roundToInt()
-                val item = Activity(it.id , it.idUser, amount.toString(), it.date, displayTime)
+                val item = Activity(it.id, it.idUser, amount.toString(), it.date, displayTime)
                 result.add(item)
             }
         }

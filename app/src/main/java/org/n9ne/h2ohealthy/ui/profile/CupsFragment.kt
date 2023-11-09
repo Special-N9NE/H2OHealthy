@@ -98,6 +98,7 @@ class CupsFragment : Fragment() {
             }
         }
         viewModel.ldCups.observe(viewLifecycleOwner) {
+            (requireActivity() as MainActivity).reloadCups(it)
             cups = it
             b.bAdd.isEnabled = true
             setAdapter()

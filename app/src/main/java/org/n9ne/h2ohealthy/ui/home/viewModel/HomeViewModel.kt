@@ -37,7 +37,7 @@ class HomeViewModel : ViewModel() {
             override fun onSuccessful(response: List<Activity>) {
 
                 val dayProgress = Utils.calculateDayProgress(response)
-                val progress = (100 * dayProgress) / target!!
+                val progress = (100 * dayProgress) / (target!! * 1000)
                 ldDayProgress.postValue(progress)
 
                 val weekProgress = Utils.calculateWeekProgress(response)
@@ -103,7 +103,7 @@ class HomeViewModel : ViewModel() {
                     )
                 }
                 var progress = Utils.calculateDayProgress(list.toList())
-                progress = (100 * progress) / target!!
+                progress = (100 * progress) / (target!! * 1000)
                 ldDayProgress.postValue(progress)
                 ldActivities.postValue(activities)
             }

@@ -6,7 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import com.github.dhaval2404.colorpicker.ColorPickerDialog
+import androidx.core.text.isDigitsOnly
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
 import org.n9ne.h2ohealthy.data.model.Cup
@@ -69,9 +69,23 @@ fun Activity.addCupDialog(
             }.show()
     }
     binding.bDone.setOnClickListener {
-        //TODO validation
         val name = binding.etName.text.toString()
         val amount = binding.etAmount.text.toString()
+
+        if (name.isEmpty()) {
+            binding.cvName.strokeColor = Color.RED
+
+            return@setOnClickListener
+        } else
+            binding.cvName.strokeColor = Color.TRANSPARENT
+
+        if (amount.isEmpty() || !amount.isDigitsOnly() || amount.toDouble() <= 0.0) {
+            binding.cvAmount.strokeColor = Color.RED
+
+            return@setOnClickListener
+        } else
+            binding.cvAmount.strokeColor = Color.TRANSPARENT
+
 
         //TODO change id user
         val result = Cup(cup?.id, 1L, name, amount.toDouble().roundToInt(), color)

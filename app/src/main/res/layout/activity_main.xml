@@ -23,7 +23,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:visibility="gone"
         app:elevation="2dp"
         app:itemActiveIndicatorStyle="@null"
         app:itemIconSize="35dp"

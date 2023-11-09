@@ -55,7 +55,6 @@ class BottomNavigationViewWithIndicator : BottomNavigationView,
         super.setOnNavigationItemSelectedListener(this)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         if (externalSelectedListener?.onNavigationItemSelected(item) != false && item.itemId != R.id.add
         ) {

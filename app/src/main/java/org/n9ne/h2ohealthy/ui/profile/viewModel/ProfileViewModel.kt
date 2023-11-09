@@ -1,5 +1,6 @@
 package org.n9ne.h2ohealthy.ui.profile.viewModel
 
+import android.content.Intent
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,6 +21,7 @@ class ProfileViewModel : ViewModel() {
     lateinit var navigator: Navigator
     val ldInLeague = MutableLiveData<Response<Boolean>>()
     val ldUser = MutableLiveData<User>()
+    val ldContactClick = MutableLiveData<Response<String>>()
     val ldError = MutableLiveData<String>()
 
 
@@ -57,7 +59,8 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun contactUsClick(@Suppress("UNUSED_PARAMETER") v: View) {
-        //TODO validation
+        //TODO change email
+        ldContactClick.postValue(Response("abigdeli42@gmail.com"))
     }
 
 

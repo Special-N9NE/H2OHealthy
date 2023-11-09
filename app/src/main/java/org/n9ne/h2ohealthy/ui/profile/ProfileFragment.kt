@@ -1,11 +1,13 @@
 package org.n9ne.h2ohealthy.ui.profile
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -134,6 +136,27 @@ class ProfileFragment : Fragment(), Navigator {
         }
         viewModel.ldUser.observe(viewLifecycleOwner) {
             setUser(it)
+        }
+        viewModel.ldContactClick.observe(viewLifecycleOwner) {
+            if (it.notHandled) {
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    type = "message/rfc822"
+                    putExtra(Intent.EXTRA_EMAIL, it.response)
+                }
+
+                try {
+                    startActivity(Intent.createChooser(intent, "Choose an Email client :"))
+                } catch (ex: android.content.ActivityNotFoundException) {
+                    Toast.makeText(
+                        requireContext(),
+                        "There are no email clients installed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+        viewModel.ldError.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         }
     }
 

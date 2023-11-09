@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import org.n9ne.h2ohealthy.data.model.Cup
 
 @Dao
 interface RoomDao {
@@ -28,4 +29,6 @@ interface RoomDao {
 
     @Query("SELECT * FROM GlassEntity")
     fun getCups(): List<GlassEntity>
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertCup(cup: GlassEntity): Long
 }

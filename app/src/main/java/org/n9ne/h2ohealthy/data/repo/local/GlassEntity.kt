@@ -8,7 +8,8 @@ import androidx.room.PrimaryKey
 data class GlassEntity(
     @ColumnInfo val idUser: Long,
     @ColumnInfo val name: String,
-    @ColumnInfo val capacity: String
+    @ColumnInfo val capacity: String,
+    @ColumnInfo val color: String
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L

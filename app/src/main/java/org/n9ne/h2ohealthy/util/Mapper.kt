@@ -2,7 +2,9 @@ package org.n9ne.h2ohealthy.util
 
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.ActivityType
+import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.model.User
+import org.n9ne.h2ohealthy.data.repo.local.GlassEntity
 import org.n9ne.h2ohealthy.data.repo.local.UserEntity
 import org.n9ne.h2ohealthy.data.repo.local.WaterEntity
 
@@ -38,5 +40,15 @@ object Mapper {
         )
     }
 
+    fun List<GlassEntity>.toCupList(): ArrayList<Cup> {
+        val result = arrayListOf<Cup>()
+        this.forEach {
+            result.add(Cup(it.id, it.idUser, it.name, it.capacity.toInt(), it.color))
+        }
+        return result
+    }
 
+    fun Cup.toGlass(): GlassEntity {
+        return GlassEntity(idUser, title, capacity.toString(), color)
+    }
 }

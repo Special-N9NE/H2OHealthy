@@ -68,7 +68,8 @@ fun Activity.addCupDialog(
         val amount = binding.etAmount.text.toString()
         val color = "#92A3FD"
 
-        val result = Cup(name, amount.toDouble().roundToInt(), color)
+        //TODO change id user
+        val result = Cup(null,1L , name, amount.toDouble().roundToInt(), color)
         listener.onClick(result)
         dialog.dismiss()
     }

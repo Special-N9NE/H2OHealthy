@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.repo.HomeRepo
+import org.n9ne.h2ohealthy.data.repo.HomeRepoLocalImpl
 import org.n9ne.h2ohealthy.data.repo.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.ActivityMainBinding
 import org.n9ne.h2ohealthy.ui.dialog.addWaterDialog
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        val repo = HomeRepo(AppDatabase.getDatabase(this).roomDao())
+        val repo = HomeRepoLocalImpl(AppDatabase.getDatabase(this).roomDao())
         viewModel = ViewModelProvider(this, MainViewModelFactory(repo))[MainViewModel::class.java]
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment

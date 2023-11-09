@@ -2,7 +2,6 @@ package org.n9ne.h2ohealthy.ui.home.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.Progress
 import org.n9ne.h2ohealthy.data.repo.HomeRepo
@@ -11,8 +10,9 @@ import org.n9ne.h2ohealthy.util.RepoCallback
 import org.n9ne.h2ohealthy.util.Utils
 import kotlin.math.roundToInt
 
-class HomeViewModel(private val repo: HomeRepo) : ViewModel() {
+class HomeViewModel : ViewModel() {
     var target: Int? = null
+    var repo: HomeRepo? = null
 
     val ldTarget = MutableLiveData<Int>()
     val ldDayProgress = MutableLiveData<Int>()
@@ -21,7 +21,7 @@ class HomeViewModel(private val repo: HomeRepo) : ViewModel() {
     val ldError = MutableLiveData<String>()
 
     fun getTarget() {
-        repo.getTarget(object : RepoCallback<Int> {
+        repo?.getTarget(object : RepoCallback<Int> {
             override fun onSuccessful(response: Int) {
                 target = response
                 ldTarget.postValue(response)
@@ -34,7 +34,7 @@ class HomeViewModel(private val repo: HomeRepo) : ViewModel() {
     }
 
     fun getProgress() {
-        repo.getProgress(object : RepoCallback<List<WaterEntity>> {
+        repo?.getProgress(object : RepoCallback<List<WaterEntity>> {
             override fun onSuccessful(response: List<WaterEntity>) {
 
                 val dayProgress = Utils.calculateDayProgress(response)
@@ -58,7 +58,7 @@ class HomeViewModel(private val repo: HomeRepo) : ViewModel() {
 
     fun updateWater(activity: Activity) {
 
-        repo.updateWater(activity.id, activity.amount, object : RepoCallback<Boolean> {
+        repo?.updateWater(activity.id, activity.amount, object : RepoCallback<Boolean> {
             override fun onSuccessful(response: Boolean) {
 
                 val activities = ldActivities.value!!
@@ -86,7 +86,7 @@ class HomeViewModel(private val repo: HomeRepo) : ViewModel() {
 
     fun removeWater(activity: Activity) {
 
-        repo.removeWater(activity.id, object : RepoCallback<Boolean> {
+        repo?.removeWater(activity.id, object : RepoCallback<Boolean> {
             override fun onSuccessful(response: Boolean) {
                 val activities = ldActivities.value!!.toCollection(ArrayList())
 
@@ -94,7 +94,14 @@ class HomeViewModel(private val repo: HomeRepo) : ViewModel() {
 
                 val list = arrayListOf<WaterEntity>()
                 activities.forEach {
-                    list.add(WaterEntity(it.id, it.date, (it.amount.toDouble() / 1000).toString(), ""))
+                    list.add(
+                        WaterEntity(
+                            it.id,
+                            it.date,
+                            (it.amount.toDouble() / 1000).toString(),
+                            ""
+                        )
+                    )
                 }
                 var progress = Utils.calculateDayProgress(list.toList())
                 progress = (100 * progress) / target!!
@@ -106,16 +113,5 @@ class HomeViewModel(private val repo: HomeRepo) : ViewModel() {
                 ldError.postValue(error)
             }
         })
-    }
-
-}
-
-@Suppress("UNCHECKED_CAST")
-class HomeViewModelFactory(private val repo: HomeRepo) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            return HomeViewModel(repo) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

@@ -10,14 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.Progress
-import org.n9ne.h2ohealthy.data.repo.HomeRepo
+import org.n9ne.h2ohealthy.data.repo.HomeRepoLocalImpl
 import org.n9ne.h2ohealthy.data.repo.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentHomeBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.dialog.activityOptionDialog
 import org.n9ne.h2ohealthy.ui.home.adpter.ActivityAdapter
 import org.n9ne.h2ohealthy.ui.home.viewModel.HomeViewModel
-import org.n9ne.h2ohealthy.ui.home.viewModel.HomeViewModelFactory
+import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
 import org.n9ne.h2ohealthy.util.interfaces.MenuClickListener
 import org.n9ne.h2ohealthy.util.interfaces.RemoveActivityListener
@@ -25,6 +25,7 @@ import org.nine.linearprogressbar.LinearVerticalProgressBar
 
 
 class HomeFragment : Fragment() {
+    private lateinit var localRepo: HomeRepoLocalImpl
 
     private lateinit var b: FragmentHomeBinding
     private lateinit var viewModel: HomeViewModel
@@ -45,13 +46,26 @@ class HomeFragment : Fragment() {
 
         setObservers()
 
-        viewModel.getTarget()
+        makeRequest {
+            viewModel.getTarget()
+        }
     }
 
     private fun init() {
-        val repo = HomeRepo(AppDatabase.getDatabase(requireContext()).roomDao())
-        viewModel = ViewModelProvider(this, HomeViewModelFactory(repo))[HomeViewModel::class.java]
+        localRepo = HomeRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
+        viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         b.viewModel = viewModel
+    }
+
+    private fun makeRequest(request: () -> Unit) {
+        val repo = if (requireActivity().isOnline()) {
+            //TODO pass apiRepo
+            localRepo
+        } else {
+            localRepo
+        }
+        viewModel.repo = repo
+        request.invoke()
     }
 
     private fun setActivityAdapter(list: List<Activity>) {
@@ -60,12 +74,17 @@ class HomeFragment : Fragment() {
                 val editListener = object : AddWaterListener {
                     override fun onAdd(amount: String) {
                         item.amount = (amount.toDouble() / 1000).toString()
-                        viewModel.updateWater(item)
+
+                        makeRequest {
+                            viewModel.updateWater(item)
+                        }
                     }
                 }
                 val removeListener = object : RemoveActivityListener {
                     override fun onRemove(activity: Activity) {
-                        viewModel.removeWater(item)
+                        makeRequest {
+                            viewModel.removeWater(item)
+                        }
                     }
                 }
                 val dialog =
@@ -91,7 +110,9 @@ class HomeFragment : Fragment() {
         viewModel.ldTarget.observe(viewLifecycleOwner) {
             b.tvTarget.text = it.toString() + "L"
 
-            viewModel.getProgress()
+            makeRequest {
+                viewModel.getProgress()
+            }
         }
         viewModel.ldDayProgress.observe(viewLifecycleOwner) {
             b.pbTarget.setProgress(it)

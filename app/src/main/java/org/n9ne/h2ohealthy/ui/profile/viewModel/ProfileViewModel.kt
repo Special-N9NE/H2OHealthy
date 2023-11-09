@@ -16,36 +16,19 @@ import org.n9ne.h2ohealthy.util.RepoCallback
 import org.n9ne.h2ohealthy.util.Response
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
-class ProfileViewModel(private val repo: ProfileRepo) : ViewModel() {
+class ProfileViewModel : ViewModel() {
+
+    var repo: ProfileRepo? = null
 
     lateinit var navigator: Navigator
     val ldInLeague = MutableLiveData<Response<Boolean>>()
     val ldUser = MutableLiveData<User>()
     val ldError = MutableLiveData<String>()
 
-    val settings = listOf(
-        Setting("Password", R.drawable.ic_password, SettingItem.PASSWORD),
-        Setting("Activity History", R.drawable.ic_history, SettingItem.HISTORY),
-        Setting("Workout Progress", R.drawable.ic_progress, SettingItem.PROGRESS),
-        Setting("Glasses", R.drawable.ic_password, SettingItem.GLASS),
-    )
-
-    fun editClick(@Suppress("UNUSED_PARAMETER") v: View) {
-        navigator.shouldNavigate(R.id.profile_to_editProfile)
-    }
-
-    fun leagueClick(@Suppress("UNUSED_PARAMETER") v: View) {
-        //TODO check if user is joined in a league
-        ldInLeague.postValue(Response(true))
-    }
-
-    fun contactUsClick(@Suppress("UNUSED_PARAMETER") v: View) {
-        //TODO validation
-    }
 
 
     fun getUser() {
-        repo.getUser(object : RepoCallback<UserEntity> {
+        repo?.getUser(object : RepoCallback<UserEntity> {
             override fun onSuccessful(response: UserEntity) {
 
                 val activityType = ActivityType.entries[response.idActivity.toInt()]
@@ -71,14 +54,33 @@ class ProfileViewModel(private val repo: ProfileRepo) : ViewModel() {
             }
         })
     }
-}
 
-@Suppress("UNCHECKED_CAST")
-class ProfileViewModelFactory(private val repo: ProfileRepo) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
-            return ProfileViewModel(repo) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
+
+
+
+
+
+
+
+    val settings = listOf(
+        Setting("Password", R.drawable.ic_password, SettingItem.PASSWORD),
+        Setting("Activity History", R.drawable.ic_history, SettingItem.HISTORY),
+        Setting("Workout Progress", R.drawable.ic_progress, SettingItem.PROGRESS),
+        Setting("Glasses", R.drawable.ic_password, SettingItem.GLASS),
+    )
+
+    fun editClick(@Suppress("UNUSED_PARAMETER") v: View) {
+        navigator.shouldNavigate(R.id.profile_to_editProfile)
     }
+
+    fun leagueClick(@Suppress("UNUSED_PARAMETER") v: View) {
+        //TODO check if user is joined in a league
+        ldInLeague.postValue(Response(true))
+    }
+
+    fun contactUsClick(@Suppress("UNUSED_PARAMETER") v: View) {
+        //TODO validation
+    }
+
+
 }

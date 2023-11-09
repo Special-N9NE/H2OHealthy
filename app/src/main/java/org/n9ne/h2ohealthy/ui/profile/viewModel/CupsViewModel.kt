@@ -15,6 +15,7 @@ class CupsViewModel : ViewModel() {
     val ldShowDialog = MutableLiveData<Response<Boolean>>()
     val ldCups = MutableLiveData<List<Cup>>()
     val ldAddCup = MutableLiveData<Boolean>()
+    val ldRemoveCup = MutableLiveData<Boolean>()
     val ldError = MutableLiveData<String>()
 
 
@@ -62,19 +63,37 @@ class CupsViewModel : ViewModel() {
         })
     }
 
-    fun updateCup(cup: Cup){
+    fun updateCup(cup: Cup) {
         repo?.updateCup(cup, object : RepoCallback<Boolean> {
             override fun onSuccessful(response: Boolean) {
 
                 val cups = ldCups.value!!.toCollection(ArrayList())
                 cups.forEach {
-                    if (it.id == cup.id){
+                    if (it.id == cup.id) {
                         it.title = cup.title
                         it.capacity = cup.capacity
                         it.color = cup.color
                     }
                 }
                 ldCups.postValue(cups)
+            }
+
+            override fun onError(error: String, isNetwork: Boolean) {
+                ldError.postValue(error)
+            }
+
+        })
+    }
+
+    fun removeCup(cup: Cup) {
+        repo?.removeCup(cup, object : RepoCallback<Boolean> {
+            override fun onSuccessful(response: Boolean) {
+
+                val cups = ldCups.value!!.toCollection(ArrayList())
+                cups.removeIf { it.id == cup.id }
+
+                ldCups.postValue(cups)
+                ldRemoveCup.postValue(true)
             }
 
             override fun onError(error: String, isNetwork: Boolean) {

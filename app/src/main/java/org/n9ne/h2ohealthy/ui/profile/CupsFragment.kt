@@ -77,7 +77,9 @@ class CupsFragment : Fragment() {
                         }
                     }).show()
                 } else {
-                    //TODO remove database
+                    makeRequest {
+                        viewModel.removeCup(cup)
+                    }
                 }
             }
         })
@@ -102,6 +104,9 @@ class CupsFragment : Fragment() {
         }
         viewModel.ldAddCup.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), "Added", Toast.LENGTH_SHORT).show()
+        }
+        viewModel.ldRemoveCup.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), "Removed", Toast.LENGTH_SHORT).show()
         }
         viewModel.ldError.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()

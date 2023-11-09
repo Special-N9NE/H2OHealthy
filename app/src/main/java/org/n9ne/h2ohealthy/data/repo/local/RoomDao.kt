@@ -33,4 +33,7 @@ interface RoomDao {
     fun insertCup(cup: GlassEntity): Long
     @Query("UPDATE GlassEntity SET name = :title , capacity = :capacity , color = :color WHERE id = :id")
     fun updateCup(id: Long, title : String , capacity : String , color: String)
+
+    @Query("DELETE FROM GlassEntity WHERE id = :id")
+    fun removeCup(id: Long)
 }

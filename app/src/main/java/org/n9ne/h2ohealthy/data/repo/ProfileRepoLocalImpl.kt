@@ -51,6 +51,9 @@ class ProfileRepoLocalImpl(private val dao: RoomDao) : ProfileRepo {
     }
 
     override fun removeCup(cup: Cup, callback: RepoCallback<Boolean>) {
-        TODO("Not yet implemented")
+        runBlocking(Dispatchers.IO) {
+            dao.removeCup(cup.id!!)
+            callback.onSuccessful(true)
+        }
     }
 }

@@ -28,7 +28,7 @@ class SplashViewModel : ViewModel() {
                     "2023/11/5", "Test",
                     "2002/11/30", 65,
                     181, 1,
-                    0, "8", ""
+                    0, "3", ""
                 )
                 AppDatabase.getDatabase(context).roomDao().insertUser(user)
             }

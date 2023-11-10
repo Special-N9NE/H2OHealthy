@@ -7,6 +7,7 @@ import java.time.LocalDate
 import java.time.Period
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
+import kotlin.math.absoluteValue
 
 object DateUtils {
 
@@ -47,7 +48,7 @@ object DateUtils {
 
     fun getTime(): String {
         val time = Calendar.getInstance().time
-        val formatter = SimpleDateFormat("hh:mm")
+        val formatter = SimpleDateFormat("HH:mm")
         return formatter.format(time)
     }
 

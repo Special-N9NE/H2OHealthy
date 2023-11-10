@@ -63,7 +63,7 @@
             android:fontFamily="@font/poppins_regular"
             android:hint="@string/enter_new_value"
             android:importantForAutofill="no"
-            android:inputType="text"
+            android:inputType="number"
             android:padding="16dp"
             android:textAlignment="center"
             android:textColor="@color/blackText"

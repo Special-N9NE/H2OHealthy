@@ -47,7 +47,10 @@ fun Activity.addCupDialog(
     dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     dialog.setCanceledOnTouchOutside(false)
 
+    var color = "#92A3FD"
+
     cup?.let {
+        color = it.color
         binding.etName.setText(it.title)
         binding.etAmount.setText(it.capacity.toString())
         binding.cvColor.strokeColor = Color.parseColor(it.color)
@@ -57,7 +60,6 @@ fun Activity.addCupDialog(
     binding.ivClose.setOnClickListener {
         dialog.dismiss()
     }
-    var color = "#92A3FD"
     binding.etColor.setOnClickListener {
         MaterialColorPickerDialog.Builder(this)
             .setTitle("Pick Color")

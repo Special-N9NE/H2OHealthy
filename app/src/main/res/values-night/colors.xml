@@ -7,8 +7,8 @@
     <color name="green">#00FF00</color>
 
 
-    <color name="positiveButtonTextColor">@color/red</color>
-    <color name="negativeButtonTextColor">@color/red</color>
+    <color name="positiveButtonTextColor">@color/blackText</color>
+    <color name="negativeButtonTextColor">@color/blackText</color>
 
     <color name="transparent">#00FF0000</color>
     <color name="blackText">#1D1617</color>

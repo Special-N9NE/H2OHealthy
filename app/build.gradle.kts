@@ -41,6 +41,9 @@ android {
 }
 
 dependencies {
+    implementation("com.patrykandpatrick.vico:core:1.12.0")
+    implementation("com.patrykandpatrick.vico:views:1.12.0")
+
     testImplementation("junit:junit:4.12")
 
     implementation("com.github.Dhaval2404:ColorPicker:2.3")

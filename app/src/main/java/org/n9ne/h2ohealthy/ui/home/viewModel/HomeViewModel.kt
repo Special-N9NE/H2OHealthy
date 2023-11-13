@@ -42,7 +42,7 @@ class HomeViewModel : ViewModel() {
 
                 val weekProgress = Utils.calculateWeekProgress(response)
                 weekProgress.forEach {
-                    it.progress = (100 * it.progress) / target!!
+                    it.progress = (100 * it.progress) / (target!! * 1000)
                 }
                 ldWeekProgress.postValue(weekProgress)
 
@@ -69,9 +69,9 @@ class HomeViewModel : ViewModel() {
 
                 var progress = 0.0
                 activities.forEach { item ->
-                    progress += (item.amount.toDouble() / 1000)
+                    progress += (item.amount.toDouble())
                 }
-                progress = (100 * progress) / target!!
+                progress = (100 * progress) / (target!! * 1000)
                 ldDayProgress.postValue(progress.roundToInt())
                 ldActivities.postValue(activities)
             }

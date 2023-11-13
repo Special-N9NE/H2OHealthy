@@ -73,7 +73,7 @@ object Utils {
             var amount = 0.0
             list.forEach {
                 if (it.date == day) {
-                    amount += it.amount.toDouble()
+                    amount += (it.amount.toDouble() * 100)
                 }
             }
             val displayDay = DateUtils.getNameOfDay(time[Calendar.YEAR], time[Calendar.DAY_OF_YEAR])

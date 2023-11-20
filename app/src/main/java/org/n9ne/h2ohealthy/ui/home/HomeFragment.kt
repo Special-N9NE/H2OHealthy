@@ -17,6 +17,7 @@ import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.dialog.activityOptionDialog
 import org.n9ne.h2ohealthy.ui.home.adpter.ActivityAdapter
 import org.n9ne.h2ohealthy.ui.home.viewModel.HomeViewModel
+import org.n9ne.h2ohealthy.util.Mapper.toLiter
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
 import org.n9ne.h2ohealthy.util.interfaces.MenuClickListener
@@ -73,7 +74,7 @@ class HomeFragment : Fragment() {
             override fun onMenuClick(item: Activity) {
                 val editListener = object : AddWaterListener {
                     override fun onAdd(amount: String) {
-                        item.amount = amount.toDouble().toString()
+                        item.amount = amount.toDouble().toLiter().toString()
 
                         makeRequest {
                             viewModel.updateWater(item)

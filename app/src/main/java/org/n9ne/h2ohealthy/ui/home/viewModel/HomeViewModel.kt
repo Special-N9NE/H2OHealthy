@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.Progress
 import org.n9ne.h2ohealthy.data.repo.HomeRepo
+import org.n9ne.h2ohealthy.util.Mapper.toLiter
+import org.n9ne.h2ohealthy.util.Mapper.toMilliLiter
 import org.n9ne.h2ohealthy.util.RepoCallback
 import org.n9ne.h2ohealthy.util.Utils
 import kotlin.math.roundToInt
@@ -37,12 +39,12 @@ class HomeViewModel : ViewModel() {
             override fun onSuccessful(response: List<Activity>) {
 
                 val dayProgress = Utils.calculateDayProgress(response)
-                val progress = (100 * dayProgress) / (target!! * 1000)
-                ldDayProgress.postValue(progress)
+                val progress = (100 * dayProgress) / (target!!.toDouble().toMilliLiter())
+                ldDayProgress.postValue(progress.toInt())
 
                 val weekProgress = Utils.calculateWeekProgress(response)
                 weekProgress.forEach {
-                    it.progress = (100 * it.progress) / (target!! * 1000)
+                    it.progress = (100 * it.progress) / (target!!.toDouble().toMilliLiter().toInt())
                 }
                 ldWeekProgress.postValue(weekProgress)
 
@@ -64,14 +66,14 @@ class HomeViewModel : ViewModel() {
 
                 activities.forEach { item ->
                     if (item.id == activity.id)
-                        item.amount = activity.amount.toDouble().roundToInt().toString()
+                        item.amount = activity.amount.toDouble().toMilliLiter().roundToInt().toString()
                 }
 
                 var progress = 0.0
                 activities.forEach { item ->
                     progress += (item.amount.toDouble())
                 }
-                progress = (100 * progress) / (target!! * 1000)
+                progress = (100 * progress) / (target!!.toDouble().toMilliLiter())
                 ldDayProgress.postValue(progress.roundToInt())
                 ldActivities.postValue(activities)
             }
@@ -96,14 +98,14 @@ class HomeViewModel : ViewModel() {
                         Activity(
                             it.id,
                             it.idUser,
-                            (it.amount.toDouble() / 1000).toString(),
+                            (it.amount.toDouble().toLiter()).toString(),
                             it.date,
                             ""
                         )
                     )
                 }
                 var progress = Utils.calculateDayProgress(list.toList())
-                progress = (100 * progress) / (target!! * 1000)
+                progress = (100 * progress) / (target!!.toDouble().toMilliLiter().toInt())
                 ldDayProgress.postValue(progress)
                 ldActivities.postValue(activities)
             }

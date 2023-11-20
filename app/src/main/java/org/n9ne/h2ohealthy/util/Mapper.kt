@@ -51,4 +51,12 @@ object Mapper {
     fun Cup.toGlass(): GlassEntity {
         return GlassEntity(idUser, title, capacity.toString(), color)
     }
+
+    fun Double.toLiter(): Double {
+        return this / 1000.000
+    }
+
+    fun Double.toMilliLiter(): Double {
+        return this * 1000
+    }
 }

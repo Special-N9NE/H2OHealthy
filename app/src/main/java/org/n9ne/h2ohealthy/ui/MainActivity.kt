@@ -17,6 +17,7 @@ import org.n9ne.h2ohealthy.databinding.ActivityMainBinding
 import org.n9ne.h2ohealthy.ui.dialog.addWaterDialog
 import org.n9ne.h2ohealthy.ui.dialog.cupDialog
 import org.n9ne.h2ohealthy.ui.home.adpter.CupsAdapter
+import org.n9ne.h2ohealthy.util.Mapper.toLiter
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
 import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
@@ -114,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         val doneListener = object : AddWaterListener {
             override fun onAdd(amount: String) {
                 //TODO change id
-                val liter = amount.toDouble() / 1000
+                val liter = amount.toDouble().toLiter()
                 makeRequest {
                     viewModel.insertWater(liter.toString(), 1L)
                 }

@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.Progress
+import org.n9ne.h2ohealthy.util.Mapper.toMilliLiter
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import kotlin.math.roundToInt
@@ -38,7 +39,7 @@ object Utils {
         var amount = 0.0
         list.forEach {
             if (it.date == today) {
-                amount += (it.amount.toDouble() * 1000)
+                amount += (it.amount.toDouble().toMilliLiter())
             }
         }
 
@@ -53,7 +54,7 @@ object Utils {
             if (it.date == today) {
 
                 val displayTime = DateUtils.getCurrentTimeDiff(it.time)
-                val amount = (it.amount.toDouble() * 1000).roundToInt()
+                val amount = (it.amount.toDouble().toMilliLiter()).roundToInt()
                 val item = Activity(it.id, it.idUser, amount.toString(), it.date, displayTime)
                 result.add(item)
             }
@@ -73,7 +74,7 @@ object Utils {
             var amount = 0.0
             list.forEach {
                 if (it.date == day) {
-                    amount += (it.amount.toDouble() * 100)
+                    amount += (it.amount.toDouble().toMilliLiter())
                 }
             }
             val displayDay = DateUtils.getNameOfDay(time[Calendar.YEAR], time[Calendar.DAY_OF_YEAR])

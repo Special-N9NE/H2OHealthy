@@ -25,6 +25,7 @@ import org.n9ne.h2ohealthy.ui.dialog.createLeagueDialog
 import org.n9ne.h2ohealthy.ui.dialog.joinLeagueDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.SettingAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.ProfileViewModel
+import org.n9ne.h2ohealthy.util.EventObserver
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
@@ -112,52 +113,43 @@ class ProfileFragment : Fragment(), Navigator {
         b.tvAge.text = user.age
 
         if (user.profile.isNotEmpty()) {
-            Glide.with(requireContext())
-                .load(user.profile)
-                .into(b.ivProfile)
-                .onLoadFailed(
-                    AppCompatResources.getDrawable(
-                        requireContext(),
-                        R.drawable.image_profile
-                    )
+            Glide.with(requireContext()).load(user.profile).into(b.ivProfile).onLoadFailed(
+                AppCompatResources.getDrawable(
+                    requireContext(), R.drawable.image_profile
                 )
+            )
         }
     }
 
     private fun setupObserver() {
-        viewModel.ldInLeague.observe(viewLifecycleOwner) {
-            if (it.notHandled) {
-                if (it.response) {
-                    shouldNavigate(R.id.profile_to_league)
-                } else {
-                    openLeagueDialogs()
-                }
+        viewModel.ldInLeague.observe(viewLifecycleOwner, EventObserver {
+            if (it) {
+                shouldNavigate(R.id.profile_to_league)
+            } else {
+                openLeagueDialogs()
             }
-        }
+        })
         viewModel.ldUser.observe(viewLifecycleOwner) {
             setUser(it)
         }
-        viewModel.ldContactClick.observe(viewLifecycleOwner) {
-            if (it.notHandled) {
-                val intent = Intent(Intent.ACTION_SEND).apply {
-                    type = "message/rfc822"
-                    putExtra(Intent.EXTRA_EMAIL, it.response)
-                }
-
-                try {
-                    startActivity(Intent.createChooser(intent, "Choose an Email client :"))
-                } catch (ex: android.content.ActivityNotFoundException) {
-                    Toast.makeText(
-                        requireContext(),
-                        "There are no email clients installed.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+        viewModel.ldContactClick.observe(viewLifecycleOwner, EventObserver {
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "message/rfc822"
+                putExtra(Intent.EXTRA_EMAIL, it)
             }
-        }
-        viewModel.ldError.observe(viewLifecycleOwner) {
+
+            try {
+                startActivity(Intent.createChooser(intent, "Choose an Email client :"))
+            } catch (ex: android.content.ActivityNotFoundException) {
+                Toast.makeText(
+                    requireContext(), "There are no email clients installed.", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+        })
+        viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-        }
+        })
     }
 
     private fun openLeagueDialogs() {

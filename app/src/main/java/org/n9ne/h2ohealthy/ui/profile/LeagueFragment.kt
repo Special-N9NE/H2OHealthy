@@ -11,6 +11,7 @@ import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.dialog.leagueSettingDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.MemberAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.LeagueViewModel
+import org.n9ne.h2ohealthy.util.EventObserver
 
 
 class LeagueFragment : Fragment() {
@@ -68,9 +69,8 @@ class LeagueFragment : Fragment() {
     }
 
     private fun setupObserver() {
-        viewModel.ldSettingClick.observe(viewLifecycleOwner) {
-            if (it.notHandled)
-                openSettingDialog(it.response)
-        }
+        viewModel.ldSettingClick.observe(viewLifecycleOwner, EventObserver {
+            openSettingDialog(it)
+        })
     }
 }

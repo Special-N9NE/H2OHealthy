@@ -58,7 +58,7 @@
             android:fontFamily="@font/poppins_bold"
             android:padding="16dp"
             android:enabled="false"
-            android:onClick="@{viewModel::addCupClick}"
+            android:onClick="@{() -> viewModel.addCupClick()}"
             android:text="@string/add_cup"
             android:textAllCaps="false"
             android:textColor="@color/white"

@@ -43,17 +43,17 @@ class ProfileRepoLocalImpl(private val dao: RoomDao) : ProfileRepo {
         }
     }
 
-    override fun updateCup(cup: Cup, callback: RepoCallback<Boolean>) {
+    override fun updateCup(cup: Cup, callback: RepoCallback<Unit>) {
         runBlocking(Dispatchers.IO) {
             dao.updateCup(cup.id!!, cup.title, cup.capacity.toString(), cup.color)
-            callback.onSuccessful(true)
+            callback.onSuccessful(Unit)
         }
     }
 
-    override fun removeCup(cup: Cup, callback: RepoCallback<Boolean>) {
+    override fun removeCup(cup: Cup, callback: RepoCallback<Unit>) {
         runBlocking(Dispatchers.IO) {
             dao.removeCup(cup.id!!)
-            callback.onSuccessful(true)
+            callback.onSuccessful(Unit)
         }
     }
 }

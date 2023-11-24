@@ -13,6 +13,7 @@ import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.FragmentEditProfileBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.profile.viewModel.EditProfileViewModel
+import org.n9ne.h2ohealthy.util.EventObserver
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
 
@@ -68,14 +69,12 @@ class EditProfileFragment : Fragment(), Navigator {
     }
 
     private fun setupObserver() {
-        viewModel.ldPickImage.observe(viewLifecycleOwner) {
-            if (it.notHandled)
-                galleryLauncher.launch("image/*")
-        }
-        viewModel.ldSubmit.observe(viewLifecycleOwner) {
-            if (it.notHandled)
-                findNavController().navigateUp()
-        }
+        viewModel.ldPickImage.observe(viewLifecycleOwner, EventObserver {
+            galleryLauncher.launch("image/*")
+        })
+        viewModel.ldSubmit.observe(viewLifecycleOwner, EventObserver {
+            findNavController().navigateUp()
+        })
     }
 
     override fun shouldNavigate(destination: Int) {

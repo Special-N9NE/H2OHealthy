@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
-                android:onClick="@{viewModel::editClick}"
+                android:onClick="@{ () ->viewModel.editClick()}"
                 android:text="@string/edit"
                 android:textColor="@color/white"
                 android:textSize="14sp"
@@ -247,7 +247,7 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
-                android:onClick="@{viewModel::leagueClick}"
+                android:onClick="@{ () ->viewModel.leagueClick()}"
                 app:cardBackgroundColor="@color/purpleAlpha"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"
@@ -354,7 +354,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
-                        android:onClick="@{viewModel::contactUsClick}"
+                        android:onClick="@{ () ->viewModel.contactUsClick()}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/_tv2">
 

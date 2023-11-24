@@ -1,31 +1,30 @@
 package org.n9ne.h2ohealthy.ui.profile.viewModel
 
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.n9ne.h2ohealthy.util.Response
+import org.n9ne.h2ohealthy.util.Event
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
 class EditProfileViewModel : ViewModel() {
 
     lateinit var navigator: Navigator
-    val ldPickImage = MutableLiveData<Response<Boolean>>()
-    val ldSubmit = MutableLiveData<Response<Boolean>>()
+    val ldPickImage = MutableLiveData<Event<Unit>>()
+    val ldSubmit = MutableLiveData<Event<Boolean>>()
 
     val genders = arrayListOf("Male", "Female")
     val activityLevels = arrayListOf("Never", "Low", "Sometimes", "High", "Athlete")
 
 
-    fun submitClick(@Suppress("UNUSED_PARAMETER") v: View) {
+    fun submitClick() {
         //TODO validation
-        ldSubmit.postValue(Response(true))
+        ldSubmit.postValue(Event(true))
     }
 
-    fun dateClick(@Suppress("UNUSED_PARAMETER") v: View) {
+    fun dateClick() {
         //TODO open date
     }
 
-    fun profileClick(@Suppress("UNUSED_PARAMETER") v: View) {
-        ldPickImage.postValue(Response(true))
+    fun profileClick() {
+        ldPickImage.postValue(Event(Unit))
     }
 }

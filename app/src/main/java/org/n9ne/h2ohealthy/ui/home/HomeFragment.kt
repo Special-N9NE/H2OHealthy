@@ -17,6 +17,7 @@ import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.dialog.activityOptionDialog
 import org.n9ne.h2ohealthy.ui.home.adpter.ActivityAdapter
 import org.n9ne.h2ohealthy.ui.home.viewModel.HomeViewModel
+import org.n9ne.h2ohealthy.util.EventObserver
 import org.n9ne.h2ohealthy.util.Mapper.toLiter
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
@@ -125,8 +126,8 @@ class HomeFragment : Fragment() {
             activityList = it.toCollection(ArrayList())
             setActivityAdapter(it)
         }
-        viewModel.ldError.observe(viewLifecycleOwner) {
+        viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-        }
+        })
     }
 }

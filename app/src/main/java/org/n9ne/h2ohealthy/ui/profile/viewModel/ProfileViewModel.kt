@@ -1,7 +1,5 @@
 package org.n9ne.h2ohealthy.ui.profile.viewModel
 
-import android.content.Intent
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.n9ne.h2ohealthy.R
@@ -10,8 +8,8 @@ import org.n9ne.h2ohealthy.data.model.SettingItem
 import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.repo.ProfileRepo
 import org.n9ne.h2ohealthy.util.DateUtils
+import org.n9ne.h2ohealthy.util.Event
 import org.n9ne.h2ohealthy.util.RepoCallback
-import org.n9ne.h2ohealthy.util.Response
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
 class ProfileViewModel : ViewModel() {
@@ -19,10 +17,10 @@ class ProfileViewModel : ViewModel() {
     var repo: ProfileRepo? = null
 
     lateinit var navigator: Navigator
-    val ldInLeague = MutableLiveData<Response<Boolean>>()
+    val ldInLeague = MutableLiveData<Event<Boolean>>()
     val ldUser = MutableLiveData<User>()
-    val ldContactClick = MutableLiveData<Response<String>>()
-    val ldError = MutableLiveData<String>()
+    val ldContactClick = MutableLiveData<Event<String>>()
+    val ldError = MutableLiveData<Event<String>>()
 
 
     fun getUser() {
@@ -36,7 +34,7 @@ class ProfileViewModel : ViewModel() {
             }
 
             override fun onError(error: String, isNetwork: Boolean) {
-                ldError.postValue(error)
+                ldError.postValue(Event(error))
             }
         })
     }
@@ -49,18 +47,18 @@ class ProfileViewModel : ViewModel() {
         Setting("Glasses", R.drawable.ic_password, SettingItem.GLASS),
     )
 
-    fun editClick(@Suppress("UNUSED_PARAMETER") v: View) {
+    fun editClick() {
         navigator.shouldNavigate(R.id.profile_to_editProfile)
     }
 
-    fun leagueClick(@Suppress("UNUSED_PARAMETER") v: View) {
+    fun leagueClick() {
         //TODO check if user is joined in a league
-        ldInLeague.postValue(Response(true))
+        ldInLeague.postValue(Event(true))
     }
 
-    fun contactUsClick(@Suppress("UNUSED_PARAMETER") v: View) {
+    fun contactUsClick() {
         //TODO change email
-        ldContactClick.postValue(Response("abigdeli42@gmail.com"))
+        ldContactClick.postValue(Event("abigdeli42@gmail.com"))
     }
 
 

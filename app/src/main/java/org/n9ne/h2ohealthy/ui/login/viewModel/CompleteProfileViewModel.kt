@@ -1,6 +1,5 @@
 package org.n9ne.h2ohealthy.ui.login.viewModel
 
-import android.view.View
 import androidx.lifecycle.ViewModel
 import org.n9ne.h2ohealthy.data.model.ActivityType
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
@@ -17,11 +16,11 @@ class CompleteProfileViewModel : ViewModel() {
         ActivityType.ATHLETE.text
     )
 
-    fun nextClick(@Suppress("UNUSED_PARAMETER") v: View) {
+    fun nextClick() {
         //TODO validation
     }
 
-    fun dateClick(@Suppress("UNUSED_PARAMETER") v: View) {
+    fun dateClick() {
         //TODO open date dialog
     }
 }

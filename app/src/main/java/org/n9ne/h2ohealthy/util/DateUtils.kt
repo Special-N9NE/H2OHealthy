@@ -13,8 +13,8 @@ object DateUtils {
 
     fun getCurrentTimeDiff(time: String): String {
         val timeFormat = SimpleDateFormat("HH:mm")
-        val current = timeFormat.parse(getTime())
-        val formatTime = timeFormat.parse(time)
+        val current = timeFormat.parse(getTime())!!
+        val formatTime = timeFormat.parse(time)!!
 
         val diff = current.time - formatTime.time
 

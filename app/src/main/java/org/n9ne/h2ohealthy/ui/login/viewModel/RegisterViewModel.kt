@@ -11,20 +11,20 @@ class RegisterViewModel : ViewModel() {
     lateinit var navigator: Navigator
     val ldPasswordClick = MutableLiveData<Boolean>()
 
-    fun passwordClick(@Suppress("UNUSED_PARAMETER") v: View) {
+    fun passwordClick() {
         passwordIsVisible = !passwordIsVisible
         ldPasswordClick.postValue(passwordIsVisible)
     }
 
-    fun loginClick(@Suppress("UNUSED_PARAMETER") v: View) {
+    fun loginClick() {
         navigator.shouldNavigate(R.id.register_to_login)
     }
 
-    fun googleClick(@Suppress("UNUSED_PARAMETER") v: View) {
+    fun googleClick() {
         //TODO register with google
     }
 
-    fun registerClick(@Suppress("UNUSED_PARAMETER") v: View) {
+    fun registerClick() {
         //TODO validation
     }
 }

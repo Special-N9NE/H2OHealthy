@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.Progress
 import org.n9ne.h2ohealthy.data.repo.HomeRepo
+import org.n9ne.h2ohealthy.util.Event
 import org.n9ne.h2ohealthy.util.Mapper.toLiter
 import org.n9ne.h2ohealthy.util.Mapper.toMilliLiter
 import org.n9ne.h2ohealthy.util.RepoCallback
@@ -19,7 +20,7 @@ class HomeViewModel : ViewModel() {
     val ldDayProgress = MutableLiveData<Int>()
     val ldWeekProgress = MutableLiveData<List<Progress>>()
     val ldActivities = MutableLiveData<List<Activity>>()
-    val ldError = MutableLiveData<String>()
+    val ldError = MutableLiveData<Event<String>>()
 
     fun getTarget() {
         repo?.getTarget(object : RepoCallback<Int> {
@@ -29,7 +30,7 @@ class HomeViewModel : ViewModel() {
             }
 
             override fun onError(error: String, isNetwork: Boolean) {
-                ldError.postValue(error)
+                ldError.postValue(Event(error))
             }
         })
     }
@@ -52,7 +53,7 @@ class HomeViewModel : ViewModel() {
             }
 
             override fun onError(error: String, isNetwork: Boolean) {
-                ldError.postValue(error)
+                ldError.postValue(Event(error))
             }
         })
     }
@@ -65,8 +66,8 @@ class HomeViewModel : ViewModel() {
                 val activities = ldActivities.value!!
 
                 activities.forEach { item ->
-                    if (item.id == activity.id)
-                        item.amount = activity.amount.toDouble().toMilliLiter().roundToInt().toString()
+                    if (item.id == activity.id) item.amount =
+                        activity.amount.toDouble().toMilliLiter().roundToInt().toString()
                 }
 
                 var progress = 0.0
@@ -79,7 +80,7 @@ class HomeViewModel : ViewModel() {
             }
 
             override fun onError(error: String, isNetwork: Boolean) {
-                ldError.postValue(error)
+                ldError.postValue(Event(error))
             }
         })
     }
@@ -111,7 +112,7 @@ class HomeViewModel : ViewModel() {
             }
 
             override fun onError(error: String, isNetwork: Boolean) {
-                ldError.postValue(error)
+                ldError.postValue(Event(error))
             }
         })
     }

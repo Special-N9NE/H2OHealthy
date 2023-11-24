@@ -17,6 +17,7 @@ import org.n9ne.h2ohealthy.databinding.ActivityMainBinding
 import org.n9ne.h2ohealthy.ui.dialog.addWaterDialog
 import org.n9ne.h2ohealthy.ui.dialog.cupDialog
 import org.n9ne.h2ohealthy.ui.home.adpter.CupsAdapter
+import org.n9ne.h2ohealthy.util.EventObserver
 import org.n9ne.h2ohealthy.util.Mapper.toLiter
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
@@ -97,12 +98,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setObserver() {
-        viewModel.ldInsertWater.observe(this) {
+        viewModel.ldInsertWater.observe(this, EventObserver {
             goHome()
-        }
-        viewModel.ldError.observe(this) {
+        })
+        viewModel.ldError.observe(this, EventObserver {
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-        }
+        })
         viewModel.ldCups.observe(this) {
             cups = it
         }

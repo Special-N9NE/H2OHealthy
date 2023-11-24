@@ -15,6 +15,7 @@ import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.dialog.addCupDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.AddCupAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.CupsViewModel
+import org.n9ne.h2ohealthy.util.EventObserver
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
 import org.n9ne.h2ohealthy.util.interfaces.CupEditListener
@@ -86,31 +87,29 @@ class CupsFragment : Fragment() {
     }
 
     private fun setupObserver() {
-        viewModel.ldShowDialog.observe(viewLifecycleOwner) {
-            if (it.notHandled) {
-                requireActivity().addCupDialog(null, object : CupClickListener {
-                    override fun onClick(item: Cup) {
-                        makeRequest {
-                            viewModel.addCup(item)
-                        }
+        viewModel.ldShowDialog.observe(viewLifecycleOwner, EventObserver {
+            requireActivity().addCupDialog(null, object : CupClickListener {
+                override fun onClick(item: Cup) {
+                    makeRequest {
+                        viewModel.addCup(item)
                     }
-                }).show()
-            }
-        }
+                }
+            }).show()
+        })
         viewModel.ldCups.observe(viewLifecycleOwner) {
             (requireActivity() as MainActivity).reloadCups(it)
             cups = it
             b.bAdd.isEnabled = true
             setAdapter()
         }
-        viewModel.ldAddCup.observe(viewLifecycleOwner) {
+        viewModel.ldAddCup.observe(viewLifecycleOwner, EventObserver {
             Toast.makeText(requireContext(), "Added", Toast.LENGTH_SHORT).show()
-        }
-        viewModel.ldRemoveCup.observe(viewLifecycleOwner) {
+        })
+        viewModel.ldRemoveCup.observe(viewLifecycleOwner, EventObserver {
             Toast.makeText(requireContext(), "Removed", Toast.LENGTH_SHORT).show()
-        }
-        viewModel.ldError.observe(viewLifecycleOwner) {
+        })
+        viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-        }
+        })
     }
 }

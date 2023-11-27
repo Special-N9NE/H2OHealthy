@@ -82,8 +82,8 @@ class LoginFragment : Fragment(), Navigator {
         })
     }
 
-    override fun shouldNavigate(destination: Int) {
-        findNavController().navigate(destination)
+    override fun shouldNavigate(destination: Int, data: Bundle?) {
+        findNavController().navigate(destination, data)
     }
 
 }

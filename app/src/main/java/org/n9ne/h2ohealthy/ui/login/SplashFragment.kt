@@ -53,11 +53,7 @@ class SplashFragment : Fragment(), Navigator {
         b.tvTitle2.setGradient(requireContext(), R.color.linearPurpleStart, R.color.linearPurpleEnd)
     }
 
-    override fun shouldNavigate(destination: Int) {
-        //TODO remove this
-        (requireActivity() as MainActivity).goHome()
-
-        //TODO remove from comment
-        //findNavController().navigate(destination)
+    override fun shouldNavigate(destination: Int, data: Bundle?) {
+        findNavController().navigate(destination, data)
     }
 }

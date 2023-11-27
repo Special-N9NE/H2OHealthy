@@ -92,4 +92,44 @@ class AuthRepoImpl(private val client: Client) : AuthRepo {
                 })
         }
     }
+
+    override suspend fun completeProfile(
+        data: Auth.CompleteProfile,
+        callback: RepoCallback<String>
+    ) {
+        withContext(Dispatchers.IO) {
+            val json = Gson().toJson(data)
+            client.getApiService().completeProfile(json)
+                .enqueue(object : Callback<Message> {
+                    override fun onResponse(
+                        call: Call<Message>, response: Response<Message>
+                    ) {
+                        if (response.isSuccessful) {
+                            val result = response.body()!!
+
+                            if (result.status) {
+                                callback.onSuccessful(result.message)
+                            } else {
+                                callback.onError(result.message)
+                            }
+
+                        } else {
+                            val result = response.code().toString()
+                            callback.onError(result)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Message>, t: Throwable) {
+
+                        if (t.message?.contains(Messages.NO_INTERNET) == true) {
+                            val result = Messages.errorNetwork
+                            callback.onError(result, true)
+                        } else {
+                            val result = t.message.toString()
+                            callback.onError(result)
+                        }
+                    }
+                })
+        }
+    }
 }

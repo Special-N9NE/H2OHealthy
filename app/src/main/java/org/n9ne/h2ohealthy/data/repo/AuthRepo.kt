@@ -1,5 +1,6 @@
 package org.n9ne.h2ohealthy.data.repo
 
+import org.n9ne.h2ohealthy.data.source.objects.Auth
 import org.n9ne.h2ohealthy.util.RepoCallback
 
 interface AuthRepo {
@@ -10,5 +11,10 @@ interface AuthRepo {
         email: String,
         password: String,
         callback: RepoCallback<Unit>
+    )
+
+    suspend fun completeProfile(
+        data: Auth.CompleteProfile,
+        callback: RepoCallback<String>
     )
 }

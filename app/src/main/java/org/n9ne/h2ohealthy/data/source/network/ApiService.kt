@@ -14,4 +14,8 @@ interface ApiService {
     @FormUrlEncoded
     @POST("user.php")
     fun register(@Field("signup") data: String): Call<Message>
+
+    @FormUrlEncoded
+    @POST("user.php")
+    fun completeProfile(@Field("insertUser") data: String): Call<Message>
 }

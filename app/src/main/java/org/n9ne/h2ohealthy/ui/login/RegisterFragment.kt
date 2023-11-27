@@ -26,6 +26,10 @@ class RegisterFragment : Fragment(), Navigator {
     private lateinit var b: FragmentRegisterBinding
     private lateinit var viewModel: RegisterViewModel
 
+    private lateinit var name: String
+    private lateinit var email: String
+    private lateinit var password: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,11 +64,11 @@ class RegisterFragment : Fragment(), Navigator {
         b.bRegister.setOnClickListener {
             b.bRegister.isEnabled = false
 
-            viewModel.register(
-                b.etName.text.toString(),
-                "qqq@aaa.com",
-                "1111"
-            )
+            name = b.etName.text.toString()
+            email = "qqq@aaa.com"
+            password = "1111"
+
+            viewModel.register(name, email, password)
         }
     }
 
@@ -95,7 +99,12 @@ class RegisterFragment : Fragment(), Navigator {
         }
 
         viewModel.ldRegister.observe(viewLifecycleOwner, EventObserver(b.bRegister) {
-            this.shouldNavigate(R.id.register_to_completeProfile)
+            val data = Bundle().apply {
+                putString("name", name)
+                putString("email", email)
+                putString("password", password)
+            }
+            this.shouldNavigate(R.id.register_to_completeProfile, data)
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
@@ -103,7 +112,7 @@ class RegisterFragment : Fragment(), Navigator {
 
     }
 
-    override fun shouldNavigate(destination: Int) {
-        findNavController().navigate(destination)
+    override fun shouldNavigate(destination: Int, data: Bundle?) {
+        findNavController().navigate(destination, data)
     }
 }

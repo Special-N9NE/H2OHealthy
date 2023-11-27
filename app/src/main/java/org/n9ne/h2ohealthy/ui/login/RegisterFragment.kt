@@ -6,14 +6,18 @@ import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.CompoundButtonCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
+import org.n9ne.h2ohealthy.data.repo.AuthRepoImpl
 import org.n9ne.h2ohealthy.databinding.FragmentRegisterBinding
 import org.n9ne.h2ohealthy.ui.login.viewModel.RegisterViewModel
+import org.n9ne.h2ohealthy.util.EventObserver
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
 
@@ -37,11 +41,31 @@ class RegisterFragment : Fragment(), Navigator {
 
         setCheckboxColor()
         setupObserver()
+
+        setClicks()
     }
+
+
     private fun init() {
+        val client = (requireActivity().application as App).client
+        val repo = AuthRepoImpl(client)
         viewModel = ViewModelProvider(this)[RegisterViewModel::class.java]
+        viewModel.repo = repo
         viewModel.navigator = this
+
         b.viewModel = viewModel
+    }
+
+    private fun setClicks() {
+        b.bRegister.setOnClickListener {
+            b.bRegister.isEnabled = false
+
+            viewModel.register(
+                b.etName.text.toString(),
+                "qqq@aaa.com",
+                "1111"
+            )
+        }
     }
 
     private fun setCheckboxColor() {
@@ -69,6 +93,14 @@ class RegisterFragment : Fragment(), Navigator {
             }
             b.etPassword.setSelection(b.etPassword.text.toString().length)
         }
+
+        viewModel.ldRegister.observe(viewLifecycleOwner, EventObserver(b.bRegister) {
+            this.shouldNavigate(R.id.register_to_completeProfile)
+        })
+        viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+        })
+
     }
 
     override fun shouldNavigate(destination: Int) {

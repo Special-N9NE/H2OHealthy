@@ -12,7 +12,7 @@ import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.repo.MainRepo
 import org.n9ne.h2ohealthy.data.repo.MainRepoLocalImpl
-import org.n9ne.h2ohealthy.data.repo.local.AppDatabase
+import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.ActivityMainBinding
 import org.n9ne.h2ohealthy.ui.dialog.addWaterDialog
 import org.n9ne.h2ohealthy.ui.dialog.cupDialog

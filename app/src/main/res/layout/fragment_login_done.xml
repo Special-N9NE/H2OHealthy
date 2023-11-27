@@ -2,14 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="org.n9ne.h2ohealthy.ui.login.viewModel.LoginDoneViewModel" />
-
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -79,7 +71,6 @@
             android:layout_margin="32dp"
             android:background="@drawable/shape_button_blue"
             android:fontFamily="@font/poppins_bold"
-            android:onClick="@{() ->viewModel.homeClick()}"
             android:padding="16dp"
             android:text="@string/go_to_home"
             android:textAllCaps="false"

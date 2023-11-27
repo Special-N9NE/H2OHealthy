@@ -2,8 +2,11 @@ package org.n9ne.h2ohealthy.ui.login.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.runBlocking
 import org.n9ne.h2ohealthy.R
-import org.n9ne.h2ohealthy.data.repo.network.AuthApi
+import org.n9ne.h2ohealthy.data.repo.AuthRepo
+import org.n9ne.h2ohealthy.util.Event
+import org.n9ne.h2ohealthy.util.RepoCallback
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
 class LoginViewModel : ViewModel() {
@@ -11,15 +14,31 @@ class LoginViewModel : ViewModel() {
     lateinit var navigator: Navigator
     val ldPasswordClick = MutableLiveData<Boolean>()
 
+
+    val ldToken = MutableLiveData<Event<String>>()
+    val ldError = MutableLiveData<Event<String>>()
+
+    var repo: AuthRepo? = null
+
     fun passwordClick() {
         passwordIsVisible = !passwordIsVisible
         ldPasswordClick.postValue(passwordIsVisible)
     }
 
-    fun loginClick() {
+    fun login(email: String, password: String) {
         //TODO validation
 
-        AuthApi.getInstance().login("amir@gmail.come", "777")
+        runBlocking {
+            repo?.login(email, password, object : RepoCallback<String> {
+                override fun onSuccessful(response: String) {
+                    ldToken.postValue(Event(response))
+                }
+
+                override fun onError(error: String, isNetwork: Boolean) {
+                    ldError.postValue(Event(error))
+                }
+            })
+        }
     }
 
     fun googleClick() {

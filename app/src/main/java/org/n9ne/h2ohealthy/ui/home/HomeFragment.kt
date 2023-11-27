@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.Progress
 import org.n9ne.h2ohealthy.data.repo.HomeRepoLocalImpl
-import org.n9ne.h2ohealthy.data.repo.local.AppDatabase
+import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentHomeBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.dialog.activityOptionDialog

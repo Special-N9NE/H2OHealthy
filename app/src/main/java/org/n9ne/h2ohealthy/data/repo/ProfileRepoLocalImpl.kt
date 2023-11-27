@@ -6,7 +6,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.model.User
-import org.n9ne.h2ohealthy.data.repo.local.RoomDao
+import org.n9ne.h2ohealthy.data.source.local.RoomDao
 import org.n9ne.h2ohealthy.util.Mapper.toCupList
 import org.n9ne.h2ohealthy.util.Mapper.toGlass
 import org.n9ne.h2ohealthy.util.Mapper.toUser

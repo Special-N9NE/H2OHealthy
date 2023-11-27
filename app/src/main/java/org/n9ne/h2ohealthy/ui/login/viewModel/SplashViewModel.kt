@@ -1,15 +1,14 @@
 package org.n9ne.h2ohealthy.ui.login.viewModel
 
 import android.content.Context
-import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.n9ne.h2ohealthy.R
-import org.n9ne.h2ohealthy.data.repo.local.AppDatabase
-import org.n9ne.h2ohealthy.data.repo.local.UserEntity
+import org.n9ne.h2ohealthy.data.source.local.AppDatabase
+import org.n9ne.h2ohealthy.data.source.local.UserEntity
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
 class SplashViewModel : ViewModel() {

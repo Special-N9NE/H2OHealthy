@@ -4,9 +4,9 @@ import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.ActivityType
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.model.User
-import org.n9ne.h2ohealthy.data.repo.local.GlassEntity
-import org.n9ne.h2ohealthy.data.repo.local.UserEntity
-import org.n9ne.h2ohealthy.data.repo.local.WaterEntity
+import org.n9ne.h2ohealthy.data.source.local.GlassEntity
+import org.n9ne.h2ohealthy.data.source.local.UserEntity
+import org.n9ne.h2ohealthy.data.source.local.WaterEntity
 
 object Mapper {
     fun List<WaterEntity>.toActivityList(): ArrayList<Activity> {

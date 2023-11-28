@@ -14,9 +14,10 @@ import org.n9ne.h2ohealthy.util.interfaces.Navigator
 class EditProfileViewModel : ViewModel() {
 
     lateinit var navigator: Navigator
-    val ldPickImage = MutableLiveData<Event<Unit>>()
-    val ldSubmit = MutableLiveData<Event<Boolean>>()
+
+    val ldSubmit = MutableLiveData<Event<Unit>>()
     val ldUser = MutableLiveData<Event<User>>()
+    val ldError = MutableLiveData<Event<String>>()
 
     var repo: ProfileRepo? = null
 
@@ -32,22 +33,14 @@ class EditProfileViewModel : ViewModel() {
                 }
 
                 override fun onError(error: String, isNetwork: Boolean) {
-
+                    ldError.postValue(Event(error))
                 }
             })
         }
     }
 
-    fun submitClick() {
+    fun saveData() {
         //TODO validation
-        ldSubmit.postValue(Event(true))
-    }
-
-    fun dateClick() {
-        //TODO open date
-    }
-
-    fun profileClick() {
-        ldPickImage.postValue(Event(Unit))
+        ldSubmit.postValue(Event(Unit))
     }
 }

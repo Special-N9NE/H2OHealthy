@@ -1,14 +1,19 @@
 package org.n9ne.h2ohealthy.ui.profile
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
+import ir.hamsaa.persiandatepicker.api.PersianPickerDate
+import ir.hamsaa.persiandatepicker.api.PersianPickerListener
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoLocalImpl
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
@@ -25,6 +30,7 @@ class EditProfileFragment : Fragment(), Navigator {
     private lateinit var b: FragmentEditProfileBinding
     private lateinit var viewModel: EditProfileViewModel
     private lateinit var localRepo: ProfileRepoLocalImpl
+    private lateinit var date: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -40,9 +46,25 @@ class EditProfileFragment : Fragment(), Navigator {
         init()
 
         setupObserver()
+        setClicks()
 
         makeLocalRequest {
             viewModel.getUser()
+        }
+    }
+
+    private fun setClicks() {
+        b.bSubmit.setOnClickListener {
+            b.bSubmit.isEnabled = false
+            makeRequest {
+                viewModel.saveData()
+            }
+        }
+        b.etBirthday.setOnClickListener {
+            showDateDialog()
+        }
+        b.ivProfile.setOnClickListener {
+            galleryLauncher.launch("image/*")
         }
     }
 
@@ -52,6 +74,61 @@ class EditProfileFragment : Fragment(), Navigator {
         b.viewModel = viewModel
 
         setupSpinners()
+    }
+
+    private fun showDateDialog() {
+        var initYear = 2001
+        var initMonth = 10
+        var initDay = 18
+
+        val text = b.etBirthday.text.toString().trim()
+        if (text.isNotEmpty()) {
+            val split = text.split("/")
+            initYear = split[0].toInt()
+            initMonth = split[1].toInt() - 1
+            initDay = split[2].toInt()
+        }
+        DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                date = "$year/${month + 1}/$dayOfMonth"
+                b.etBirthday.setText(date)
+            }, initYear, initMonth, initDay
+        ).show()
+
+    }
+
+    private fun showPersianDateDialog() {
+
+        PersianDatePickerDialog(requireContext())
+            .setPositiveButtonString("تایید")
+            .setNegativeButton("لغو")
+            .setTodayButton("امروز")
+            .setTodayButtonVisible(true)
+            .setMinYear(1300)
+            .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
+            .setMaxMonth(PersianDatePickerDialog.THIS_MONTH)
+            .setMaxDay(PersianDatePickerDialog.THIS_DAY)
+            .setInitDate(1380, 7, 26)
+            .setActionTextColor(resources.getColor(R.color.linearBlueEnd, requireContext().theme))
+//            .setTypeFace(
+//                Typeface.createFromAsset(
+//                    requireContext().assets,
+//                    "font/poppins_regular.ttf"
+//                )
+//            )
+            .setShowInBottomSheet(true)
+            .setListener(object : PersianPickerListener {
+                override fun onDateSelected(persianPickerDate: PersianPickerDate) {
+                    date =
+                        "${persianPickerDate.gregorianYear}/${persianPickerDate.gregorianMonth}/${persianPickerDate.gregorianDay}"
+                    val pDate =
+                        "${persianPickerDate.persianYear}/${persianPickerDate.persianMonth}/${persianPickerDate.persianDay}"
+                    b.etBirthday.setText(pDate)
+                }
+
+                override fun onDismissed() {}
+            }).show()
     }
 
     private fun makeRequest(request: () -> Unit) {
@@ -93,9 +170,6 @@ class EditProfileFragment : Fragment(), Navigator {
     }
 
     private fun setupObserver() {
-        viewModel.ldPickImage.observe(viewLifecycleOwner, EventObserver {
-            galleryLauncher.launch("image/*")
-        })
         viewModel.ldUser.observe(viewLifecycleOwner, EventObserver {
             b.user = it
             b.spActivity.setText(it.activityType.text)
@@ -103,10 +177,16 @@ class EditProfileFragment : Fragment(), Navigator {
             b.spActivity.setTextColor(resources.getColor(R.color.blackText, requireContext().theme))
             b.spGender.setTextColor(resources.getColor(R.color.blackText, requireContext().theme))
             setupSpinners()
+
+            date = it.birthDate
         })
-        viewModel.ldSubmit.observe(viewLifecycleOwner, EventObserver {
+        viewModel.ldSubmit.observe(viewLifecycleOwner, EventObserver(b.bSubmit) {
             findNavController().navigateUp()
         })
+        viewModel.ldError.observe(viewLifecycleOwner, EventObserver(b.bSubmit) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+        })
+
     }
 
     override fun shouldNavigate(destination: Int, data: Bundle?) {

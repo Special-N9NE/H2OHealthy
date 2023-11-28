@@ -135,7 +135,6 @@
                 android:focusable="false"
                 android:text="@{user.birthDate}"
                 android:hint="@string/date_of_birth"
-                android:onClick="@{() ->viewModel.dateClick()}"
                 app:layout_constraintEnd_toStartOf="@+id/gRight"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/gLeft"
@@ -215,12 +214,12 @@
                 app:layout_constraintTop_toTopOf="@+id/etHeight" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="32dp"
                 android:background="@drawable/shape_button_blue"
                 android:fontFamily="@font/poppins_bold"
-                android:onClick="@{() ->viewModel.submitClick()}"
                 android:padding="16dp"
                 android:text="@string/submit"
                 android:textAllCaps="false"

@@ -1,6 +1,7 @@
 package org.n9ne.h2ohealthy.ui.login.viewModel
 
 import android.content.Context
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -46,12 +47,9 @@ class CompleteProfileViewModel : ViewModel() {
         height: String,
         context: Context
     ) {
-        //TODO validation
-
         val date = DateUtils.getDate()
         val genderId = if (gender == "Male") 1 else 0
         var activityId = "0"
-
         activityLevels.forEachIndexed { index, s ->
             if (s == activity)
                 activityId = index.toString()
@@ -61,6 +59,9 @@ class CompleteProfileViewModel : ViewModel() {
             email, name, password, date, activityId, birthdate,
             weight, height, genderId.toString()
         )
+
+        if (!isUserValid(data))
+            return
 
         runBlocking {
             repo?.completeProfile(data, object : RepoCallback<String> {
@@ -75,6 +76,19 @@ class CompleteProfileViewModel : ViewModel() {
                 }
             })
         }
+    }
+
+    private fun isUserValid(data: Auth.CompleteProfile): Boolean {
+        if (!data.weight.isDigitsOnly()) {
+            ldError.postValue(Event("Enter correct number for weight"))
+            return false
+        }
+        if (!data.height.isDigitsOnly()) {
+            ldError.postValue(Event("Enter correct number for height"))
+            return false
+        }
+
+        return true
     }
 
     private fun initDatabase(context: Context, data: Auth.CompleteProfile) {

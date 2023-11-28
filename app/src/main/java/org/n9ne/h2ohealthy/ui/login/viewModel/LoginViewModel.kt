@@ -1,5 +1,6 @@
 package org.n9ne.h2ohealthy.ui.login.viewModel
 
+import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.runBlocking
@@ -26,7 +27,9 @@ class LoginViewModel : ViewModel() {
     }
 
     fun login(email: String, password: String) {
-        //TODO validation
+
+        if (!isDataValid(email, password))
+            return
 
         runBlocking {
             repo?.login(email, password, object : RepoCallback<String> {
@@ -39,6 +42,27 @@ class LoginViewModel : ViewModel() {
                 }
             })
         }
+    }
+
+    private fun isDataValid(email: String, password: String): Boolean {
+        if (email.isEmpty()) {
+            ldError.postValue(Event("Email is empty"))
+            return false
+        }
+        if (password.isEmpty()) {
+            ldError.postValue(Event("Password is empty"))
+            return false
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            ldError.postValue(Event("Email is not valid"))
+            return false
+        }
+        if (password.length < 6) {
+            ldError.postValue(Event("password is short"))
+            return false
+        }
+
+        return true
     }
 
     fun googleClick() {

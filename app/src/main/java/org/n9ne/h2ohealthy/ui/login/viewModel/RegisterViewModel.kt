@@ -1,5 +1,6 @@
 package org.n9ne.h2ohealthy.ui.login.viewModel
 
+import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.runBlocking
@@ -33,7 +34,9 @@ class RegisterViewModel : ViewModel() {
     }
 
     fun register(name: String, email: String, password: String) {
-        //TODO validation
+
+        if (!isDataValid(name, email, password))
+            return
 
         runBlocking {
             repo?.register(name, email, password, object : RepoCallback<Unit> {
@@ -47,5 +50,34 @@ class RegisterViewModel : ViewModel() {
 
             })
         }
+    }
+
+    private fun isDataValid(name: String, email: String, password: String): Boolean {
+        if (name.isEmpty()) {
+            ldError.postValue(Event("Name is empty"))
+            return false
+        }
+        if (email.isEmpty()) {
+            ldError.postValue(Event("Email is empty"))
+            return false
+        }
+        if (password.isEmpty()) {
+            ldError.postValue(Event("Password is empty"))
+            return false
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            ldError.postValue(Event("Email is not valid"))
+            return false
+        }
+        if (name.length <= 1) {
+            ldError.postValue(Event("name is short"))
+            return false
+        }
+        if (password.length < 6) {
+            ldError.postValue(Event("password is short"))
+            return false
+        }
+
+        return true
     }
 }

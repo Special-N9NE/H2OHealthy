@@ -1,4 +1,4 @@
-package org.n9ne.h2ohealthy.data.repo
+package org.n9ne.h2ohealthy.data.repo.profile
 
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.model.User

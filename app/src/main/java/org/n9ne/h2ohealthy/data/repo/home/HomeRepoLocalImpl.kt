@@ -1,4 +1,4 @@
-package org.n9ne.h2ohealthy.data.repo
+package org.n9ne.h2ohealthy.data.repo.home
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -7,7 +7,6 @@ import kotlinx.coroutines.runBlocking
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.source.local.RoomDao
 import org.n9ne.h2ohealthy.util.Mapper.toActivityList
-import org.n9ne.h2ohealthy.util.Mapper.toWater
 import org.n9ne.h2ohealthy.util.RepoCallback
 
 class HomeRepoLocalImpl(private val dao: RoomDao) : HomeRepo {

@@ -6,7 +6,7 @@ import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Setting
 import org.n9ne.h2ohealthy.data.model.SettingItem
 import org.n9ne.h2ohealthy.data.model.User
-import org.n9ne.h2ohealthy.data.repo.ProfileRepo
+import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepo
 import org.n9ne.h2ohealthy.util.DateUtils
 import org.n9ne.h2ohealthy.util.Event
 import org.n9ne.h2ohealthy.util.RepoCallback

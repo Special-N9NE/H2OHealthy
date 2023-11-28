@@ -3,7 +3,7 @@ package org.n9ne.h2ohealthy.ui.profile.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.n9ne.h2ohealthy.data.model.Cup
-import org.n9ne.h2ohealthy.data.repo.ProfileRepo
+import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepo
 import org.n9ne.h2ohealthy.util.Event
 import org.n9ne.h2ohealthy.util.RepoCallback
 

@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
-import org.n9ne.h2ohealthy.data.repo.AuthRepoImpl
+import org.n9ne.h2ohealthy.data.repo.auth.AuthRepoImpl
 import org.n9ne.h2ohealthy.databinding.FragmentLoginBinding
 import org.n9ne.h2ohealthy.ui.login.viewModel.LoginViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
@@ -77,7 +77,7 @@ class LoginFragment : Fragment(), Navigator {
             requireActivity().saveToken(it)
             this.shouldNavigate(R.id.login_to_loginDone)
         })
-        viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
+        viewModel.ldError.observe(viewLifecycleOwner, EventObserver(b.bLogin) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
     }

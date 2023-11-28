@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.Progress
-import org.n9ne.h2ohealthy.data.repo.HomeRepo
+import org.n9ne.h2ohealthy.data.repo.home.HomeRepo
 import org.n9ne.h2ohealthy.util.Event
 import org.n9ne.h2ohealthy.util.Mapper.toLiter
 import org.n9ne.h2ohealthy.util.Mapper.toMilliLiter

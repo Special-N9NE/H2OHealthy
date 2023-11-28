@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.runBlocking
 import org.n9ne.h2ohealthy.R
-import org.n9ne.h2ohealthy.data.repo.AuthRepo
+import org.n9ne.h2ohealthy.data.repo.auth.AuthRepo
 import org.n9ne.h2ohealthy.util.Event
 import org.n9ne.h2ohealthy.util.RepoCallback
 import org.n9ne.h2ohealthy.util.interfaces.Navigator

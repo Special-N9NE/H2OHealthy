@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/login">
+    app:startDestination="@id/splash">
 
     <fragment
         android:id="@+id/splash"
@@ -15,6 +15,9 @@
             android:id="@+id/splash_to_register"
             app:destination="@id/register"
             app:enterAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/splash_to_login"
+            app:destination="@id/login" />
     </fragment>
     <fragment
         android:id="@+id/register"

@@ -1,4 +1,4 @@
-package org.n9ne.h2ohealthy.data.repo
+package org.n9ne.h2ohealthy.data.repo.auth
 
 import org.n9ne.h2ohealthy.data.source.objects.Auth
 import org.n9ne.h2ohealthy.util.RepoCallback

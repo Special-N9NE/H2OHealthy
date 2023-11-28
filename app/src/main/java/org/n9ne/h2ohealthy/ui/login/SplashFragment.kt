@@ -37,8 +37,9 @@ class SplashFragment : Fragment(), Navigator {
         setTextColors()
 
         if (requireActivity().isFirstTime()) {
-            viewModel.initDatabase(requireContext())
             requireActivity().setFirstTime(false)
+        } else {
+            this.shouldNavigate(R.id.splash_to_login)
         }
     }
 

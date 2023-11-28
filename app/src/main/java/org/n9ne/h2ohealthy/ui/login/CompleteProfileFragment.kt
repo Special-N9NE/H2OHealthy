@@ -11,7 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
-import org.n9ne.h2ohealthy.data.repo.AuthRepoImpl
+import org.n9ne.h2ohealthy.data.repo.auth.AuthRepoImpl
+import org.n9ne.h2ohealthy.data.source.objects.Auth
 import org.n9ne.h2ohealthy.databinding.FragmentCompleteProfileBinding
 import org.n9ne.h2ohealthy.ui.login.viewModel.CompleteProfileViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
@@ -26,6 +27,8 @@ class CompleteProfileFragment : Fragment(), Navigator {
     private lateinit var name: String
     private lateinit var email: String
     private lateinit var password: String
+
+    private lateinit var userData: Auth.CompleteProfile
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,9 +67,11 @@ class CompleteProfileFragment : Fragment(), Navigator {
     private fun setClicks() {
         b.bNext.setOnClickListener {
             b.bNext.isEnabled = false
+
             viewModel.completeProfile(
                 name, email, password, b.spActivity.text.toString(), b.spGender.text.toString(),
-                "2002/11/30", b.etWeight.text.toString(), b.etHeight.text.toString()
+                "2002/11/30", b.etWeight.text.toString(), b.etHeight.text.toString(),
+                requireContext()
             )
         }
     }
@@ -90,7 +95,7 @@ class CompleteProfileFragment : Fragment(), Navigator {
             requireActivity().saveToken(it)
             this.shouldNavigate(R.id.completeProfile_to_loginDone)
         })
-        viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
+        viewModel.ldError.observe(viewLifecycleOwner, EventObserver(b.bNext) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
     }

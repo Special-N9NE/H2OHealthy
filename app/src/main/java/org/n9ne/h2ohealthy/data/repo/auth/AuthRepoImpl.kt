@@ -1,4 +1,4 @@
-package org.n9ne.h2ohealthy.data.repo
+package org.n9ne.h2ohealthy.data.repo.auth
 
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers

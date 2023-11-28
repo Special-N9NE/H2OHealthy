@@ -18,19 +18,5 @@ class SplashViewModel : ViewModel() {
         navigator.shouldNavigate(R.id.splash_to_register)
     }
 
-    fun initDatabase(context: Context) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val user = UserEntity(
-                    1L, 0L,
-                    "test@gmail.com", "1234",
-                    "2023/11/5", "Test",
-                    "2002/11/30", 65,
-                    181, 1,
-                    0, "3", ""
-                )
-                AppDatabase.getDatabase(context).roomDao().insertUser(user)
-            }
-        }
-    }
+
 }

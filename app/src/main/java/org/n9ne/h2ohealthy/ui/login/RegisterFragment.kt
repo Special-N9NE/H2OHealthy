@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
-import org.n9ne.h2ohealthy.data.repo.AuthRepoImpl
+import org.n9ne.h2ohealthy.data.repo.auth.AuthRepoImpl
 import org.n9ne.h2ohealthy.databinding.FragmentRegisterBinding
 import org.n9ne.h2ohealthy.ui.login.viewModel.RegisterViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
@@ -106,7 +106,7 @@ class RegisterFragment : Fragment(), Navigator {
             }
             this.shouldNavigate(R.id.register_to_completeProfile, data)
         })
-        viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
+        viewModel.ldError.observe(viewLifecycleOwner, EventObserver(b.bRegister) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
 

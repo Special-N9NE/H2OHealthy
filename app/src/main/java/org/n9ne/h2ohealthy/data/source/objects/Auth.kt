@@ -27,6 +27,7 @@ sealed class Auth {
 
         val target: String = "3",
         val idLeague: String = "0",
-        val score: String = "0"
+        val score: String = "0",
+        val profile: String = ""
     )
 }

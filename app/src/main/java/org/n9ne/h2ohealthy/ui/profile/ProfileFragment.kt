@@ -17,7 +17,7 @@ import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Setting
 import org.n9ne.h2ohealthy.data.model.SettingItem
 import org.n9ne.h2ohealthy.data.model.User
-import org.n9ne.h2ohealthy.data.repo.ProfileRepoLocalImpl
+import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoLocalImpl
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentProfileBinding
 import org.n9ne.h2ohealthy.ui.MainActivity

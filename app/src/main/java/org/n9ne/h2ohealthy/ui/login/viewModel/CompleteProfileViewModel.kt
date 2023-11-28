@@ -19,11 +19,14 @@ import org.n9ne.h2ohealthy.util.Event
 import org.n9ne.h2ohealthy.util.RepoCallback
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
+
 class CompleteProfileViewModel : ViewModel() {
     lateinit var navigator: Navigator
 
     var repo: AuthRepo? = null
 
+
+    val ldShowDate = MutableLiveData<Event<Unit>>()
     val ldToken = MutableLiveData<Event<String>>()
     val ldError = MutableLiveData<Event<String>>()
 
@@ -56,7 +59,7 @@ class CompleteProfileViewModel : ViewModel() {
         }
 
         val data = Auth.CompleteProfile(
-            email, name, password, date, activityId, birthdate,
+            email, name.trim(), password, date, activityId, birthdate,
             weight, height, genderId.toString()
         )
 
@@ -79,11 +82,19 @@ class CompleteProfileViewModel : ViewModel() {
     }
 
     private fun isUserValid(data: Auth.CompleteProfile): Boolean {
-        if (!data.weight.isDigitsOnly()) {
+        if (data.weight.trim().isEmpty()){
+            ldError.postValue(Event("Enter Weight"))
+            return false
+        }
+        if (data.height.trim().isEmpty()){
+            ldError.postValue(Event("Enter Height"))
+            return false
+        }
+        if (!data.weight.trim().isDigitsOnly()) {
             ldError.postValue(Event("Enter correct number for weight"))
             return false
         }
-        if (!data.height.isDigitsOnly()) {
+        if (!data.height.trim().isDigitsOnly()) {
             ldError.postValue(Event("Enter correct number for height"))
             return false
         }
@@ -108,6 +119,6 @@ class CompleteProfileViewModel : ViewModel() {
     }
 
     fun dateClick() {
-        //TODO open date dialog
+        ldShowDate.postValue(Event(Unit))
     }
 }

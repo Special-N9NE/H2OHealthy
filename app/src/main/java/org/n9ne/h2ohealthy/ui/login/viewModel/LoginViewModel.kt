@@ -45,11 +45,11 @@ class LoginViewModel : ViewModel() {
     }
 
     private fun isDataValid(email: String, password: String): Boolean {
-        if (email.isEmpty()) {
+        if (email.trim().isEmpty()) {
             ldError.postValue(Event("Email is empty"))
             return false
         }
-        if (password.isEmpty()) {
+        if (password.trim().isEmpty()) {
             ldError.postValue(Event("Password is empty"))
             return false
         }

@@ -1,13 +1,10 @@
 package org.n9ne.h2ohealthy.util
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.Period
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
-import kotlin.math.absoluteValue
 
 object DateUtils {
 
@@ -44,6 +41,24 @@ object DateUtils {
         val time = Calendar.getInstance().time
         val formatter = SimpleDateFormat("yyyy/MM/dd")
         return formatter.format(time)
+    }
+
+    fun getYear(): Int {
+        val time = Calendar.getInstance().time
+        val formatter = SimpleDateFormat("yyyy")
+        return formatter.format(time).toInt()
+    }
+
+    fun getMonth(): Int {
+        val time = Calendar.getInstance().time
+        val formatter = SimpleDateFormat("MM")
+        return formatter.format(time).toInt()
+    }
+
+    fun getDayOfMonth(): Int {
+        val time = Calendar.getInstance().time
+        val formatter = SimpleDateFormat("dd")
+        return formatter.format(time).toInt()
     }
 
     fun getTime(): String {

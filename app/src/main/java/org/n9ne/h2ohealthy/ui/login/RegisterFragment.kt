@@ -65,8 +65,8 @@ class RegisterFragment : Fragment(), Navigator {
             b.bRegister.isEnabled = false
 
             name = b.etName.text.toString()
-            email = "qqq@aaa.com"
-            password = "1111"
+            email = b.etEmail.text.toString()
+            password = b.etPassword.text.toString()
 
             viewModel.register(name, email, password)
         }

@@ -9,10 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.FragmentSplashBinding
-import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.login.viewModel.SplashViewModel
 import org.n9ne.h2ohealthy.util.Saver.isFirstTime
-import org.n9ne.h2ohealthy.util.Saver.setFirstTime
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 import org.n9ne.h2ohealthy.util.setGradient
 
@@ -32,13 +30,10 @@ class SplashFragment : Fragment(), Navigator {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as MainActivity).hideNavigation()
         init()
         setTextColors()
 
-        if (requireActivity().isFirstTime()) {
-            requireActivity().setFirstTime(false)
-        } else {
+        if (!requireActivity().isFirstTime()) {
             this.shouldNavigate(R.id.splash_to_login)
         }
     }

@@ -48,6 +48,8 @@ dependencies {
 
     implementation("com.github.Dhaval2404:ColorPicker:2.3")
 
+    implementation("com.github.aliab:Persian-Date-Picker-Dialog:1.8.0")
+
     implementation("me.saket.cascade:cascade:2.3.0")
     implementation("me.saket.cascade:cascade-compose:2.3.0")
 

@@ -1,5 +1,6 @@
 package org.n9ne.h2ohealthy.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +14,14 @@ import org.n9ne.h2ohealthy.data.model.Progress
 import org.n9ne.h2ohealthy.data.repo.home.HomeRepoLocalImpl
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentHomeBinding
+import org.n9ne.h2ohealthy.ui.AuthActivity
 import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.dialog.activityOptionDialog
 import org.n9ne.h2ohealthy.ui.home.adpter.ActivityAdapter
 import org.n9ne.h2ohealthy.ui.home.viewModel.HomeViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
 import org.n9ne.h2ohealthy.util.Mapper.toLiter
+import org.n9ne.h2ohealthy.util.Saver.getToken
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
 import org.n9ne.h2ohealthy.util.interfaces.MenuClickListener
@@ -47,6 +50,11 @@ class HomeFragment : Fragment() {
         init()
 
         setObservers()
+
+        if(requireActivity().getToken() == null){
+            requireActivity().startActivity(Intent(requireActivity() , AuthActivity::class.java))
+            requireActivity().finish()
+        }
 
         makeRequest {
             viewModel.getTarget()

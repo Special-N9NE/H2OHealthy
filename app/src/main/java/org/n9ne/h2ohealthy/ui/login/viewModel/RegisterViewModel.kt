@@ -39,7 +39,7 @@ class RegisterViewModel : ViewModel() {
             return
 
         runBlocking {
-            repo?.register(name, email, password, object : RepoCallback<Unit> {
+            repo?.register(name.trim(), email, password, object : RepoCallback<Unit> {
                 override fun onSuccessful(response: Unit) {
                     ldRegister.postValue(Event(Unit))
                 }
@@ -53,15 +53,15 @@ class RegisterViewModel : ViewModel() {
     }
 
     private fun isDataValid(name: String, email: String, password: String): Boolean {
-        if (name.isEmpty()) {
+        if (name.trim().isEmpty()) {
             ldError.postValue(Event("Name is empty"))
             return false
         }
-        if (email.isEmpty()) {
+        if (email.trim().isEmpty()) {
             ldError.postValue(Event("Email is empty"))
             return false
         }
-        if (password.isEmpty()) {
+        if (password.trim().isEmpty()) {
             ldError.postValue(Event("Password is empty"))
             return false
         }

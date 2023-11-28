@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [ActivityEntity::class, GlassEntity::class, LeagueEntity::class, UserEntity::class, WaterEntity::class],
-    version = 3
+    version = 4
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -35,7 +35,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     }
 
-    fun removeDatabase(appDatabase: AppDatabase) {
-        appDatabase.clearAllTables()
+    fun removeDatabase() {
+        this.clearAllTables()
     }
 }

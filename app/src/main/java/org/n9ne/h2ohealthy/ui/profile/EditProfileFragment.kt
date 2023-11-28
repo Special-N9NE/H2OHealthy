@@ -10,10 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.R
+import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoLocalImpl
+import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentEditProfileBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.profile.viewModel.EditProfileViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
+import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
 
@@ -21,6 +24,7 @@ class EditProfileFragment : Fragment(), Navigator {
 
     private lateinit var b: FragmentEditProfileBinding
     private lateinit var viewModel: EditProfileViewModel
+    private lateinit var localRepo: ProfileRepoLocalImpl
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -36,15 +40,35 @@ class EditProfileFragment : Fragment(), Navigator {
         init()
 
         setupObserver()
+
+        makeLocalRequest {
+            viewModel.getUser()
+        }
     }
 
     private fun init() {
+        localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
         viewModel = ViewModelProvider(this)[EditProfileViewModel::class.java]
         b.viewModel = viewModel
 
         setupSpinners()
     }
 
+    private fun makeRequest(request: () -> Unit) {
+        val repo = if (requireActivity().isOnline()) {
+            //TODO pass apiRepo
+            localRepo
+        } else {
+            localRepo
+        }
+        viewModel.repo = repo
+        request.invoke()
+    }
+
+    private fun makeLocalRequest(request: () -> Unit) {
+        viewModel.repo = localRepo
+        request.invoke()
+    }
 
     private fun setupSpinners() {
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
@@ -71,6 +95,14 @@ class EditProfileFragment : Fragment(), Navigator {
     private fun setupObserver() {
         viewModel.ldPickImage.observe(viewLifecycleOwner, EventObserver {
             galleryLauncher.launch("image/*")
+        })
+        viewModel.ldUser.observe(viewLifecycleOwner, EventObserver {
+            b.user = it
+            b.spActivity.setText(it.activityType.text)
+            b.spGender.setText(it.gender)
+            b.spActivity.setTextColor(resources.getColor(R.color.blackText, requireContext().theme))
+            b.spGender.setTextColor(resources.getColor(R.color.blackText, requireContext().theme))
+            setupSpinners()
         })
         viewModel.ldSubmit.observe(viewLifecycleOwner, EventObserver {
             findNavController().navigateUp()

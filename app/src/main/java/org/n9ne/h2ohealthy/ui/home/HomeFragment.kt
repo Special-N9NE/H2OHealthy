@@ -51,13 +51,13 @@ class HomeFragment : Fragment() {
 
         setObservers()
 
-        if(requireActivity().getToken() == null){
-            requireActivity().startActivity(Intent(requireActivity() , AuthActivity::class.java))
+        if (requireActivity().getToken() == null) {
+            requireActivity().startActivity(Intent(requireActivity(), AuthActivity::class.java))
             requireActivity().finish()
-        }
-
-        makeRequest {
-            viewModel.getTarget()
+        } else {
+            makeRequest {
+                viewModel.getTarget()
+            }
         }
     }
 

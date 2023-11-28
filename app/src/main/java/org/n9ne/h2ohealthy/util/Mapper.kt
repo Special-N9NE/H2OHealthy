@@ -25,6 +25,8 @@ object Mapper {
 
         val activity = ActivityType.entries[idActivity.toInt()]
         val age = DateUtils.calculateAge(birthdate)
+        val genderText = if (gender == 1) "Male" else "Female"
+
         return User(
             id,
             activity,
@@ -35,6 +37,7 @@ object Mapper {
             birthdate,
             weight,
             height,
+            genderText,
             score,
             profile
         )

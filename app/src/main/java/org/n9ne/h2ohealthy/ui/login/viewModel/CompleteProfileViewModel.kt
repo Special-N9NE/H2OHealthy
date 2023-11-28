@@ -82,11 +82,11 @@ class CompleteProfileViewModel : ViewModel() {
     }
 
     private fun isUserValid(data: Auth.CompleteProfile): Boolean {
-        if (data.weight.trim().isEmpty()){
+        if (data.weight.trim().isEmpty()) {
             ldError.postValue(Event("Enter Weight"))
             return false
         }
-        if (data.height.trim().isEmpty()){
+        if (data.height.trim().isEmpty()) {
             ldError.postValue(Event("Enter Height"))
             return false
         }
@@ -105,12 +105,14 @@ class CompleteProfileViewModel : ViewModel() {
     private fun initDatabase(context: Context, data: Auth.CompleteProfile) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
+                AppDatabase.getDatabase(context).removeDatabase()
+
                 val user = UserEntity(
                     data.idActivity.toLong(), data.idLeague.toLong(),
                     data.email, data.password,
                     data.date, data.name,
-                    data.birthdate, data.weight.toInt(),
-                    data.height.toInt(), data.gender.toInt(),
+                    data.birthdate, data.weight,
+                    data.height, data.gender.toInt(),
                     data.score.toInt(), data.target, data.profile
                 )
                 AppDatabase.getDatabase(context).roomDao().insertUser(user)

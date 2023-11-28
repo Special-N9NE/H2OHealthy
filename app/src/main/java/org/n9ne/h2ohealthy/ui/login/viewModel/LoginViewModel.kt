@@ -34,6 +34,7 @@ class LoginViewModel : ViewModel() {
         runBlocking {
             repo?.login(email, password, object : RepoCallback<String> {
                 override fun onSuccessful(response: String) {
+                    //TODO get all user data
                     ldToken.postValue(Event(response))
                 }
 

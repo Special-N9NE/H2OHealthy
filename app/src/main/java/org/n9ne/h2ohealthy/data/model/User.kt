@@ -7,9 +7,10 @@ data class User(
     val email: String,
     val name: String,
     var age: String,
-    val birthDate : String,
-    val weight: Int,
-    val height: Int,
+    val birthDate: String,
+    val weight: String,
+    val height: String,
+    val gender: String,
     val score: Int,
     val profile: String
 )

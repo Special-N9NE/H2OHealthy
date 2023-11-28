@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="user"
+            type="org.n9ne.h2ohealthy.data.model.User" />
         <variable
             name="viewModel"
             type="org.n9ne.h2ohealthy.ui.profile.viewModel.EditProfileViewModel" />
@@ -60,6 +62,7 @@
                 android:layout_marginTop="32dp"
                 android:drawableStart="@drawable/ic_profile"
                 android:hint="@string/name"
+                android:text="@{user.name}"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toStartOf="@+id/gRight"
                 app:layout_constraintStart_toStartOf="@+id/gLeft"
@@ -74,6 +77,7 @@
                 android:layout_marginTop="16dp"
                 android:drawableStart="@drawable/ic_email"
                 android:hint="@string/email"
+                android:text="@{user.email}"
                 android:inputType="textEmailAddress"
                 app:layout_constraintEnd_toStartOf="@+id/gRight"
                 app:layout_constraintStart_toStartOf="@+id/gLeft"
@@ -129,6 +133,7 @@
                 android:layout_marginTop="16dp"
                 android:drawableStart="@drawable/ic_birthday"
                 android:focusable="false"
+                android:text="@{user.birthDate}"
                 android:hint="@string/date_of_birth"
                 android:onClick="@{() ->viewModel.dateClick()}"
                 app:layout_constraintEnd_toStartOf="@+id/gRight"
@@ -145,7 +150,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:drawableStart="@drawable/ic_weight"
-                android:hint="@string/your_height"
+                android:hint="@string/your_weight"
+                android:text="@{user.weight}"
                 android:inputType="numberDecimal"
                 app:layout_constraintEnd_toStartOf="@+id/tvKg"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -163,6 +169,7 @@
                 android:drawableStart="@drawable/ic_height"
                 android:hint="@string/your_height"
                 android:inputType="number"
+                android:text="@{user.height}"
                 app:layout_constraintEnd_toStartOf="@+id/tvCm"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/gLeft"

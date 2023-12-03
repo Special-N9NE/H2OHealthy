@@ -180,10 +180,10 @@ class EditProfileFragment : Fragment(), Navigator {
 
             date = it.birthDate
         })
-        viewModel.ldSubmit.observe(viewLifecycleOwner, EventObserver(b.bSubmit) {
+        viewModel.ldSubmit.observe(viewLifecycleOwner, EventObserver(listOf(b.bSubmit)) {
             findNavController().navigateUp()
         })
-        viewModel.ldError.observe(viewLifecycleOwner, EventObserver(b.bSubmit) {
+        viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bSubmit)) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
 

@@ -98,7 +98,7 @@ class RegisterFragment : Fragment(), Navigator {
             b.etPassword.setSelection(b.etPassword.text.toString().length)
         }
 
-        viewModel.ldRegister.observe(viewLifecycleOwner, EventObserver(b.bRegister) {
+        viewModel.ldRegister.observe(viewLifecycleOwner, EventObserver(listOf(b.bRegister)) {
             val data = Bundle().apply {
                 putString("name", name)
                 putString("email", email)
@@ -106,7 +106,7 @@ class RegisterFragment : Fragment(), Navigator {
             }
             this.shouldNavigate(R.id.register_to_completeProfile, data)
         })
-        viewModel.ldError.observe(viewLifecycleOwner, EventObserver(b.bRegister) {
+        viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bRegister)) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
 

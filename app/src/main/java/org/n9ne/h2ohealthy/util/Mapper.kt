@@ -7,6 +7,7 @@ import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.source.local.GlassEntity
 import org.n9ne.h2ohealthy.data.source.local.UserEntity
 import org.n9ne.h2ohealthy.data.source.local.WaterEntity
+import org.n9ne.h2ohealthy.data.source.objects.Login
 
 object Mapper {
     fun List<WaterEntity>.toActivityList(): ArrayList<Activity> {
@@ -32,7 +33,10 @@ object Mapper {
             activity,
             idLeague,
             email,
+            password,
             name,
+            date,
+            target,
             age.toString(),
             birthdate,
             weight,
@@ -40,6 +44,33 @@ object Mapper {
             genderText,
             score,
             profile
+        )
+    }
+
+    fun Login.toUser(): User {
+
+        val user = this.user!![0]
+
+        val activity = ActivityType.entries[user.idActivity - 1]
+        val age = DateUtils.calculateAge(user.birthdate)
+        val genderText = if (user.gender == 1) "Male" else "Female"
+
+        return User(
+            user.id.toLong(),
+            activity,
+            user.idleague.toLong(),
+            user.email,
+            user.password,
+            user.name,
+            user.date,
+            user.target,
+            age.toString(),
+            user.birthdate,
+            user.weight.toString(),
+            user.height.toString(),
+            genderText,
+            user.score,
+            user.profile
         )
     }
 

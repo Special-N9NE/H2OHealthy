@@ -56,7 +56,8 @@ class LoginFragment : Fragment(), Navigator {
 
             viewModel.login(
                 b.etEmail.text.toString(),
-                b.etPassword.text.toString()
+                b.etPassword.text.toString(),
+                requireContext()
             )
         }
     }
@@ -73,13 +74,14 @@ class LoginFragment : Fragment(), Navigator {
             }
             b.etPassword.setSelection(b.etPassword.text.toString().length)
         }
-        viewModel.ldToken.observe(viewLifecycleOwner, EventObserver(b.bLogin) {
+        viewModel.ldToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
             requireActivity().saveToken(it)
             this.shouldNavigate(R.id.login_to_loginDone)
         })
-        viewModel.ldError.observe(viewLifecycleOwner, EventObserver(b.bLogin) {
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-        })
+        viewModel.ldError.observe(viewLifecycleOwner,
+            EventObserver(listOf(b.bLogin)) {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            })
     }
 
     override fun shouldNavigate(destination: Int, data: Bundle?) {

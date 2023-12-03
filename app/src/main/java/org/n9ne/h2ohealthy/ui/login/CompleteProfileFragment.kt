@@ -94,11 +94,11 @@ class CompleteProfileFragment : Fragment(), Navigator {
     }
 
     private fun setObservers() {
-        viewModel.ldToken.observe(viewLifecycleOwner, EventObserver(b.bNext) {
+        viewModel.ldToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bNext)) {
             requireActivity().saveToken(it)
             this.shouldNavigate(R.id.completeProfile_to_loginDone)
         })
-        viewModel.ldError.observe(viewLifecycleOwner, EventObserver(b.bNext) {
+        viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bNext)) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
         viewModel.ldShowDate.observe(viewLifecycleOwner, EventObserver {

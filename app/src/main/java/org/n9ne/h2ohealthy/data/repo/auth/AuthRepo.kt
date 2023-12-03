@@ -1,10 +1,12 @@
 package org.n9ne.h2ohealthy.data.repo.auth
 
+import org.n9ne.h2ohealthy.data.model.LoginResult
+import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.source.objects.Auth
 import org.n9ne.h2ohealthy.util.RepoCallback
 
 interface AuthRepo {
-    suspend fun login(email: String, password: String, callback: RepoCallback<String>)
+    suspend fun login(email: String, password: String, callback: RepoCallback<LoginResult>)
 
     suspend fun register(
         name: String,

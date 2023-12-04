@@ -25,16 +25,19 @@ import org.n9ne.h2ohealthy.util.Saver.getToken
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
 import org.n9ne.h2ohealthy.util.interfaces.MenuClickListener
+import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
 import org.n9ne.h2ohealthy.util.interfaces.RemoveActivityListener
 import org.nine.linearprogressbar.LinearVerticalProgressBar
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), RefreshListener {
     private lateinit var localRepo: HomeRepoLocalImpl
 
     private lateinit var b: FragmentHomeBinding
     private lateinit var viewModel: HomeViewModel
     private var activityList = arrayListOf<Activity>()
+    private lateinit var activity: MainActivity
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,15 +49,17 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as MainActivity).showNavigation()
         init()
-
         setObservers()
+
+        activity.showNavigation()
 
         if (requireActivity().getToken() == null) {
             requireActivity().startActivity(Intent(requireActivity(), AuthActivity::class.java))
             requireActivity().finish()
         } else {
+
+            activity.startLoading()
             makeRequest {
                 viewModel.getTarget()
             }
@@ -62,6 +67,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun init() {
+        activity = requireActivity() as MainActivity
         localRepo = HomeRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         b.viewModel = viewModel
@@ -78,6 +84,12 @@ class HomeFragment : Fragment() {
         request.invoke()
     }
 
+    private fun makeApiRequest(request: () -> Unit) {
+        //TODO change to api
+        viewModel.repo = localRepo
+        request.invoke()
+    }
+
     private fun setActivityAdapter(list: List<Activity>) {
         val adapter = ActivityAdapter(list, object : MenuClickListener {
             override fun onMenuClick(item: Activity) {
@@ -85,13 +97,16 @@ class HomeFragment : Fragment() {
                     override fun onAdd(amount: String) {
                         item.amount = amount.toDouble().toLiter().toString()
 
+                        activity.startLoading()
                         makeRequest {
                             viewModel.updateWater(item)
                         }
                     }
                 }
                 val removeListener = object : RemoveActivityListener {
-                    override fun onRemove(activity: Activity) {
+                    override fun onRemove() {
+
+                        activity.startLoading()
                         makeRequest {
                             viewModel.removeWater(item)
                         }
@@ -133,9 +148,18 @@ class HomeFragment : Fragment() {
         viewModel.ldActivities.observe(viewLifecycleOwner) {
             activityList = it.toCollection(ArrayList())
             setActivityAdapter(it)
+
+            activity.stopLoading()
         }
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
+            activity.stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
+    }
+
+    override fun onRefresh() {
+        makeApiRequest {
+            viewModel.getTarget()
+        }
     }
 }

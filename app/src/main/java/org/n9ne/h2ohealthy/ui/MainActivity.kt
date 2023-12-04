@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
+import com.simform.refresh.SSPullToRefreshLayout
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.repo.MainRepo
@@ -22,6 +24,7 @@ import org.n9ne.h2ohealthy.util.Mapper.toLiter
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
 import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
+import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,6 +48,23 @@ class MainActivity : AppCompatActivity() {
 
         makeRequest {
             viewModel.getCups()
+        }
+
+        b.ssPullRefresh.setRefreshing(true)
+
+        b.ssPullRefresh.setOnRefreshListener {
+            val navHostFragment: Fragment? =
+                supportFragmentManager.findFragmentById(R.id.navHost)
+            val currentFragment: Fragment? =
+                navHostFragment?.childFragmentManager?.fragments?.get(0)
+
+
+            if (currentFragment is RefreshListener) {
+                val listener = currentFragment as RefreshListener
+                listener.onRefresh()
+            } else {
+                stopLoading()
+            }
         }
 
         b.bottomNavigation.setOnNavigationItemSelectedListener {
@@ -75,6 +95,18 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
         navController = navHostFragment.navController
+
+        b.ssPullRefresh.setRepeatMode(SSPullToRefreshLayout.RepeatMode.REPEAT)
+        b.ssPullRefresh.setRepeatCount(SSPullToRefreshLayout.RepeatCount.INFINITE)
+        b.ssPullRefresh.setLottieAnimation("loading.json")
+    }
+
+    fun startLoading() {
+        b.ssPullRefresh.setRefreshing(true)
+    }
+
+    fun stopLoading() {
+        b.ssPullRefresh.setRefreshing(false)
     }
 
     private fun makeRequest(request: () -> Unit) {

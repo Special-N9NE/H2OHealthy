@@ -31,11 +31,12 @@ import org.n9ne.h2ohealthy.util.Saver.saveToken
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
+import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
 import org.n9ne.h2ohealthy.util.interfaces.SettingClickListener
 import org.n9ne.h2ohealthy.util.setGradient
 
 
-class ProfileFragment : Fragment(), Navigator {
+class ProfileFragment : Fragment(), Navigator, RefreshListener {
 
     private lateinit var localRepo: ProfileRepoLocalImpl
 
@@ -43,6 +44,7 @@ class ProfileFragment : Fragment(), Navigator {
     private lateinit var viewModel: ProfileViewModel
     private lateinit var createLeagueDialog: Dialog
     private lateinit var joinLeagueDialog: Dialog
+    private lateinit var activity: MainActivity
 
 
     override fun onCreateView(
@@ -60,7 +62,7 @@ class ProfileFragment : Fragment(), Navigator {
         setupObserver()
         setClicks()
 
-        makeRequest {
+        makeLocalRequest {
             viewModel.getUser()
         }
     }
@@ -76,7 +78,19 @@ class ProfileFragment : Fragment(), Navigator {
         request.invoke()
     }
 
+    private fun makeLocalRequest(request: () -> Unit) {
+        viewModel.repo = localRepo
+        request.invoke()
+    }
+
+    private fun makeApiRequest(request: () -> Unit) {
+        //TODO pass apiRepo
+        viewModel.repo = localRepo
+        request.invoke()
+    }
+
     private fun init() {
+        activity = requireActivity() as MainActivity
         localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
 
         viewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
@@ -109,6 +123,7 @@ class ProfileFragment : Fragment(), Navigator {
 
     private fun setClicks() {
         b.clLogout.setOnClickListener {
+            activity.startLoading()
             viewModel.logout(requireContext())
         }
     }
@@ -137,9 +152,11 @@ class ProfileFragment : Fragment(), Navigator {
             } else {
                 openLeagueDialogs()
             }
+            activity.stopLoading()
         })
         viewModel.ldUser.observe(viewLifecycleOwner) {
             setUser(it)
+            activity.stopLoading()
         }
         viewModel.ldLogout.observe(viewLifecycleOwner, EventObserver {
             requireActivity().saveToken(null)
@@ -163,6 +180,7 @@ class ProfileFragment : Fragment(), Navigator {
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            activity.stopLoading()
         })
     }
 
@@ -190,5 +208,11 @@ class ProfileFragment : Fragment(), Navigator {
 
     override fun shouldNavigate(destination: Int, data: Bundle?) {
         findNavController().navigate(destination, data)
+    }
+
+    override fun onRefresh() {
+        makeApiRequest {
+            viewModel.getUser()
+        }
     }
 }

@@ -17,6 +17,7 @@ import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.repo.auth.AuthRepoImpl
 import org.n9ne.h2ohealthy.databinding.FragmentCompleteProfileBinding
+import org.n9ne.h2ohealthy.ui.AuthActivity
 import org.n9ne.h2ohealthy.ui.login.viewModel.CompleteProfileViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
 import org.n9ne.h2ohealthy.util.Saver.saveToken
@@ -32,6 +33,7 @@ class CompleteProfileFragment : Fragment(), Navigator {
     private lateinit var password: String
 
     private lateinit var date: String
+    private lateinit var activity: AuthActivity
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,6 +58,7 @@ class CompleteProfileFragment : Fragment(), Navigator {
     }
 
     private fun init() {
+        activity = requireActivity() as AuthActivity
         val client = (requireActivity().application as App).client
         val repo = AuthRepoImpl(client)
 
@@ -70,6 +73,7 @@ class CompleteProfileFragment : Fragment(), Navigator {
         b.bNext.setOnClickListener {
             b.bNext.isEnabled = false
 
+            activity.startLoading()
             viewModel.completeProfile(
                 name, email, password, b.spActivity.text.toString(), b.spGender.text.toString(),
                 date, b.etWeight.text.toString(), b.etHeight.text.toString(),
@@ -98,9 +102,12 @@ class CompleteProfileFragment : Fragment(), Navigator {
             val data = Bundle().apply {
                 putString("name", name)
             }
-            this.shouldNavigate(R.id.completeProfile_to_loginDone , data)
+            this.shouldNavigate(R.id.completeProfile_to_loginDone, data)
+
+            activity.stopLoading()
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bNext)) {
+            activity.stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
         viewModel.ldShowDate.observe(viewLifecycleOwner, EventObserver {

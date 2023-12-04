@@ -13,6 +13,7 @@ import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.repo.auth.AuthRepoImpl
 import org.n9ne.h2ohealthy.databinding.FragmentLoginBinding
+import org.n9ne.h2ohealthy.ui.AuthActivity
 import org.n9ne.h2ohealthy.ui.login.viewModel.LoginViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
 import org.n9ne.h2ohealthy.util.Saver.saveToken
@@ -23,6 +24,7 @@ class LoginFragment : Fragment(), Navigator {
 
     private lateinit var b: FragmentLoginBinding
     private lateinit var viewModel: LoginViewModel
+    private lateinit var activity: AuthActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +44,7 @@ class LoginFragment : Fragment(), Navigator {
 
 
     private fun init() {
+        activity = requireActivity() as AuthActivity
         val client = (requireActivity().application as App).client
         val repo = AuthRepoImpl(client)
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
@@ -54,6 +57,7 @@ class LoginFragment : Fragment(), Navigator {
         b.bLogin.setOnClickListener {
             b.bLogin.isEnabled = true
 
+            activity.startLoading()
             viewModel.login(
                 b.etEmail.text.toString(),
                 b.etPassword.text.toString(),
@@ -76,6 +80,7 @@ class LoginFragment : Fragment(), Navigator {
         }
         viewModel.ldToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
             requireActivity().saveToken(it)
+            activity.stopLoading()
         })
         viewModel.ldName.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
             val data = Bundle().apply {
@@ -85,6 +90,7 @@ class LoginFragment : Fragment(), Navigator {
         })
         viewModel.ldError.observe(viewLifecycleOwner,
             EventObserver(listOf(b.bLogin)) {
+                activity.stopLoading()
                 Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
             })
     }

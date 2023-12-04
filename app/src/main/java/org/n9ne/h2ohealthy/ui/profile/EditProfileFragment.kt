@@ -23,6 +23,7 @@ import org.n9ne.h2ohealthy.ui.profile.viewModel.EditProfileViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
+import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
 
 
 class EditProfileFragment : Fragment(), Navigator {
@@ -31,6 +32,7 @@ class EditProfileFragment : Fragment(), Navigator {
     private lateinit var viewModel: EditProfileViewModel
     private lateinit var localRepo: ProfileRepoLocalImpl
     private lateinit var date: String
+    private lateinit var activity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -42,8 +44,8 @@ class EditProfileFragment : Fragment(), Navigator {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as MainActivity).showNavigation()
         init()
+        activity.showNavigation()
 
         setupObserver()
         setClicks()
@@ -56,6 +58,8 @@ class EditProfileFragment : Fragment(), Navigator {
     private fun setClicks() {
         b.bSubmit.setOnClickListener {
             b.bSubmit.isEnabled = false
+
+            activity.startLoading()
             makeRequest {
                 viewModel.saveData()
             }
@@ -69,6 +73,7 @@ class EditProfileFragment : Fragment(), Navigator {
     }
 
     private fun init() {
+        activity = requireActivity() as MainActivity
         localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
         viewModel = ViewModelProvider(this)[EditProfileViewModel::class.java]
         b.viewModel = viewModel
@@ -147,6 +152,12 @@ class EditProfileFragment : Fragment(), Navigator {
         request.invoke()
     }
 
+    private fun makeApiRequest(request: () -> Unit) {
+        //TODO change this
+        viewModel.repo = localRepo
+        request.invoke()
+    }
+
     private fun setupSpinners() {
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
             requireContext(), R.layout.view_drop_down, viewModel.activityLevels
@@ -181,9 +192,11 @@ class EditProfileFragment : Fragment(), Navigator {
             date = it.birthDate
         })
         viewModel.ldSubmit.observe(viewLifecycleOwner, EventObserver(listOf(b.bSubmit)) {
+            activity.stopLoading()
             findNavController().navigateUp()
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bSubmit)) {
+            activity.stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
 

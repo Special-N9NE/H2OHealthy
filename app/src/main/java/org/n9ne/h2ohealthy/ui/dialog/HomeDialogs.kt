@@ -89,7 +89,7 @@ fun Activity.activityOptionDialog(
         }
     }
     binding.cvRemove.setOnClickListener {
-        removeListener.onRemove(item)
+        removeListener.onRemove()
         dialog.dismiss()
     }
     return dialog

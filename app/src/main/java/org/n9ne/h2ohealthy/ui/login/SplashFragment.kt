@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.FragmentSplashBinding
+import org.n9ne.h2ohealthy.ui.AuthActivity
 import org.n9ne.h2ohealthy.ui.login.viewModel.SplashViewModel
 import org.n9ne.h2ohealthy.util.Saver.isFirstTime
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
@@ -33,6 +34,8 @@ class SplashFragment : Fragment(), Navigator {
         init()
         setTextColors()
         setClicks()
+
+        (requireActivity() as AuthActivity).stopLoading()
     }
 
     private fun setClicks() {

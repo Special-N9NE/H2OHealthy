@@ -12,9 +12,10 @@ import org.n9ne.h2ohealthy.ui.dialog.leagueSettingDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.MemberAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.LeagueViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
+import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
 
 
-class LeagueFragment : Fragment() {
+class LeagueFragment : Fragment() , RefreshListener{
 
     private lateinit var b: FragmentLeagueBinding
     private lateinit var viewModel: LeagueViewModel
@@ -72,5 +73,9 @@ class LeagueFragment : Fragment() {
         viewModel.ldSettingClick.observe(viewLifecycleOwner, EventObserver {
             openSettingDialog(it)
         })
+    }
+
+    override fun onRefresh() {
+        //TODO
     }
 }

@@ -41,6 +41,10 @@ android {
 }
 
 dependencies {
+    implementation("com.github.SimformSolutionsPvtLtd:SSPullToRefresh:1.5.1")
+
+    implementation("com.airbnb.android:lottie:6.1.0")
+
     implementation("com.patrykandpatrick.vico:core:1.12.0")
     implementation("com.patrykandpatrick.vico:views:1.12.0")
 

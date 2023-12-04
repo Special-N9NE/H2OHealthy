@@ -19,14 +19,16 @@ import org.n9ne.h2ohealthy.util.EventObserver
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
 import org.n9ne.h2ohealthy.util.interfaces.CupEditListener
+import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
 
 
-class CupsFragment : Fragment() {
+class CupsFragment : Fragment(), RefreshListener {
     private lateinit var localRepo: ProfileRepoLocalImpl
 
     private var cups = listOf<Cup>()
     private lateinit var b: FragmentCupsBinding
     private lateinit var viewModel: CupsViewModel
+    private lateinit var activity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -38,9 +40,10 @@ class CupsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as MainActivity).hideNavigation()
         init()
+        activity.hideNavigation()
 
+        activity.startLoading()
         makeRequest {
             viewModel.getCups()
         }
@@ -48,6 +51,7 @@ class CupsFragment : Fragment() {
     }
 
     private fun init() {
+        activity = requireActivity() as MainActivity
         localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
 
         viewModel = ViewModelProvider(this)[CupsViewModel::class.java]
@@ -66,18 +70,28 @@ class CupsFragment : Fragment() {
         request.invoke()
     }
 
+    private fun makeApiRequest(request: () -> Unit) {
+        //TODO pass apiRepo
+        viewModel.repo = localRepo
+        request.invoke()
+    }
+
     private fun setAdapter() {
         b.rvCups.adapter = AddCupAdapter(cups, object : CupEditListener {
             override fun onEdit(cup: Cup, edit: Boolean) {
                 if (edit) {
                     requireActivity().addCupDialog(cup, object : CupClickListener {
                         override fun onClick(item: Cup) {
+
+                            activity.startLoading()
                             makeRequest {
                                 viewModel.updateCup(item)
                             }
                         }
                     }).show()
                 } else {
+
+                    activity.startLoading()
                     makeRequest {
                         viewModel.removeCup(cup)
                     }
@@ -90,6 +104,8 @@ class CupsFragment : Fragment() {
         viewModel.ldShowDialog.observe(viewLifecycleOwner, EventObserver {
             requireActivity().addCupDialog(null, object : CupClickListener {
                 override fun onClick(item: Cup) {
+
+                    activity.startLoading()
                     makeRequest {
                         viewModel.addCup(item)
                     }
@@ -101,15 +117,25 @@ class CupsFragment : Fragment() {
             cups = it
             b.bAdd.isEnabled = true
             setAdapter()
+            activity.stopLoading()
         }
         viewModel.ldAddCup.observe(viewLifecycleOwner, EventObserver {
+            activity.stopLoading()
             Toast.makeText(requireContext(), "Added", Toast.LENGTH_SHORT).show()
         })
         viewModel.ldRemoveCup.observe(viewLifecycleOwner, EventObserver {
+            activity.stopLoading()
             Toast.makeText(requireContext(), "Removed", Toast.LENGTH_SHORT).show()
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
+            activity.stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
+    }
+
+    override fun onRefresh() {
+        makeApiRequest {
+            viewModel.getCups()
+        }
     }
 }

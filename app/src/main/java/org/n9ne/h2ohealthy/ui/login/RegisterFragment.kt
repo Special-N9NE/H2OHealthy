@@ -16,6 +16,7 @@ import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.repo.auth.AuthRepoImpl
 import org.n9ne.h2ohealthy.databinding.FragmentRegisterBinding
+import org.n9ne.h2ohealthy.ui.AuthActivity
 import org.n9ne.h2ohealthy.ui.login.viewModel.RegisterViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
@@ -29,6 +30,8 @@ class RegisterFragment : Fragment(), Navigator {
     private lateinit var name: String
     private lateinit var email: String
     private lateinit var password: String
+
+    private lateinit var activity : AuthActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +54,7 @@ class RegisterFragment : Fragment(), Navigator {
 
 
     private fun init() {
+        activity = requireActivity() as AuthActivity
         val client = (requireActivity().application as App).client
         val repo = AuthRepoImpl(client)
         viewModel = ViewModelProvider(this)[RegisterViewModel::class.java]
@@ -68,6 +72,7 @@ class RegisterFragment : Fragment(), Navigator {
             email = b.etEmail.text.toString()
             password = b.etPassword.text.toString()
 
+            activity.startLoading()
             viewModel.register(name, email, password)
         }
     }
@@ -105,8 +110,11 @@ class RegisterFragment : Fragment(), Navigator {
                 putString("password", password)
             }
             this.shouldNavigate(R.id.register_to_completeProfile, data)
+
+            activity.stopLoading()
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bRegister)) {
+            activity.stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
 

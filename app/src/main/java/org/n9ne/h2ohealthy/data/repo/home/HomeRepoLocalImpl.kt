@@ -3,7 +3,7 @@ package org.n9ne.h2ohealthy.data.repo.home
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.source.local.RoomDao
 import org.n9ne.h2ohealthy.util.Mapper.toActivityList
@@ -12,8 +12,8 @@ import org.n9ne.h2ohealthy.util.RepoCallback
 class HomeRepoLocalImpl(private val dao: RoomDao) : HomeRepo {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getTarget(callback: RepoCallback<Int>) {
-        runBlocking(Dispatchers.IO) {
+    override suspend fun getTarget(callback: RepoCallback<Int>) {
+        withContext(Dispatchers.IO) {
             val users = async { dao.getUser() }
             users.invokeOnCompletion {
                 callback.onSuccessful(users.getCompleted()[0].target.toInt())
@@ -22,8 +22,8 @@ class HomeRepoLocalImpl(private val dao: RoomDao) : HomeRepo {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getProgress(callback: RepoCallback<List<Activity>>) {
-        runBlocking(Dispatchers.IO) {
+    override suspend fun getProgress(callback: RepoCallback<List<Activity>>) {
+        withContext(Dispatchers.IO) {
             val progress = async { dao.getProgress() }
             progress.invokeOnCompletion {
                 val result = progress.getCompleted().toActivityList()
@@ -33,17 +33,13 @@ class HomeRepoLocalImpl(private val dao: RoomDao) : HomeRepo {
         }
     }
 
-    override fun updateWater(id: Long, amount: String, callback: RepoCallback<Boolean>) {
-        runBlocking(Dispatchers.IO) {
-            dao.updateWater(id, amount)
-            callback.onSuccessful(true)
-        }
+    override suspend fun updateWater(id: Long, amount: String, callback: RepoCallback<Boolean>) {
+        dao.updateWater(id, amount)
+        callback.onSuccessful(true)
     }
 
-    override fun removeWater(id: Long, callback: RepoCallback<Boolean>) {
-        runBlocking(Dispatchers.IO) {
-            dao.removeWater(id)
-            callback.onSuccessful(true)
-        }
+    override suspend fun removeWater(id: Long, callback: RepoCallback<Boolean>) {
+        dao.removeWater(id)
+        callback.onSuccessful(true)
     }
 }

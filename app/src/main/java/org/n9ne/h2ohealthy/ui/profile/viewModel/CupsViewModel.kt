@@ -2,6 +2,9 @@ package org.n9ne.h2ohealthy.ui.profile.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepo
 import org.n9ne.h2ohealthy.util.Event
@@ -31,74 +34,84 @@ class CupsViewModel : ViewModel() {
     }
 
     fun getCups() {
-        repo?.getCups(object : RepoCallback<List<Cup>> {
-            override fun onSuccessful(response: List<Cup>) {
-                ldCups.postValue(response)
-            }
 
-            override fun onError(error: String, isNetwork: Boolean) {
-                ldError.postValue(Event(error))
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            repo?.getCups(object : RepoCallback<List<Cup>> {
+                override fun onSuccessful(response: List<Cup>) {
+                    ldCups.postValue(response)
+                }
 
-        })
+                override fun onError(error: String, isNetwork: Boolean) {
+                    ldError.postValue(Event(error))
+                }
+
+            })
+        }
     }
 
     fun addCup(cup: Cup) {
-        repo?.addCup(cup, object : RepoCallback<Long> {
-            override fun onSuccessful(response: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo?.addCup(cup, object : RepoCallback<Long> {
+                override fun onSuccessful(response: Long) {
 
-                val cups = ldCups.value!!.toCollection(ArrayList())
-                cup.id = response
-                cups.add(cup)
+                    val cups = ldCups.value!!.toCollection(ArrayList())
+                    cup.id = response
+                    cups.add(cup)
 
-                ldCups.postValue(cups)
+                    ldCups.postValue(cups)
 
-                ldAddCup.postValue(Event(Unit))
-            }
+                    ldAddCup.postValue(Event(Unit))
+                }
 
-            override fun onError(error: String, isNetwork: Boolean) {
-                ldError.postValue(Event(error))
-            }
+                override fun onError(error: String, isNetwork: Boolean) {
+                    ldError.postValue(Event(error))
+                }
 
-        })
+            })
+        }
     }
 
     fun updateCup(cup: Cup) {
-        repo?.updateCup(cup, object : RepoCallback<Unit> {
-            override fun onSuccessful(response: Unit) {
 
-                val cups = ldCups.value!!.toCollection(ArrayList())
-                cups.forEach {
-                    if (it.id == cup.id) {
-                        it.title = cup.title
-                        it.capacity = cup.capacity
-                        it.color = cup.color
+        viewModelScope.launch(Dispatchers.IO) {
+            repo?.updateCup(cup, object : RepoCallback<Unit> {
+                override fun onSuccessful(response: Unit) {
+
+                    val cups = ldCups.value!!.toCollection(ArrayList())
+                    cups.forEach {
+                        if (it.id == cup.id) {
+                            it.title = cup.title
+                            it.capacity = cup.capacity
+                            it.color = cup.color
+                        }
                     }
+                    ldCups.postValue(cups)
                 }
-                ldCups.postValue(cups)
-            }
 
-            override fun onError(error: String, isNetwork: Boolean) {
-                ldError.postValue(Event(error))
-            }
+                override fun onError(error: String, isNetwork: Boolean) {
+                    ldError.postValue(Event(error))
+                }
 
-        })
+            })
+        }
     }
 
     fun removeCup(cup: Cup) {
-        repo?.removeCup(cup, object : RepoCallback<Unit> {
-            override fun onSuccessful(response: Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo?.removeCup(cup, object : RepoCallback<Unit> {
+                override fun onSuccessful(response: Unit) {
 
-                val cups = ldCups.value!!.toCollection(ArrayList())
-                cups.removeIf { it.id == cup.id }
+                    val cups = ldCups.value!!.toCollection(ArrayList())
+                    cups.removeIf { it.id == cup.id }
 
-                ldCups.postValue(cups)
-                ldRemoveCup.postValue(Event(Unit))
-            }
+                    ldCups.postValue(cups)
+                    ldRemoveCup.postValue(Event(Unit))
+                }
 
-            override fun onError(error: String, isNetwork: Boolean) {
-                ldError.postValue(Event(error))
-            }
-        })
+                override fun onError(error: String, isNetwork: Boolean) {
+                    ldError.postValue(Event(error))
+                }
+            })
+        }
     }
 }

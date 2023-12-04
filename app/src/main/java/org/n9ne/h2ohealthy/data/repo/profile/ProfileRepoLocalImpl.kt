@@ -15,7 +15,7 @@ import org.n9ne.h2ohealthy.util.RepoCallback
 class ProfileRepoLocalImpl(private val dao: RoomDao) : ProfileRepo {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getUser(callback: RepoCallback<User>) {
+    override suspend fun getUser(callback: RepoCallback<User>) {
         runBlocking(Dispatchers.IO) {
             val users = async { dao.getUser() }
             users.invokeOnCompletion {
@@ -26,7 +26,7 @@ class ProfileRepoLocalImpl(private val dao: RoomDao) : ProfileRepo {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getCups(callback: RepoCallback<List<Cup>>) {
+    override suspend fun getCups(callback: RepoCallback<List<Cup>>) {
         runBlocking(Dispatchers.IO) {
             val cups = async { dao.getCups() }
             cups.invokeOnCompletion {
@@ -36,24 +36,18 @@ class ProfileRepoLocalImpl(private val dao: RoomDao) : ProfileRepo {
         }
     }
 
-    override fun addCup(cup: Cup, callback: RepoCallback<Long>) {
-        runBlocking(Dispatchers.IO) {
-            val id = dao.insertCup(cup.toGlass())
-            callback.onSuccessful(id)
-        }
+    override suspend fun addCup(cup: Cup, callback: RepoCallback<Long>) {
+        val id = dao.insertCup(cup.toGlass())
+        callback.onSuccessful(id)
     }
 
-    override fun updateCup(cup: Cup, callback: RepoCallback<Unit>) {
-        runBlocking(Dispatchers.IO) {
-            dao.updateCup(cup.id!!, cup.title, cup.capacity.toString(), cup.color)
-            callback.onSuccessful(Unit)
-        }
+    override suspend fun updateCup(cup: Cup, callback: RepoCallback<Unit>) {
+        dao.updateCup(cup.id!!, cup.title, cup.capacity.toString(), cup.color)
+        callback.onSuccessful(Unit)
     }
 
-    override fun removeCup(cup: Cup, callback: RepoCallback<Unit>) {
-        runBlocking(Dispatchers.IO) {
-            dao.removeCup(cup.id!!)
-            callback.onSuccessful(Unit)
-        }
+    override suspend fun removeCup(cup: Cup, callback: RepoCallback<Unit>) {
+        dao.removeCup(cup.id!!)
+        callback.onSuccessful(Unit)
     }
 }

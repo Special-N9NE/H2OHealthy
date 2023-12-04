@@ -27,15 +27,17 @@ class EditProfileViewModel : ViewModel() {
 
     fun getUser() {
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.getUser(object : RepoCallback<User> {
-                override fun onSuccessful(response: User) {
-                    ldUser.postValue(Event(response))
-                }
+            viewModelScope.launch(Dispatchers.IO) {
+                repo?.getUser(object : RepoCallback<User> {
+                    override fun onSuccessful(response: User) {
+                        ldUser.postValue(Event(response))
+                    }
 
-                override fun onError(error: String, isNetwork: Boolean) {
-                    ldError.postValue(Event(error))
-                }
-            })
+                    override fun onError(error: String, isNetwork: Boolean) {
+                        ldError.postValue(Event(error))
+                    }
+                })
+            }
         }
     }
 

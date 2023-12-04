@@ -12,15 +12,13 @@ import org.n9ne.h2ohealthy.util.Mapper.toWater
 import org.n9ne.h2ohealthy.util.RepoCallback
 
 class MainRepoLocalImpl(private val dao: RoomDao) : MainRepo {
-    override fun insertWater(water: Activity, callback: RepoCallback<Boolean>) {
-        runBlocking(Dispatchers.IO) {
-
-            dao.insertWater(water.toWater())
-            callback.onSuccessful(true)
-        }
+    override suspend fun insertWater(water: Activity, callback: RepoCallback<Boolean>) {
+        dao.insertWater(water.toWater())
+        callback.onSuccessful(true)
     }
+
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getCups(callback: RepoCallback<List<Cup>>) {
+    override suspend fun getCups(callback: RepoCallback<List<Cup>>) {
         runBlocking(Dispatchers.IO) {
             val cups = async { dao.getCups() }
             cups.invokeOnCompletion {

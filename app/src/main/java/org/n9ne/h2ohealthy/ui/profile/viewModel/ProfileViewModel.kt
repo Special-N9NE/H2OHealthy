@@ -31,19 +31,21 @@ class ProfileViewModel : ViewModel() {
 
 
     fun getUser() {
-        repo?.getUser(object : RepoCallback<User> {
-            override fun onSuccessful(response: User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo?.getUser(object : RepoCallback<User> {
+                override fun onSuccessful(response: User) {
 
-                val age = DateUtils.calculateAge(response.birthDate)
-                response.age = age.toString()
+                    val age = DateUtils.calculateAge(response.birthDate)
+                    response.age = age.toString()
 
-                ldUser.postValue(response)
-            }
+                    ldUser.postValue(response)
+                }
 
-            override fun onError(error: String, isNetwork: Boolean) {
-                ldError.postValue(Event(error))
-            }
-        })
+                override fun onError(error: String, isNetwork: Boolean) {
+                    ldError.postValue(Event(error))
+                }
+            })
+        }
     }
 
 

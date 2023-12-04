@@ -5,9 +5,9 @@ import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.util.RepoCallback
 
 interface ProfileRepo {
-    fun getUser(callback: RepoCallback<User>)
-    fun getCups(callback: RepoCallback<List<Cup>>)
-    fun addCup(cup: Cup, callback: RepoCallback<Long>)
-    fun updateCup(cup: Cup, callback: RepoCallback<Unit>)
-    fun removeCup(cup: Cup, callback: RepoCallback<Unit>)
+    suspend fun getUser(callback: RepoCallback<User>)
+    suspend fun getCups(callback: RepoCallback<List<Cup>>)
+    suspend fun addCup(cup: Cup, callback: RepoCallback<Long>)
+    suspend fun updateCup(cup: Cup, callback: RepoCallback<Unit>)
+    suspend fun removeCup(cup: Cup, callback: RepoCallback<Unit>)
 }

@@ -1,5 +1,6 @@
 package org.n9ne.h2ohealthy.data.source.network
 
+import org.n9ne.h2ohealthy.data.source.objects.GetCups
 import org.n9ne.h2ohealthy.data.source.objects.GetUser
 import org.n9ne.h2ohealthy.data.source.objects.Login
 import org.n9ne.h2ohealthy.data.source.objects.Message
@@ -29,5 +30,12 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Field("getUser") data: String = ""
     ): Call<GetUser>
+
+    @FormUrlEncoded
+    @POST("glass.php")
+    fun getCups(
+        @Header("Authorization") token: String,
+        @Field("getGlass") data: String = ""
+    ): Call<GetCups>
 
 }

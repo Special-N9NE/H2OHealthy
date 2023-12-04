@@ -29,15 +29,15 @@ class MainViewModel : ViewModel() {
         val water = Activity(id, 1L, amount, date, time)
 
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.insertWater(water, object : RepoCallback<Boolean> {
-                override fun onSuccessful(response: Boolean) {
-                    ldInsertWater.postValue(Event(Unit))
-                }
-
-                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
-                    ldError.postValue(Event(error))
-                }
-            })
+//            repo?.insertWater(water, object : RepoCallback<Boolean> {
+//                override fun onSuccessful(response: Boolean) {
+//                    ldInsertWater.postValue(Event(Unit))
+//                }
+//
+//                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
+//                    ldError.postValue(Event(error))
+//                }
+//            })
         }
     }
 

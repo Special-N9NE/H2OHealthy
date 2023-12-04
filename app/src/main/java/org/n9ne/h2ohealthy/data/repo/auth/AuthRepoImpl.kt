@@ -1,6 +1,7 @@
 package org.n9ne.h2ohealthy.data.repo.auth
 
 import com.google.gson.Gson
+import org.n9ne.h2ohealthy.data.model.CompleteProfileResult
 import org.n9ne.h2ohealthy.data.model.LoginResult
 import org.n9ne.h2ohealthy.data.source.network.Client
 import org.n9ne.h2ohealthy.data.source.objects.Auth
@@ -103,7 +104,7 @@ class AuthRepoImpl(private val client: Client) : AuthRepo {
 
     override suspend fun completeProfile(
         data: Auth.CompleteProfile,
-        callback: RepoCallback<String>
+        callback: RepoCallback<CompleteProfileResult>
     ) {
         val json = Gson().toJson(data)
         client.getApiService().completeProfile(json)
@@ -115,7 +116,12 @@ class AuthRepoImpl(private val client: Client) : AuthRepo {
                         val result = response.body()!!
 
                         if (result.status) {
-                            callback.onSuccessful(result.message)
+                            callback.onSuccessful(
+                                CompleteProfileResult(
+                                    result.id!!,
+                                    result.message
+                                )
+                            )
                         } else {
                             callback.onError(result.message)
                         }

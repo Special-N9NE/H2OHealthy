@@ -45,10 +45,8 @@ class ProfileViewModel : ViewModel() {
                 }
 
                 override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
-                    if (isToken)
-                        ldToken.postValue(Event(Unit))
-                    else
-                        ldError.postValue(Event(error))
+                    if (isToken) ldToken.postValue(Event(Unit))
+                    else ldError.postValue(Event(error))
                 }
             })
         }
@@ -57,11 +55,15 @@ class ProfileViewModel : ViewModel() {
     private fun syncUser(user: User) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                db?.removeDatabase()
-                val data = user.toUserEntity()
-                db?.roomDao()?.insertUser(data)
+                try {
+                    db?.roomDao()!!.removeUser()
+                    val data = user.toUserEntity()
+                    db?.roomDao()?.insertUser(data)
+                    ldUser.postValue(user)
 
-                ldUser.postValue(user)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
     }
@@ -88,9 +90,9 @@ class ProfileViewModel : ViewModel() {
         ldContactClick.postValue(Event("abigdeli42@gmail.com"))
     }
 
-    fun logout(context: Context) {
+    fun logout() {
         viewModelScope.launch(Dispatchers.IO) {
-            AppDatabase.getDatabase(context).removeDatabase()
+            db?.removeDatabase()
             ldLogout.postValue(Event(Unit))
         }
     }

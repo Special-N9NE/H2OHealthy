@@ -130,7 +130,7 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
     private fun setClicks() {
         b.clLogout.setOnClickListener {
             activity.startLoading()
-            viewModel.logout(requireContext())
+            viewModel.logout()
         }
     }
 

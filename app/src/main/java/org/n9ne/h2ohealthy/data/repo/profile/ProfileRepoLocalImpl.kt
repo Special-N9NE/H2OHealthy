@@ -8,7 +8,6 @@ import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.source.local.RoomDao
 import org.n9ne.h2ohealthy.util.Mapper.toCupList
-import org.n9ne.h2ohealthy.util.Mapper.toGlass
 import org.n9ne.h2ohealthy.util.Mapper.toUser
 import org.n9ne.h2ohealthy.util.RepoCallback
 
@@ -24,13 +23,8 @@ class ProfileRepoLocalImpl(private val dao: RoomDao) : ProfileRepo {
             }
         }
     }
-
-    override suspend fun updateUser(user: User, callback: RepoCallback<Unit>) {
-
-    }
-
     @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun getCups(callback: RepoCallback<List<Cup>>) {
+    override suspend fun getCups(token: String?, callback: RepoCallback<List<Cup>>) {
         runBlocking(Dispatchers.IO) {
             val cups = async { dao.getCups() }
             cups.invokeOnCompletion {
@@ -38,11 +32,6 @@ class ProfileRepoLocalImpl(private val dao: RoomDao) : ProfileRepo {
                 callback.onSuccessful(result)
             }
         }
-    }
-
-    override suspend fun addCup(cup: Cup, callback: RepoCallback<Long>) {
-        val id = dao.insertCup(cup.toGlass())
-        callback.onSuccessful(id)
     }
 
     override suspend fun updateCup(cup: Cup, callback: RepoCallback<Unit>) {

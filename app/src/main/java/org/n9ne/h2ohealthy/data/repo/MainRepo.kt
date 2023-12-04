@@ -5,6 +5,6 @@ import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.util.RepoCallback
 
 interface MainRepo {
-    suspend fun insertWater(water: Activity, callback: RepoCallback<Boolean>)
+    suspend fun insertWater(water: Activity, callback: RepoCallback<Boolean>){}
     suspend fun getCups(callback: RepoCallback<List<Cup>>)
 }

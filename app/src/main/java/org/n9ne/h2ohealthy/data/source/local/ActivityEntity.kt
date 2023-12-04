@@ -6,8 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class ActivityEntity(
+    @ColumnInfo @PrimaryKey val id: Long,
     @ColumnInfo val type: String
-){
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0L
-}
+)

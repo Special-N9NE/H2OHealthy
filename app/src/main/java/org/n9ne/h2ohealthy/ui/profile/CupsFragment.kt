@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.data.model.Cup
+import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoApiImpl
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoLocalImpl
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentCupsBinding
@@ -16,6 +18,7 @@ import org.n9ne.h2ohealthy.ui.dialog.addCupDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.AddCupAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.CupsViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
+import org.n9ne.h2ohealthy.util.Saver.getToken
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
 import org.n9ne.h2ohealthy.util.interfaces.CupEditListener
@@ -24,6 +27,7 @@ import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
 
 class CupsFragment : Fragment(), RefreshListener {
     private lateinit var localRepo: ProfileRepoLocalImpl
+    private lateinit var apiRepo: ProfileRepoApiImpl
 
     private var cups = listOf<Cup>()
     private lateinit var b: FragmentCupsBinding
@@ -45,13 +49,16 @@ class CupsFragment : Fragment(), RefreshListener {
 
         activity.startLoading()
         makeRequest {
-            viewModel.getCups()
+            viewModel.getCups(requireActivity().getToken())
         }
         setupObserver()
     }
 
     private fun init() {
         activity = requireActivity() as MainActivity
+
+        val client = (requireActivity().application as App).client
+        apiRepo = ProfileRepoApiImpl(client)
         localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
 
         viewModel = ViewModelProvider(this)[CupsViewModel::class.java]
@@ -61,8 +68,7 @@ class CupsFragment : Fragment(), RefreshListener {
 
     private fun makeRequest(request: () -> Unit) {
         val repo = if (requireActivity().isOnline()) {
-            //TODO pass apiRepo
-            localRepo
+            apiRepo
         } else {
             localRepo
         }
@@ -71,8 +77,7 @@ class CupsFragment : Fragment(), RefreshListener {
     }
 
     private fun makeApiRequest(request: () -> Unit) {
-        //TODO pass apiRepo
-        viewModel.repo = localRepo
+        viewModel.repo = apiRepo
         request.invoke()
     }
 
@@ -135,7 +140,7 @@ class CupsFragment : Fragment(), RefreshListener {
 
     override fun onRefresh() {
         makeApiRequest {
-            viewModel.getCups()
+            viewModel.getCups(requireActivity().getToken())
         }
     }
 }

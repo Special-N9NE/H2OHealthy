@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class UserEntity(
+    @ColumnInfo @PrimaryKey val id: Long,
     @ColumnInfo val idActivity: Long,
     @ColumnInfo val idLeague: Long,
     @ColumnInfo val email: String,
@@ -19,7 +20,4 @@ data class UserEntity(
     @ColumnInfo val score: Int,
     @ColumnInfo val target: String,
     @ColumnInfo val profile: String
-){
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0L
-}
+)

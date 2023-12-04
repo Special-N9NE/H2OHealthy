@@ -90,7 +90,7 @@ fun Activity.addCupDialog(
 
 
         //TODO change id user
-        val result = Cup(cup?.id, 1L, name, amount.toDouble().roundToInt(), color)
+        val result = Cup(null, 1L, name, amount.toDouble().roundToInt(), color)
         listener.onClick(result)
         dialog.dismiss()
     }

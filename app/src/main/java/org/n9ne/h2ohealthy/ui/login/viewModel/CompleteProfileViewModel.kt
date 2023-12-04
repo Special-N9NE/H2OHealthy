@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.n9ne.h2ohealthy.data.model.ActivityType
+import org.n9ne.h2ohealthy.data.model.CompleteProfileResult
 import org.n9ne.h2ohealthy.data.repo.auth.AuthRepo
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.data.source.local.UserEntity
@@ -67,11 +68,11 @@ class CompleteProfileViewModel : ViewModel() {
             return
 
         runBlocking {
-            repo?.completeProfile(data, object : RepoCallback<String> {
-                override fun onSuccessful(response: String) {
+            repo?.completeProfile(data, object : RepoCallback<CompleteProfileResult> {
+                override fun onSuccessful(response: CompleteProfileResult) {
 
-                    initDatabase(context, data)
-                    ldToken.postValue(Event(response))
+                    initDatabase(context, data, response.id)
+                    ldToken.postValue(Event(response.token))
                 }
 
                 override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
@@ -102,13 +103,13 @@ class CompleteProfileViewModel : ViewModel() {
         return true
     }
 
-    private fun initDatabase(context: Context, data: Auth.CompleteProfile) {
+    private fun initDatabase(context: Context, data: Auth.CompleteProfile, id: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 AppDatabase.getDatabase(context).removeDatabase()
 
                 val user = UserEntity(
-                    data.idActivity.toLong(), data.idLeague.toLong(),
+                    id.toLong(), data.idActivity.toLong(), data.idLeague.toLong(),
                     data.email, data.password,
                     data.date, data.name,
                     data.birthdate, data.weight,

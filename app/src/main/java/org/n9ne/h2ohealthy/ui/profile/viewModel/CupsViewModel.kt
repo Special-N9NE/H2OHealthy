@@ -5,14 +5,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepo
+import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.util.Event
+import org.n9ne.h2ohealthy.util.Mapper.toGlass
 import org.n9ne.h2ohealthy.util.RepoCallback
 
 class CupsViewModel : ViewModel() {
 
     var repo: ProfileRepo? = null
+    var db: AppDatabase? = null
 
     val ldCups = MutableLiveData<List<Cup>>()
 
@@ -33,12 +37,13 @@ class CupsViewModel : ViewModel() {
         }
     }
 
-    fun getCups() {
+    fun getCups(token: String?) {
 
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.getCups(object : RepoCallback<List<Cup>> {
+            repo?.getCups(token, object : RepoCallback<List<Cup>> {
                 override fun onSuccessful(response: List<Cup>) {
-                    ldCups.postValue(response)
+
+                    syncCups(response)
                 }
 
                 override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
@@ -46,6 +51,24 @@ class CupsViewModel : ViewModel() {
                 }
 
             })
+        }
+    }
+
+    private fun syncCups(cups: List<Cup>) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    db?.roomDao()?.removeCups()
+
+                    cups.forEach {
+                        db?.roomDao()!!.insertCup(it.toGlass())
+                    }
+
+                    ldCups.postValue(cups)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 

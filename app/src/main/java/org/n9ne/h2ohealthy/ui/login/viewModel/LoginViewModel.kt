@@ -9,12 +9,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.n9ne.h2ohealthy.R
-import org.n9ne.h2ohealthy.data.model.ActivityType
 import org.n9ne.h2ohealthy.data.model.LoginResult
 import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.repo.auth.AuthRepo
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
-import org.n9ne.h2ohealthy.data.source.local.UserEntity
 import org.n9ne.h2ohealthy.util.Event
 import org.n9ne.h2ohealthy.util.Mapper.toUserEntity
 import org.n9ne.h2ohealthy.util.RepoCallback

@@ -7,6 +7,7 @@ import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.source.local.GlassEntity
 import org.n9ne.h2ohealthy.data.source.local.UserEntity
 import org.n9ne.h2ohealthy.data.source.local.WaterEntity
+import org.n9ne.h2ohealthy.data.source.objects.GetCups
 import org.n9ne.h2ohealthy.data.source.objects.GetUser
 
 object Mapper {
@@ -19,7 +20,7 @@ object Mapper {
     }
 
     fun Activity.toWater(): WaterEntity {
-        return WaterEntity(idUser, date, amount, time)
+        return WaterEntity(id, idUser, date, amount, time)
     }
 
     fun UserEntity.toUser(): User {
@@ -57,7 +58,7 @@ object Mapper {
         val gender = if (this.gender == "Male") 1 else 0
 
         return UserEntity(
-            idActivity.toLong(), this.idLeague,
+            this.id, idActivity.toLong(), this.idLeague,
             this.email, this.password,
             this.joinDate, this.name,
             this.birthDate, this.weight,
@@ -91,6 +92,23 @@ object Mapper {
         )
     }
 
+    fun GetCups.toCups(): List<Cup> {
+        val cups = this.data!!
+        val result = arrayListOf<Cup>()
+        cups.forEach {
+            result.add(
+                Cup(
+                    it.id.toLong(),
+                    it.idUser.toLong(),
+                    it.name,
+                    it.capacity.toInt(),
+                    it.color
+                )
+            )
+        }
+        return result
+    }
+
     fun List<GlassEntity>.toCupList(): ArrayList<Cup> {
         val result = arrayListOf<Cup>()
         this.forEach {
@@ -100,7 +118,7 @@ object Mapper {
     }
 
     fun Cup.toGlass(): GlassEntity {
-        return GlassEntity(idUser, title, capacity.toString(), color)
+        return GlassEntity(id!!, idUser, title, capacity.toString(), color)
     }
 
     fun Double.toLiter(): Double {

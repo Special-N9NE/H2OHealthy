@@ -10,9 +10,11 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.simform.refresh.SSPullToRefreshLayout
+import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.repo.MainRepo
+import org.n9ne.h2ohealthy.data.repo.MainRepoApiImpl
 import org.n9ne.h2ohealthy.data.repo.MainRepoLocalImpl
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.ActivityMainBinding
@@ -21,6 +23,7 @@ import org.n9ne.h2ohealthy.ui.dialog.cupDialog
 import org.n9ne.h2ohealthy.ui.home.adpter.CupsAdapter
 import org.n9ne.h2ohealthy.util.EventObserver
 import org.n9ne.h2ohealthy.util.Mapper.toLiter
+import org.n9ne.h2ohealthy.util.Saver.getToken
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
 import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
@@ -30,6 +33,7 @@ import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
 class MainActivity : AppCompatActivity() {
 
     private lateinit var localRepo: MainRepo
+    private lateinit var apiRepo: MainRepo
 
     private var cups = listOf<Cup>()
     private lateinit var b: ActivityMainBinding
@@ -47,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         setObserver()
 
         makeRequest {
-            viewModel.getCups()
+            viewModel.getCups(getToken())
         }
 
         b.ssPullRefresh.setRefreshing(true)
@@ -90,6 +94,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        apiRepo = MainRepoApiImpl((application as App).client)
         localRepo = MainRepoLocalImpl(AppDatabase.getDatabase(this).roomDao())
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         val navHostFragment =
@@ -111,8 +116,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun makeRequest(request: () -> Unit) {
         val repo = if (isOnline()) {
-            //TODO pass apiRepo
-            localRepo
+            apiRepo
         } else {
             localRepo
         }
@@ -143,7 +147,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigationAddClick() {
         makeRequest {
-            viewModel.getCups()
+            viewModel.getCups(getToken())
         }
         val doneListener = object : AddWaterListener {
             override fun onAdd(amount: String) {

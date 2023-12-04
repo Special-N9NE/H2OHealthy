@@ -11,7 +11,7 @@ import org.n9ne.h2ohealthy.util.RepoCallback
 
 class MainRepoLocalImpl(private val dao: RoomDao) : MainRepo {
     @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun getCups(callback: RepoCallback<List<Cup>>) {
+    override suspend fun getCups(token: String?, callback: RepoCallback<List<Cup>>) {
         runBlocking(Dispatchers.IO) {
             val cups = async { dao.getCups() }
             cups.invokeOnCompletion {

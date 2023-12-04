@@ -41,10 +41,10 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun getCups() {
+    fun getCups(token: String?) {
 
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.getCups(object : RepoCallback<List<Cup>> {
+            repo?.getCups(token, object : RepoCallback<List<Cup>> {
                 override fun onSuccessful(response: List<Cup>) {
                     ldCups.postValue(response)
                 }

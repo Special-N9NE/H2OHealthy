@@ -72,16 +72,16 @@ class CupsViewModel : ViewModel() {
         }
     }
 
-    fun addCup(cup: Cup) {
+    fun addCup(cup: Cup, token: String?) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.addCup(cup, object : RepoCallback<Long> {
+            repo?.addCup(cup, token, object : RepoCallback<Long> {
                 override fun onSuccessful(response: Long) {
 
                     val cups = ldCups.value!!.toCollection(ArrayList())
                     cup.id = response
                     cups.add(cup)
 
-                    ldCups.postValue(cups)
+                    syncCups(cups)
 
                     ldAddCup.postValue(Event(Unit))
                 }

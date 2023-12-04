@@ -7,7 +7,7 @@ import org.n9ne.h2ohealthy.util.RepoCallback
 interface ProfileRepo {
     suspend fun getUser(token: String? = null, callback: RepoCallback<User>)
     suspend fun getCups(token: String? = null, callback: RepoCallback<List<Cup>>)
-    suspend fun addCup(cup: Cup, callback: RepoCallback<Long>) {}
+    suspend fun addCup(cup: Cup, token: String? , callback: RepoCallback<Long>) {}
     suspend fun updateCup(cup: Cup, callback: RepoCallback<Unit>)
     suspend fun removeCup(cup: Cup, callback: RepoCallback<Unit>)
 }

@@ -62,6 +62,8 @@ class CupsFragment : Fragment(), RefreshListener {
         localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
 
         viewModel = ViewModelProvider(this)[CupsViewModel::class.java]
+        viewModel.db = AppDatabase.getDatabase(requireContext())
+
         b.viewModel = viewModel
 
     }
@@ -111,8 +113,8 @@ class CupsFragment : Fragment(), RefreshListener {
                 override fun onClick(item: Cup) {
 
                     activity.startLoading()
-                    makeRequest {
-                        viewModel.addCup(item)
+                    makeApiRequest {
+                        viewModel.addCup(item, requireActivity().getToken())
                     }
                 }
             }).show()

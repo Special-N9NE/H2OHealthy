@@ -126,7 +126,7 @@ class CupsViewModel : ViewModel() {
                     val cups = ldCups.value!!.toCollection(ArrayList())
                     cups.removeIf { it.id == cup.id }
 
-                    ldCups.postValue(cups)
+                    syncCups(cups)
                     ldRemoveCup.postValue(Event(Unit))
                 }
 

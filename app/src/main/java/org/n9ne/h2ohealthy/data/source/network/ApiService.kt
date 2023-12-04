@@ -50,4 +50,9 @@ interface ApiService {
     fun updateCup(
         @Field("update") data: String
     ): Call<Message>
+    @FormUrlEncoded
+    @POST("glass.php")
+    fun removeCup(
+        @Field("deleteGlass") data: String
+    ): Call<Message>
 }

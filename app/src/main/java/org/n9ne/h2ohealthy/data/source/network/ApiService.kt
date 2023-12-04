@@ -45,5 +45,9 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Field("insertGlass") data: String
     ): Call<Message>
-
+    @FormUrlEncoded
+    @POST("glass.php")
+    fun updateCup(
+        @Field("update") data: String
+    ): Call<Message>
 }

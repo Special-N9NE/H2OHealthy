@@ -8,6 +8,6 @@ interface ProfileRepo {
     suspend fun getUser(token: String? = null, callback: RepoCallback<User>)
     suspend fun getCups(token: String? = null, callback: RepoCallback<List<Cup>>)
     suspend fun addCup(cup: Cup, token: String? , callback: RepoCallback<Long>) {}
-    suspend fun updateCup(cup: Cup, callback: RepoCallback<Unit>)
-    suspend fun removeCup(cup: Cup, callback: RepoCallback<Unit>)
+    suspend fun updateCup(cup: Cup, callback: RepoCallback<String>){}
+    suspend fun removeCup(cup: Cup, callback: RepoCallback<String>){}
 }

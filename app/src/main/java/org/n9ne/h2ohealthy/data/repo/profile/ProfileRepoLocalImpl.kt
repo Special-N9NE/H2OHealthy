@@ -23,6 +23,7 @@ class ProfileRepoLocalImpl(private val dao: RoomDao) : ProfileRepo {
             }
         }
     }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun getCups(token: String?, callback: RepoCallback<List<Cup>>) {
         runBlocking(Dispatchers.IO) {
@@ -34,13 +35,4 @@ class ProfileRepoLocalImpl(private val dao: RoomDao) : ProfileRepo {
         }
     }
 
-    override suspend fun updateCup(cup: Cup, callback: RepoCallback<Unit>) {
-        dao.updateCup(cup.id!!, cup.title, cup.capacity.toString(), cup.color)
-        callback.onSuccessful(Unit)
-    }
-
-    override suspend fun removeCup(cup: Cup, callback: RepoCallback<Unit>) {
-        dao.removeCup(cup.id!!)
-        callback.onSuccessful(Unit)
-    }
 }

@@ -89,8 +89,7 @@ fun Activity.addCupDialog(
             binding.cvAmount.strokeColor = Color.TRANSPARENT
 
 
-        //TODO change id user
-        val result = Cup(null, 1L, name, amount.toDouble().roundToInt(), color)
+        val result = Cup(cup?.id, null, name, amount.toDouble().roundToInt(), color)
         listener.onClick(result)
         dialog.dismiss()
     }

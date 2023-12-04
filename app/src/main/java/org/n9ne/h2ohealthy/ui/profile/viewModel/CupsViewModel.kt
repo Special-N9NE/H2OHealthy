@@ -95,10 +95,9 @@ class CupsViewModel : ViewModel() {
     }
 
     fun updateCup(cup: Cup) {
-
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.updateCup(cup, object : RepoCallback<Unit> {
-                override fun onSuccessful(response: Unit) {
+            repo?.updateCup(cup, object : RepoCallback<String> {
+                override fun onSuccessful(response: String) {
 
                     val cups = ldCups.value!!.toCollection(ArrayList())
                     cups.forEach {
@@ -108,7 +107,7 @@ class CupsViewModel : ViewModel() {
                             it.color = cup.color
                         }
                     }
-                    ldCups.postValue(cups)
+                    syncCups(cups)
                 }
 
                 override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
@@ -121,8 +120,8 @@ class CupsViewModel : ViewModel() {
 
     fun removeCup(cup: Cup) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.removeCup(cup, object : RepoCallback<Unit> {
-                override fun onSuccessful(response: Unit) {
+            repo?.removeCup(cup, object : RepoCallback<String> {
+                override fun onSuccessful(response: String) {
 
                     val cups = ldCups.value!!.toCollection(ArrayList())
                     cups.removeIf { it.id == cup.id }

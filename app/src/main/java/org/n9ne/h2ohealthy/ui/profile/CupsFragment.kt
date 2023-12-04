@@ -91,7 +91,7 @@ class CupsFragment : Fragment(), RefreshListener {
                         override fun onClick(item: Cup) {
 
                             activity.startLoading()
-                            makeRequest {
+                            makeApiRequest {
                                 viewModel.updateCup(item)
                             }
                         }
@@ -99,7 +99,7 @@ class CupsFragment : Fragment(), RefreshListener {
                 } else {
 
                     activity.startLoading()
-                    makeRequest {
+                    makeApiRequest {
                         viewModel.removeCup(cup)
                     }
                 }

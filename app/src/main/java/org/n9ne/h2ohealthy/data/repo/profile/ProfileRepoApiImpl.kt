@@ -4,11 +4,11 @@ import com.google.gson.Gson
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.source.network.Client
-import org.n9ne.h2ohealthy.data.source.objects.Auth
 import org.n9ne.h2ohealthy.data.source.objects.GetCups
 import org.n9ne.h2ohealthy.data.source.objects.GetUser
 import org.n9ne.h2ohealthy.data.source.objects.InsertCup
 import org.n9ne.h2ohealthy.data.source.objects.Message
+import org.n9ne.h2ohealthy.data.source.objects.UpdateCup
 import org.n9ne.h2ohealthy.util.Mapper.toCups
 import org.n9ne.h2ohealthy.util.Mapper.toUser
 import org.n9ne.h2ohealthy.util.Messages
@@ -134,9 +134,52 @@ class ProfileRepoApiImpl(private val client: Client) : ProfileRepo {
             })
     }
 
-    override suspend fun updateCup(cup: Cup, callback: RepoCallback<Unit>) {
+    override suspend fun updateCup(cup: Cup, callback: RepoCallback<String>) {
+        val json = Gson().toJson(
+            UpdateCup(
+                cup.id.toString(),
+                cup.title,
+                cup.capacity.toString(),
+                cup.color
+            )
+        )
+        client.getApiService().updateCup(json)
+            .enqueue(object : Callback<Message> {
+                override fun onResponse(
+                    call: Call<Message>, response: Response<Message>
+                ) {
+                    if (response.isSuccessful) {
+                        val result = response.body()!!
+
+                        if (result.status) {
+                            callback.onSuccessful(result.message)
+                        } else {
+                            val message = result.message
+                            if (message == "-1")
+                                callback.onError(message, isToken = true)
+                            else
+                                callback.onError(message)
+                        }
+
+                    } else {
+                        val result = response.code().toString()
+                        callback.onError(result)
+                    }
+                }
+
+                override fun onFailure(call: Call<Message>, t: Throwable) {
+
+                    if (t.message?.contains(Messages.NO_INTERNET) == true) {
+                        val result = Messages.errorNetwork
+                        callback.onError(result, true)
+                    } else {
+                        val result = t.message.toString()
+                        callback.onError(result)
+                    }
+                }
+            })
     }
 
-    override suspend fun removeCup(cup: Cup, callback: RepoCallback<Unit>) {
+    override suspend fun removeCup(cup: Cup, callback: RepoCallback<String>) {
     }
 }

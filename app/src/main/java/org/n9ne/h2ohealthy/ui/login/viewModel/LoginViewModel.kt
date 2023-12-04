@@ -16,6 +16,7 @@ import org.n9ne.h2ohealthy.data.repo.auth.AuthRepo
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.data.source.local.UserEntity
 import org.n9ne.h2ohealthy.util.Event
+import org.n9ne.h2ohealthy.util.Mapper.toUserEntity
 import org.n9ne.h2ohealthy.util.RepoCallback
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
@@ -49,7 +50,7 @@ class LoginViewModel : ViewModel() {
                     ldName.postValue(Event(response.user.name))
                 }
 
-                override fun onError(error: String, isNetwork: Boolean) {
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
                     ldError.postValue(Event(error))
                 }
             })
@@ -82,22 +83,7 @@ class LoginViewModel : ViewModel() {
             withContext(Dispatchers.IO) {
                 AppDatabase.getDatabase(context).removeDatabase()
 
-                var idActivity = 0
-                ActivityType.entries.forEachIndexed { index, it ->
-                    if (it == data.activityType)
-                        idActivity = index
-                }
-
-                val gender = if (data.gender == "Male") 1 else 0
-
-                val user = UserEntity(
-                    idActivity.toLong(), data.idLeague,
-                    data.email, data.password,
-                    data.joinDate, data.name,
-                    data.birthDate, data.weight,
-                    data.height, gender,
-                    data.score, data.target, data.profile
-                )
+                val user = data.toUserEntity()
                 AppDatabase.getDatabase(context).roomDao().insertUser(user)
             }
         }

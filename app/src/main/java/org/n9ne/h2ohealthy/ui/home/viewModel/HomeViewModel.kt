@@ -33,7 +33,7 @@ class HomeViewModel : ViewModel() {
                     ldTarget.postValue(response)
                 }
 
-                override fun onError(error: String, isNetwork: Boolean) {
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
                     ldError.postValue(Event(error))
                 }
             })
@@ -59,7 +59,7 @@ class HomeViewModel : ViewModel() {
                     ldActivities.postValue(Utils.calculateActivities(response))
                 }
 
-                override fun onError(error: String, isNetwork: Boolean) {
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
                     ldError.postValue(Event(error))
                 }
             })
@@ -87,7 +87,7 @@ class HomeViewModel : ViewModel() {
                     ldActivities.postValue(activities)
                 }
 
-                override fun onError(error: String, isNetwork: Boolean) {
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
                     ldError.postValue(Event(error))
                 }
             })
@@ -120,7 +120,7 @@ class HomeViewModel : ViewModel() {
                     ldActivities.postValue(activities)
                 }
 
-                override fun onError(error: String, isNetwork: Boolean) {
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
                     ldError.postValue(Event(error))
                 }
             })

@@ -44,7 +44,7 @@ class RegisterViewModel : ViewModel() {
                     ldRegister.postValue(Event(Unit))
                 }
 
-                override fun onError(error: String, isNetwork: Boolean) {
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
                     ldError.postValue(Event(error))
                 }
 

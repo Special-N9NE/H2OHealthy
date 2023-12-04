@@ -34,7 +34,7 @@ class MainViewModel : ViewModel() {
                     ldInsertWater.postValue(Event(Unit))
                 }
 
-                override fun onError(error: String, isNetwork: Boolean) {
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
                     ldError.postValue(Event(error))
                 }
             })
@@ -49,7 +49,7 @@ class MainViewModel : ViewModel() {
                     ldCups.postValue(response)
                 }
 
-                override fun onError(error: String, isNetwork: Boolean) {
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
                     ldError.postValue(Event(error))
                 }
 

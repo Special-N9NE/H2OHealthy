@@ -30,7 +30,12 @@ class AuthRepoImpl(private val client: Client) : AuthRepo {
                         val result = response.body()!!
 
                         if (result.status) {
-                            callback.onSuccessful(LoginResult(result.toUser(), result.message))
+                            callback.onSuccessful(
+                                LoginResult(
+                                    result.user!![0].toUser(),
+                                    result.message
+                                )
+                            )
                         } else {
                             callback.onError(result.message)
                         }

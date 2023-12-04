@@ -29,6 +29,11 @@ object Saver {
 
     fun Activity.getToken(): String? {
         val sharedPreferences = getSharedPreferences("APP", Context.MODE_PRIVATE)
-        return sharedPreferences.getString(TOKEN, null)
+        val token = sharedPreferences.getString(TOKEN, "")
+        return if (!token.isNullOrEmpty()) {
+            "Bearer ${token}}"
+        } else {
+            token
+        }
     }
 }

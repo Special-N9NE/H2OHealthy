@@ -7,7 +7,7 @@ import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.source.local.GlassEntity
 import org.n9ne.h2ohealthy.data.source.local.UserEntity
 import org.n9ne.h2ohealthy.data.source.local.WaterEntity
-import org.n9ne.h2ohealthy.data.source.objects.Login
+import org.n9ne.h2ohealthy.data.source.objects.GetUser
 
 object Mapper {
     fun List<WaterEntity>.toActivityList(): ArrayList<Activity> {
@@ -47,30 +47,47 @@ object Mapper {
         )
     }
 
-    fun Login.toUser(): User {
+    fun User.toUserEntity(): UserEntity {
+        var idActivity = 0
+        ActivityType.entries.forEachIndexed { index, it ->
+            if (it == this.activityType)
+                idActivity = index
+        }
 
-        val user = this.user!![0]
+        val gender = if (this.gender == "Male") 1 else 0
 
-        val activity = ActivityType.entries[user.idActivity - 1]
-        val age = DateUtils.calculateAge(user.birthdate)
-        val genderText = if (user.gender == 1) "Male" else "Female"
+        return UserEntity(
+            idActivity.toLong(), this.idLeague,
+            this.email, this.password,
+            this.joinDate, this.name,
+            this.birthDate, this.weight,
+            this.height, gender,
+            this.score, this.target, this.profile
+        )
+    }
+
+    fun GetUser.User.toUser(): User {
+
+        val activity = ActivityType.entries[this.idActivity - 1]
+        val age = DateUtils.calculateAge(this.birthdate)
+        val genderText = if (this.gender == 1) "Male" else "Female"
 
         return User(
-            user.id.toLong(),
+            this.id.toLong(),
             activity,
-            user.idleague.toLong(),
-            user.email,
-            user.password,
-            user.name,
-            user.date,
-            user.target,
+            this.idleague.toLong(),
+            this.email,
+            this.password,
+            this.name,
+            this.date,
+            this.target,
             age.toString(),
-            user.birthdate,
-            user.weight.toString(),
-            user.height.toString(),
+            this.birthdate,
+            this.weight.toString(),
+            this.height.toString(),
             genderText,
-            user.score,
-            user.profile
+            this.score,
+            this.profile
         )
     }
 

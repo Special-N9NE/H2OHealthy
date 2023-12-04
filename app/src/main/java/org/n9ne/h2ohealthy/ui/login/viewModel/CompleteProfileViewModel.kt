@@ -74,7 +74,7 @@ class CompleteProfileViewModel : ViewModel() {
                     ldToken.postValue(Event(response))
                 }
 
-                override fun onError(error: String, isNetwork: Boolean) {
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
                     ldError.postValue(Event(error))
                 }
             })

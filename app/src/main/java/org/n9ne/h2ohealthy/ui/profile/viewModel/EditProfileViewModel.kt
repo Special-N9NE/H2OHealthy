@@ -25,15 +25,15 @@ class EditProfileViewModel : ViewModel() {
     val activityLevels = arrayListOf("Never", "Low", "Sometimes", "High", "Athlete")
 
 
-    fun getUser() {
+    fun getUser(token: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
             viewModelScope.launch(Dispatchers.IO) {
-                repo?.getUser(object : RepoCallback<User> {
+                repo?.getUser(token, object : RepoCallback<User> {
                     override fun onSuccessful(response: User) {
                         ldUser.postValue(Event(response))
                     }
 
-                    override fun onError(error: String, isNetwork: Boolean) {
+                    override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
                         ldError.postValue(Event(error))
                     }
                 })

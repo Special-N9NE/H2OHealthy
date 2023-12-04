@@ -41,7 +41,7 @@ class CupsViewModel : ViewModel() {
                     ldCups.postValue(response)
                 }
 
-                override fun onError(error: String, isNetwork: Boolean) {
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
                     ldError.postValue(Event(error))
                 }
 
@@ -63,7 +63,7 @@ class CupsViewModel : ViewModel() {
                     ldAddCup.postValue(Event(Unit))
                 }
 
-                override fun onError(error: String, isNetwork: Boolean) {
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
                     ldError.postValue(Event(error))
                 }
 
@@ -88,7 +88,7 @@ class CupsViewModel : ViewModel() {
                     ldCups.postValue(cups)
                 }
 
-                override fun onError(error: String, isNetwork: Boolean) {
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
                     ldError.postValue(Event(error))
                 }
 
@@ -108,7 +108,7 @@ class CupsViewModel : ViewModel() {
                     ldRemoveCup.postValue(Event(Unit))
                 }
 
-                override fun onError(error: String, isNetwork: Boolean) {
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
                     ldError.postValue(Event(error))
                 }
             })

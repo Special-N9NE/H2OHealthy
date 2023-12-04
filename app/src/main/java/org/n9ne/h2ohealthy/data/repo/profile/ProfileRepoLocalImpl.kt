@@ -15,7 +15,7 @@ import org.n9ne.h2ohealthy.util.RepoCallback
 class ProfileRepoLocalImpl(private val dao: RoomDao) : ProfileRepo {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun getUser(callback: RepoCallback<User>) {
+    override suspend fun getUser(token: String?, callback: RepoCallback<User>) {
         runBlocking(Dispatchers.IO) {
             val users = async { dao.getUser() }
             users.invokeOnCompletion {
@@ -23,6 +23,10 @@ class ProfileRepoLocalImpl(private val dao: RoomDao) : ProfileRepo {
                 callback.onSuccessful(result)
             }
         }
+    }
+
+    override suspend fun updateUser(user: User, callback: RepoCallback<Unit>) {
+
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

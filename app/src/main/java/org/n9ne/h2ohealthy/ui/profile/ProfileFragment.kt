@@ -13,10 +13,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Setting
 import org.n9ne.h2ohealthy.data.model.SettingItem
 import org.n9ne.h2ohealthy.data.model.User
+import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoApiImpl
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoLocalImpl
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentProfileBinding
@@ -27,6 +29,7 @@ import org.n9ne.h2ohealthy.ui.dialog.joinLeagueDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.SettingAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.ProfileViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
+import org.n9ne.h2ohealthy.util.Saver.getToken
 import org.n9ne.h2ohealthy.util.Saver.saveToken
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
@@ -39,6 +42,7 @@ import org.n9ne.h2ohealthy.util.setGradient
 class ProfileFragment : Fragment(), Navigator, RefreshListener {
 
     private lateinit var localRepo: ProfileRepoLocalImpl
+    private lateinit var apiRepo: ProfileRepoApiImpl
 
     private lateinit var b: FragmentProfileBinding
     private lateinit var viewModel: ProfileViewModel
@@ -69,8 +73,7 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
 
     private fun makeRequest(request: () -> Unit) {
         val repo = if (requireActivity().isOnline()) {
-            //TODO pass apiRepo
-            localRepo
+            apiRepo
         } else {
             localRepo
         }
@@ -84,17 +87,20 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
     }
 
     private fun makeApiRequest(request: () -> Unit) {
-        //TODO pass apiRepo
-        viewModel.repo = localRepo
+        viewModel.repo = apiRepo
         request.invoke()
     }
 
     private fun init() {
         activity = requireActivity() as MainActivity
+        val client = (requireActivity().application as App).client
+
+        apiRepo = ProfileRepoApiImpl(client)
         localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
 
         viewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
 
+        viewModel.db = AppDatabase.getDatabase(requireContext())
         viewModel.navigator = this
         b.viewModel = viewModel
         b.rvSettings.adapter = SettingAdapter(viewModel.settings, object : SettingClickListener {
@@ -178,6 +184,11 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
             }
 
         })
+        viewModel.ldToken.observe(viewLifecycleOwner, EventObserver {
+            requireActivity().saveToken(null)
+            requireActivity().startActivity(Intent(requireActivity(), AuthActivity::class.java))
+            requireActivity().finish()
+        })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
             activity.stopLoading()
@@ -212,7 +223,7 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
 
     override fun onRefresh() {
         makeApiRequest {
-            viewModel.getUser()
+            viewModel.getUser(requireActivity().getToken())
         }
     }
 }

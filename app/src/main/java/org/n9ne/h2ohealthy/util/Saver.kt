@@ -20,7 +20,7 @@ object Saver {
         return sharedPreferences.getBoolean(FIRST_TIME, true)
     }
 
-    fun Activity.saveToken(token: String) {
+    fun Activity.saveToken(token: String?) {
         val sharedPreferences = getSharedPreferences("APP", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString(TOKEN, token)

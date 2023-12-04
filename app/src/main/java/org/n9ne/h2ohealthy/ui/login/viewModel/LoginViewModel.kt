@@ -25,6 +25,7 @@ class LoginViewModel : ViewModel() {
     val ldPasswordClick = MutableLiveData<Boolean>()
 
 
+    val ldName = MutableLiveData<Event<String>>()
     val ldToken = MutableLiveData<Event<String>>()
     val ldError = MutableLiveData<Event<String>>()
 
@@ -45,6 +46,7 @@ class LoginViewModel : ViewModel() {
                 override fun onSuccessful(response: LoginResult) {
                     initDatabase(context, response.user)
                     ldToken.postValue(Event(response.token))
+                    ldName.postValue(Event(response.user.name))
                 }
 
                 override fun onError(error: String, isNetwork: Boolean) {

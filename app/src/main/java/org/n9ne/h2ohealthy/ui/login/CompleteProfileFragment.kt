@@ -32,7 +32,6 @@ class CompleteProfileFragment : Fragment(), Navigator {
     private lateinit var password: String
 
     private lateinit var date: String
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -96,7 +95,10 @@ class CompleteProfileFragment : Fragment(), Navigator {
     private fun setObservers() {
         viewModel.ldToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bNext)) {
             requireActivity().saveToken(it)
-            this.shouldNavigate(R.id.completeProfile_to_loginDone)
+            val data = Bundle().apply {
+                putString("name", name)
+            }
+            this.shouldNavigate(R.id.completeProfile_to_loginDone , data)
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bNext)) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()

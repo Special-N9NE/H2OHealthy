@@ -60,7 +60,6 @@
             android:layout_margin="32dp"
             android:background="@drawable/shape_button_blue"
             android:fontFamily="@font/poppins_bold"
-            android:onClick="@{() -> viewModel.startClick()}"
             android:padding="16dp"
             android:text="@string/get_started"
             android:textAllCaps="false"

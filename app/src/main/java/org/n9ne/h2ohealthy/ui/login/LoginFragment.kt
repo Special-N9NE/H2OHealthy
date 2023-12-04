@@ -76,7 +76,12 @@ class LoginFragment : Fragment(), Navigator {
         }
         viewModel.ldToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
             requireActivity().saveToken(it)
-            this.shouldNavigate(R.id.login_to_loginDone)
+        })
+        viewModel.ldName.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
+            val data = Bundle().apply {
+                putString("name", it)
+            }
+            this.shouldNavigate(R.id.login_to_loginDone, data)
         })
         viewModel.ldError.observe(viewLifecycleOwner,
             EventObserver(listOf(b.bLogin)) {

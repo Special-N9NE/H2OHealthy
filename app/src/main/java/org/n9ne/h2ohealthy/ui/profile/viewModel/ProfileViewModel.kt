@@ -1,12 +1,17 @@
 package org.n9ne.h2ohealthy.ui.profile.viewModel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Setting
 import org.n9ne.h2ohealthy.data.model.SettingItem
 import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepo
+import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.util.DateUtils
 import org.n9ne.h2ohealthy.util.Event
 import org.n9ne.h2ohealthy.util.RepoCallback
@@ -17,6 +22,8 @@ class ProfileViewModel : ViewModel() {
     var repo: ProfileRepo? = null
 
     lateinit var navigator: Navigator
+
+    val ldLogout = MutableLiveData<Event<Unit>>()
     val ldInLeague = MutableLiveData<Event<Boolean>>()
     val ldUser = MutableLiveData<User>()
     val ldContactClick = MutableLiveData<Event<String>>()
@@ -61,5 +68,11 @@ class ProfileViewModel : ViewModel() {
         ldContactClick.postValue(Event("abigdeli42@gmail.com"))
     }
 
+    fun logout(context: Context) {
+        viewModelScope.launch(Dispatchers.IO) {
+            AppDatabase.getDatabase(context).removeDatabase()
+            ldLogout.postValue(Event(Unit))
+        }
+    }
 
 }

@@ -32,9 +32,15 @@ class SplashFragment : Fragment(), Navigator {
 
         init()
         setTextColors()
+        setClicks()
+    }
 
-        if (!requireActivity().isFirstTime()) {
-            this.shouldNavigate(R.id.splash_to_login)
+    private fun setClicks() {
+        b.bStart.setOnClickListener {
+            if (!requireActivity().isFirstTime()) {
+                this.shouldNavigate(R.id.splash_to_login)
+            } else
+                this.shouldNavigate(R.id.splash_to_register)
         }
     }
 

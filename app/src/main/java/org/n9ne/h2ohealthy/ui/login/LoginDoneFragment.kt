@@ -26,6 +26,9 @@ class LoginDoneFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val name = requireArguments().getString("name")
+        b.tvName.text = name
+
         b.bGo.setOnClickListener {
             requireActivity().setFirstTime(false)
             startActivity(Intent(requireActivity(), MainActivity::class.java))

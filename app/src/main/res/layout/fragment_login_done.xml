@@ -43,7 +43,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Stefani"
                 android:textColor="@color/blackText"
                 android:textSize="20sp" />
         </LinearLayout>

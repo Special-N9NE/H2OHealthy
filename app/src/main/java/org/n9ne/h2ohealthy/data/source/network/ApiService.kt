@@ -86,4 +86,9 @@ interface ApiService {
     fun updateActivity(
         @Field("updateAmout") data: String
     ): Call<Message>
+    @FormUrlEncoded
+    @POST("water.php")
+    fun removeActivity(
+        @Field("deleteWater") data: String
+    ): Call<Message>
 }

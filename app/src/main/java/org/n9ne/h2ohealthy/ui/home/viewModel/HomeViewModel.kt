@@ -91,7 +91,7 @@ class HomeViewModel : ViewModel() {
                     }
                     progress = (100 * progress) / (target!!.toDouble().toMilliLiter())
 
-                    syncActivity(activity)
+                    syncActivity(activity, false)
 
                     ldDayProgress.postValue(progress.roundToInt())
                     ldActivities.postValue(activities)
@@ -112,6 +112,7 @@ class HomeViewModel : ViewModel() {
 
                     activities.removeIf { it.id == activity.id }
 
+                    syncActivity(activity, true)
                     val list = arrayListOf<Activity>()
                     activities.forEach {
                         list.add(
@@ -152,12 +153,16 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    private fun syncActivity(data: Activity) {
+    private fun syncActivity(data: Activity, deleted: Boolean) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    db?.roomDao()!!.updateWater(data.id!!, data.amount)
+                    if (deleted) {
+                        db?.roomDao()!!.removeWater(data.id!!)
+                    } else {
+                        db?.roomDao()!!.updateWater(data.id!!, data.amount)
 
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

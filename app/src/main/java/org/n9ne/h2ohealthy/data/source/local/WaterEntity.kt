@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class WaterEntity(
     @ColumnInfo @PrimaryKey val id: Long,
-    @ColumnInfo val idUser: Long,
+    @ColumnInfo val idUser: Long?,
     @ColumnInfo val date: String,
     @ColumnInfo val amount: String,
     @ColumnInfo val time: String,

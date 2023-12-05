@@ -20,7 +20,7 @@ object Mapper {
     }
 
     fun Activity.toWater(): WaterEntity {
-        return WaterEntity(id, idUser, date, amount, time)
+        return WaterEntity(id!!, idUser, date, amount, time)
     }
 
     fun UserEntity.toUser(): User {

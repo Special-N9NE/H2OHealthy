@@ -68,7 +68,7 @@ class HomeViewModel : ViewModel() {
 
     fun updateWater(activity: Activity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.updateWater(activity.id, activity.amount, object : RepoCallback<Boolean> {
+            repo?.updateWater(activity.id!!, activity.amount, object : RepoCallback<Boolean> {
                 override fun onSuccessful(response: Boolean) {
 
                     val activities = ldActivities.value!!
@@ -96,7 +96,7 @@ class HomeViewModel : ViewModel() {
 
     fun removeWater(activity: Activity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.removeWater(activity.id, object : RepoCallback<Boolean> {
+            repo?.removeWater(activity.id!!, object : RepoCallback<Boolean> {
                 override fun onSuccessful(response: Boolean) {
                     val activities = ldActivities.value!!.toCollection(ArrayList())
 

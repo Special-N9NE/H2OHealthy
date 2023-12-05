@@ -97,6 +97,8 @@ class MainActivity : AppCompatActivity() {
         apiRepo = MainRepoApiImpl((application as App).client)
         localRepo = MainRepoLocalImpl(AppDatabase.getDatabase(this).roomDao())
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel.db = AppDatabase.getDatabase(this)
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
         navController = navHostFragment.navController
@@ -121,6 +123,11 @@ class MainActivity : AppCompatActivity() {
             localRepo
         }
         viewModel.repo = repo
+        request.invoke()
+    }
+
+    private fun makeApiRequest(request: () -> Unit) {
+        viewModel.repo = apiRepo
         request.invoke()
     }
 
@@ -153,8 +160,8 @@ class MainActivity : AppCompatActivity() {
             override fun onAdd(amount: String) {
                 //TODO change id
                 val liter = amount.toDouble().toLiter()
-                makeRequest {
-                    viewModel.insertWater(liter.toString(), 1L)
+                makeApiRequest {
+                    viewModel.insertWater(liter.toString(), getToken())
                 }
             }
         }

@@ -2,7 +2,6 @@ package org.n9ne.h2ohealthy.data.source.network
 
 import org.n9ne.h2ohealthy.data.source.objects.GetCups
 import org.n9ne.h2ohealthy.data.source.objects.GetUser
-import org.n9ne.h2ohealthy.data.source.objects.InsertCup
 import org.n9ne.h2ohealthy.data.source.objects.Login
 import org.n9ne.h2ohealthy.data.source.objects.Message
 import retrofit2.Call
@@ -45,14 +44,24 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Field("insertGlass") data: String
     ): Call<Message>
+
     @FormUrlEncoded
     @POST("glass.php")
     fun updateCup(
         @Field("update") data: String
     ): Call<Message>
+
     @FormUrlEncoded
     @POST("glass.php")
     fun removeCup(
         @Field("deleteGlass") data: String
+    ): Call<Message>
+
+
+    @FormUrlEncoded
+    @POST("water.php")
+    fun addActivity(
+        @Field("insertWater") data: String,
+        @Header("Authorization") token: String
     ): Call<Message>
 }

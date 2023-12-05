@@ -16,6 +16,8 @@ interface RoomDao {
 
     @Query("UPDATE UserEntity SET target = :target")
     fun updateTarget(target: Int)
+    @Query("UPDATE UserEntity SET score = :score")
+    fun updateScore(score: Int)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertWater(water: WaterEntity): Long

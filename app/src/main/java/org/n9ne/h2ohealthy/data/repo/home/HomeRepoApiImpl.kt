@@ -93,9 +93,14 @@ class HomeRepoApiImpl(private val client: Client) : HomeRepo {
     }
 
 
-    override suspend fun updateWater(id: Long, amount: String, callback: RepoCallback<String>) {
+    override suspend fun updateWater(
+        id: Long,
+        amount: String,
+        token: String?,
+        callback: RepoCallback<String>
+    ) {
         val json = Gson().toJson(UpdateActivity(id.toString(), amount))
-        client.getApiService().updateActivity(json)
+        client.getApiService().updateActivity(token!!, json)
             .enqueue(object : Callback<Message> {
                 override fun onResponse(
                     call: Call<Message>, response: Response<Message>
@@ -132,8 +137,8 @@ class HomeRepoApiImpl(private val client: Client) : HomeRepo {
             })
     }
 
-    override suspend fun removeWater(id: Long, callback: RepoCallback<String>) {
-        client.getApiService().removeActivity(id.toString())
+    override suspend fun removeWater(id: Long,token: String?, callback: RepoCallback<String>) {
+        client.getApiService().removeActivity(token!! , id.toString())
             .enqueue(object : Callback<Message> {
                 override fun onResponse(
                     call: Call<Message>, response: Response<Message>

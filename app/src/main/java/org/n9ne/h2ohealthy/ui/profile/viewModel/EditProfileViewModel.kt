@@ -1,5 +1,7 @@
 package org.n9ne.h2ohealthy.ui.profile.viewModel
 
+import android.util.Patterns
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +13,7 @@ import org.n9ne.h2ohealthy.data.model.UpdateUser
 import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepo
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
+import org.n9ne.h2ohealthy.data.source.objects.Auth
 import org.n9ne.h2ohealthy.util.Event
 import org.n9ne.h2ohealthy.util.Mapper.toUserEntity
 import org.n9ne.h2ohealthy.util.RepoCallback
@@ -48,8 +51,11 @@ class EditProfileViewModel : ViewModel() {
     }
 
     fun saveData(user: UpdateUser, token: String?) {
-        //TODO validation
         //TODO save image
+
+        if (!isUserValid(user)) {
+            return
+        }
 
         var idActivity = 0
         val gender = if (user.gender == "Male") 1 else 0
@@ -73,6 +79,47 @@ class EditProfileViewModel : ViewModel() {
                 }
             })
         }
+    }
+
+    private fun isUserValid(data: UpdateUser): Boolean {
+        if (data.name.trim().isEmpty()) {
+            ldError.postValue(Event("Name is empty"))
+            return false
+        }
+        if (data.email.trim().isEmpty()) {
+            ldError.postValue(Event("Email is empty"))
+            return false
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(data.email).matches()) {
+            ldError.postValue(Event("Email is not valid"))
+            return false
+        }
+        if (data.name.length <= 1) {
+            ldError.postValue(Event("name is short"))
+            return false
+        }
+        if (data.weight.trim().isEmpty()) {
+            ldError.postValue(Event("Enter Weight"))
+            return false
+        }
+        if (data.height.trim().isEmpty()) {
+            ldError.postValue(Event("Enter Height"))
+            return false
+        }
+        if (data.birthdate.trim().isEmpty()) {
+            ldError.postValue(Event("Enter Birthdate"))
+            return false
+        }
+        if (!data.weight.trim().isDigitsOnly()) {
+            ldError.postValue(Event("Enter correct number for weight"))
+            return false
+        }
+        if (!data.height.trim().isDigitsOnly()) {
+            ldError.postValue(Event("Enter correct number for height"))
+            return false
+        }
+
+        return true
     }
 
     private fun syncUser(user: User) {

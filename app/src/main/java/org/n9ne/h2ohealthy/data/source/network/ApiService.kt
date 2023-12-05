@@ -89,11 +89,13 @@ interface ApiService {
     @FormUrlEncoded
     @POST("water.php")
     fun updateActivity(
+        @Header("Authorization") token: String,
         @Field("updateAmout") data: String
     ): Call<Message>
     @FormUrlEncoded
     @POST("water.php")
     fun removeActivity(
+        @Header("Authorization") token: String,
         @Field("deleteWater") data: String
     ): Call<Message>
 }

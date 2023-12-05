@@ -158,8 +158,7 @@ class MainActivity : AppCompatActivity() {
         }
         val doneListener = object : AddWaterListener {
             override fun onAdd(amount: String) {
-                //TODO change id
-                val liter = amount.toDouble().toLiter()
+                 val liter = amount.toDouble().toLiter()
                 makeApiRequest {
                     viewModel.insertWater(liter.toString(), getToken())
                 }

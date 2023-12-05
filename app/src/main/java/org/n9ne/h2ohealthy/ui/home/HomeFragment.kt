@@ -95,6 +95,7 @@ class HomeFragment : Fragment(), RefreshListener {
         viewModel.repo = apiRepo
         request.invoke()
     }
+
     private fun makeLocalRequest(request: () -> Unit) {
         viewModel.repo = localRepo
         request.invoke()
@@ -109,7 +110,7 @@ class HomeFragment : Fragment(), RefreshListener {
 
                         activity.startLoading()
                         makeApiRequest {
-                            viewModel.updateWater(item)
+                            viewModel.updateWater(item, requireActivity().getToken())
                         }
                     }
                 }
@@ -118,7 +119,7 @@ class HomeFragment : Fragment(), RefreshListener {
 
                         activity.startLoading()
                         makeApiRequest {
-                            viewModel.removeWater(item)
+                            viewModel.removeWater(item, requireActivity().getToken())
                         }
                     }
                 }

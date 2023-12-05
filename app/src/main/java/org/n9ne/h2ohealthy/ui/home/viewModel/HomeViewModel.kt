@@ -63,6 +63,8 @@ class HomeViewModel : ViewModel() {
 
                     ldActivities.postValue(Utils.calculateActivities(response))
 
+                    val score = calculateScore(Utils.calculateActivities(response))
+                    syncScore(score)
                     syncProgress(response)
                 }
 
@@ -73,9 +75,10 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun updateWater(activity: Activity) {
+
+    fun updateWater(activity: Activity, token: String?) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.updateWater(activity.id!!, activity.amount, object : RepoCallback<String> {
+            repo?.updateWater(activity.id!!, activity.amount, token, object : RepoCallback<String> {
                 override fun onSuccessful(response: String) {
 
                     val activities = ldActivities.value!!
@@ -91,6 +94,8 @@ class HomeViewModel : ViewModel() {
                     }
                     progress = (100 * progress) / (target!!.toDouble().toMilliLiter())
 
+                    val score = calculateScore(activities)
+                    syncScore(score)
                     syncActivity(activity, false)
 
                     ldDayProgress.postValue(progress.roundToInt())
@@ -104,15 +109,15 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun removeWater(activity: Activity) {
+    fun removeWater(activity: Activity, token: String?) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.removeWater(activity.id!!, object : RepoCallback<String> {
+            repo?.removeWater(activity.id!!, token, object : RepoCallback<String> {
                 override fun onSuccessful(response: String) {
                     val activities = ldActivities.value!!.toCollection(ArrayList())
 
                     activities.removeIf { it.id == activity.id }
 
-                    syncActivity(activity, true)
+
                     val list = arrayListOf<Activity>()
                     activities.forEach {
                         list.add(
@@ -125,6 +130,11 @@ class HomeViewModel : ViewModel() {
                             )
                         )
                     }
+
+                    val score = calculateScore(activities)
+                    syncScore(score)
+                    syncActivity(activity, true)
+
                     var progress = Utils.calculateDayProgress(list.toList())
                     progress = (100 * progress) / (target!!.toDouble().toMilliLiter().toInt())
                     ldDayProgress.postValue(progress)
@@ -135,6 +145,18 @@ class HomeViewModel : ViewModel() {
                     ldError.postValue(Event(error))
                 }
             })
+        }
+    }
+
+    private fun syncScore(score: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    db?.roomDao()!!.updateScore(score)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 
@@ -184,5 +206,15 @@ class HomeViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    private fun calculateScore(list: List<Activity>): Int {
+        var total = 0.0
+        list.forEach {
+            total += it.amount.toDouble()
+        }
+
+        total = total.toLiter()
+        return (total / 3).roundToInt()
     }
 }

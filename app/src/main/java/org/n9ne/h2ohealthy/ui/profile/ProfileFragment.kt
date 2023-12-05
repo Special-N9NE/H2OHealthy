@@ -46,8 +46,8 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
 
     private lateinit var b: FragmentProfileBinding
     private lateinit var viewModel: ProfileViewModel
-    private lateinit var createLeagueDialog: Dialog
-    private lateinit var joinLeagueDialog: Dialog
+    private var createLeagueDialog: Dialog? = null
+    private var joinLeagueDialog: Dialog? = null
     private lateinit var activity: MainActivity
     private var hasLeague: Boolean = false
 
@@ -207,21 +207,30 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
             requireActivity().finish()
         })
         viewModel.ldJoinLeague.observe(viewLifecycleOwner, EventObserver {
-            setEnableDialog(joinLeagueDialog, true)
-            setEnableDialog(createLeagueDialog, true)
+            joinLeagueDialog?.let {
+                setEnableDialog(it, true)
+            }
+            createLeagueDialog?.let {
+                setEnableDialog(it, true)
+            }
 
             hasLeague = true
 
-            createLeagueDialog.dismiss()
-            joinLeagueDialog.dismiss()
+            createLeagueDialog?.dismiss()
+            joinLeagueDialog?.dismiss()
 
             activity.stopLoading()
 
             shouldNavigate(R.id.profile_to_league)
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
-            setEnableDialog(joinLeagueDialog, true)
-            setEnableDialog(createLeagueDialog, true)
+
+            joinLeagueDialog?.let {d->
+                setEnableDialog(d, true)
+            }
+            createLeagueDialog?.let {d->
+                setEnableDialog(d, true)
+            }
 
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
             activity.stopLoading()
@@ -233,23 +242,25 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
             joinLeagueDialog = requireActivity().joinLeagueDialog(object : AddLeagueListener {
                 override fun addLeague(input: String) {
                     activity.startLoading()
-                    setEnableDialog(joinLeagueDialog, false)
+                    setEnableDialog(joinLeagueDialog!!, false)
                     makeApiRequest {
                         viewModel.joinLeague(input, requireActivity().getToken())
                     }
                 }
             })
-            joinLeagueDialog.show()
+            joinLeagueDialog!!.show()
         }
         val createClick = object : AddLeagueListener {
             override fun addLeague(input: String) {
-                //TODO validation
-                createLeagueDialog.dismiss()
+                makeApiRequest {
+                    viewModel.createLeague(input, requireActivity().getToken())
+                }
+                createLeagueDialog!!.dismiss()
             }
         }
         createLeagueDialog = requireActivity().createLeagueDialog(joinClick, createClick)
 
-        createLeagueDialog.show()
+        createLeagueDialog!!.show()
     }
 
     override fun shouldNavigate(destination: Int, data: Bundle?) {

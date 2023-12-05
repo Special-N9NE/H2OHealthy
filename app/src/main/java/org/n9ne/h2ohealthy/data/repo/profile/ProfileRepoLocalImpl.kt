@@ -18,8 +18,12 @@ class ProfileRepoLocalImpl(private val dao: RoomDao) : ProfileRepo {
         runBlocking(Dispatchers.IO) {
             val users = async { dao.getUser() }
             users.invokeOnCompletion {
-                val result = users.getCompleted()[0].toUser()
-                callback.onSuccessful(result)
+                if (users.getCompleted().isEmpty()) {
+                    callback.onError("no user")
+                } else {
+                    val result = users.getCompleted()[0].toUser()
+                    callback.onSuccessful(result)
+                }
             }
         }
     }

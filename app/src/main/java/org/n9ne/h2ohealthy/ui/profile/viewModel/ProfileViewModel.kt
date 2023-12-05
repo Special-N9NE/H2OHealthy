@@ -7,6 +7,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.n9ne.h2ohealthy.R
+import org.n9ne.h2ohealthy.data.model.CreateLeague
+import org.n9ne.h2ohealthy.data.model.League
 import org.n9ne.h2ohealthy.data.model.Setting
 import org.n9ne.h2ohealthy.data.model.SettingItem
 import org.n9ne.h2ohealthy.data.model.User
@@ -14,6 +16,7 @@ import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepo
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.util.DateUtils
 import org.n9ne.h2ohealthy.util.Event
+import org.n9ne.h2ohealthy.util.Mapper.toLeagueEntity
 import org.n9ne.h2ohealthy.util.Mapper.toUserEntity
 import org.n9ne.h2ohealthy.util.RepoCallback
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
@@ -60,11 +63,17 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun joinLeague(code: String, token: String?) {
+
+        if (code.trim().isBlank()) {
+            ldError.postValue(Event("enter code"))
+            return
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
             repo?.joinLeague(code, token, object : RepoCallback<Long> {
                 override fun onSuccessful(response: Long) {
 
-                    syncLeague(response)
+                    syncLeague(response, null, false)
                 }
 
                 override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
@@ -75,13 +84,46 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
-    private fun syncLeague(idLeague: Long) {
+    fun createLeague(name: String, token: String?) {
+
+        if (name.trim().isBlank()) {
+            ldError.postValue(Event("enter name"))
+            return
+        }
+        if (name.trim().length <= 2) {
+            ldError.postValue(Event("name is too short"))
+            return
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            repo?.createLeague(name, token, object : RepoCallback<CreateLeague> {
+                override fun onSuccessful(response: CreateLeague) {
+
+                    val league = League(response.id.toLong(), null, name, response.code)
+                    syncLeague(league.id!!, league, true)
+                    joinLeague(response.code, token)
+                }
+
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
+                    if (isToken) ldToken.postValue(Event(Unit))
+                    else ldError.postValue(Event(error))
+                }
+            })
+        }
+    }
+
+    private fun syncLeague(idLeague: Long, league: League?, created: Boolean) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    db?.roomDao()?.joinLeague(idLeague)
-                    ldJoinLeague.postValue(Event(Unit))
+                    if (created) {
+                        db?.roomDao()?.removeLeagues()
+                        db?.roomDao()?.insertLeague(league!!.toLeagueEntity())
 
+                    } else {
+                        db?.roomDao()?.joinLeague(idLeague)
+                        ldJoinLeague.postValue(Event(Unit))
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

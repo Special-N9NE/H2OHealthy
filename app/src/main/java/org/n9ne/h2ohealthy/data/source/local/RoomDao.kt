@@ -16,8 +16,13 @@ interface RoomDao {
 
     @Query("UPDATE UserEntity SET idLeague = :idLeague")
     fun joinLeague(idLeague: Long)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertLeague(user: LeagueEntity): Long
+
     @Query("UPDATE UserEntity SET target = :target")
     fun updateTarget(target: Int)
+
     @Query("UPDATE UserEntity SET score = :score")
     fun updateScore(score: Int)
 
@@ -54,4 +59,7 @@ interface RoomDao {
 
     @Query("DELETE FROM GlassEntity")
     fun removeCups()
+
+    @Query("DELETE FROM LeagueEntity")
+    fun removeLeagues()
 }

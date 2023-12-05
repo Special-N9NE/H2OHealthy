@@ -1,6 +1,7 @@
 package org.n9ne.h2ohealthy.data.repo.profile
 
 import com.google.gson.Gson
+import org.n9ne.h2ohealthy.data.model.CreateLeague
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.model.UpdateUser
 import org.n9ne.h2ohealthy.data.model.User
@@ -274,6 +275,48 @@ class ProfileRepoApiImpl(private val client: Client) : ProfileRepo {
 
                         if (result.status) {
                             callback.onSuccessful(result.message.toLong())
+                        } else {
+                            val message = result.message
+                            if (message == "-1")
+                                callback.onError(message, isToken = true)
+                            else
+                                callback.onError(message)
+                        }
+
+                    } else {
+                        val result = response.code().toString()
+                        callback.onError(result)
+                    }
+                }
+
+                override fun onFailure(call: Call<Message>, t: Throwable) {
+
+                    if (t.message?.contains(Messages.NO_INTERNET) == true) {
+                        val result = Messages.errorNetwork
+                        callback.onError(result, true)
+                    } else {
+                        val result = t.message.toString()
+                        callback.onError(result)
+                    }
+                }
+            })
+    }
+
+    override suspend fun createLeague(
+        name: String,
+        token: String?,
+        callback: RepoCallback<CreateLeague>
+    ) {
+        client.getApiService().createLeague(token!!, name)
+            .enqueue(object : Callback<Message> {
+                override fun onResponse(
+                    call: Call<Message>, response: Response<Message>
+                ) {
+                    if (response.isSuccessful) {
+                        val result = response.body()!!
+
+                        if (result.status) {
+                            callback.onSuccessful(CreateLeague(result.id!!, result.message))
                         } else {
                             val message = result.message
                             if (message == "-1")

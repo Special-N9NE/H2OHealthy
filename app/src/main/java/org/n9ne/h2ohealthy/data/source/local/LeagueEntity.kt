@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class LeagueEntity(
     @ColumnInfo @PrimaryKey val id: Long,
-    @ColumnInfo val idUser: Int,
+    @ColumnInfo val idUser: Long?,
     @ColumnInfo val name: String,
     @ColumnInfo val code: String
 )

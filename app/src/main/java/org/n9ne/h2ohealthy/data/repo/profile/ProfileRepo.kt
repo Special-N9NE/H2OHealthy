@@ -1,8 +1,10 @@
 package org.n9ne.h2ohealthy.data.repo.profile
 
+import org.n9ne.h2ohealthy.data.model.CreateLeague
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.model.UpdateUser
 import org.n9ne.h2ohealthy.data.model.User
+import org.n9ne.h2ohealthy.data.source.objects.Message
 import org.n9ne.h2ohealthy.util.RepoCallback
 
 interface ProfileRepo {
@@ -12,5 +14,7 @@ interface ProfileRepo {
     suspend fun updateCup(cup: Cup, callback: RepoCallback<String>) {}
     suspend fun removeCup(cup: Cup, callback: RepoCallback<String>) {}
     suspend fun updateUser(date: UpdateUser, token: String?, callback: RepoCallback<User>) {}
-    suspend fun joinLeague(code: String, token: String?, callback: RepoCallback<Long>){}
+    suspend fun joinLeague(code: String, token: String?, callback: RepoCallback<Long>) {}
+
+    suspend fun createLeague(name: String, token: String?, callback: RepoCallback<CreateLeague>) {}
 }

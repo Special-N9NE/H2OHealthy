@@ -5,7 +5,7 @@ import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.source.network.Client
 import org.n9ne.h2ohealthy.data.source.objects.GetCups
-import org.n9ne.h2ohealthy.data.source.objects.InsertWater
+import org.n9ne.h2ohealthy.data.source.objects.InsertActivity
 import org.n9ne.h2ohealthy.data.source.objects.Message
 import org.n9ne.h2ohealthy.util.Mapper.toCups
 import org.n9ne.h2ohealthy.util.Messages
@@ -17,7 +17,7 @@ import retrofit2.Response
 class MainRepoApiImpl(private val client: Client) : MainRepo {
 
     override suspend fun insertWater(water: Activity,token: String? ,callback: RepoCallback<Long>) {
-        val json = Gson().toJson(InsertWater(water.date, water.amount, water.time))
+        val json = Gson().toJson(InsertActivity(water.date, water.amount, water.time))
         client.getApiService().addActivity(json, token!!)
             .enqueue(object : Callback<Message> {
                 override fun onResponse(

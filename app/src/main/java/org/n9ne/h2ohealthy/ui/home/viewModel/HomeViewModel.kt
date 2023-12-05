@@ -11,7 +11,6 @@ import org.n9ne.h2ohealthy.data.model.Progress
 import org.n9ne.h2ohealthy.data.repo.home.HomeRepo
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.util.Event
-import org.n9ne.h2ohealthy.util.Mapper.toGlass
 import org.n9ne.h2ohealthy.util.Mapper.toLiter
 import org.n9ne.h2ohealthy.util.Mapper.toMilliLiter
 import org.n9ne.h2ohealthy.util.Mapper.toWater
@@ -76,8 +75,8 @@ class HomeViewModel : ViewModel() {
 
     fun updateWater(activity: Activity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.updateWater(activity.id!!, activity.amount, object : RepoCallback<Boolean> {
-                override fun onSuccessful(response: Boolean) {
+            repo?.updateWater(activity.id!!, activity.amount, object : RepoCallback<String> {
+                override fun onSuccessful(response: String) {
 
                     val activities = ldActivities.value!!
 
@@ -91,6 +90,9 @@ class HomeViewModel : ViewModel() {
                         progress += (item.amount.toDouble())
                     }
                     progress = (100 * progress) / (target!!.toDouble().toMilliLiter())
+
+                    syncActivity(activity)
+
                     ldDayProgress.postValue(progress.roundToInt())
                     ldActivities.postValue(activities)
                 }
@@ -104,8 +106,8 @@ class HomeViewModel : ViewModel() {
 
     fun removeWater(activity: Activity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.removeWater(activity.id!!, object : RepoCallback<Boolean> {
-                override fun onSuccessful(response: Boolean) {
+            repo?.removeWater(activity.id!!, object : RepoCallback<String> {
+                override fun onSuccessful(response: String) {
                     val activities = ldActivities.value!!.toCollection(ArrayList())
 
                     activities.removeIf { it.id == activity.id }
@@ -143,6 +145,19 @@ class HomeViewModel : ViewModel() {
 
                     target = data
                     ldTarget.postValue(data)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
+    private fun syncActivity(data: Activity) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    db?.roomDao()!!.updateWater(data.id!!, data.amount)
+
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

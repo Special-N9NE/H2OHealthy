@@ -5,6 +5,7 @@ import org.n9ne.h2ohealthy.data.source.objects.GetProgress
 import org.n9ne.h2ohealthy.data.source.objects.GetUser
 import org.n9ne.h2ohealthy.data.source.objects.Login
 import org.n9ne.h2ohealthy.data.source.objects.Message
+import org.n9ne.h2ohealthy.data.source.objects.UpdateActivity
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -80,4 +81,9 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Field("getUserAmout") data: String = ""
     ): Call<GetProgress>
+    @FormUrlEncoded
+    @POST("water.php")
+    fun updateActivity(
+        @Field("updateAmout") data: String
+    ): Call<Message>
 }

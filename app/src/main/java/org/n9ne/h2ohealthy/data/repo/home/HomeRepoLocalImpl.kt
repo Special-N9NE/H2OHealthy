@@ -33,13 +33,13 @@ class HomeRepoLocalImpl(private val dao: RoomDao) : HomeRepo {
         }
     }
 
-    override suspend fun updateWater(id: Long, amount: String, callback: RepoCallback<Boolean>) {
+    override suspend fun updateWater(id: Long, amount: String, callback: RepoCallback<String>) {
         dao.updateWater(id, amount)
-        callback.onSuccessful(true)
+        callback.onSuccessful("Success")
     }
 
-    override suspend fun removeWater(id: Long, callback: RepoCallback<Boolean>) {
+    override suspend fun removeWater(id: Long, callback: RepoCallback<String>) {
         dao.removeWater(id)
-        callback.onSuccessful(true)
+        callback.onSuccessful("Success")
     }
 }

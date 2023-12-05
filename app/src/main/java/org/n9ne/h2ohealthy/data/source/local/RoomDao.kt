@@ -14,6 +14,8 @@ interface RoomDao {
     @Query("SELECT * FROM UserEntity")
     fun getUser(): List<UserEntity>
 
+    @Query("UPDATE UserEntity SET idLeague = :idLeague")
+    fun joinLeague(idLeague: Long)
     @Query("UPDATE UserEntity SET target = :target")
     fun updateTarget(target: Int)
     @Query("UPDATE UserEntity SET score = :score")

@@ -49,7 +49,7 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
     private lateinit var createLeagueDialog: Dialog
     private lateinit var joinLeagueDialog: Dialog
     private lateinit var activity: MainActivity
-
+    private var hasLeague: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -67,9 +67,25 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
         setClicks()
 
         makeLocalRequest {
-            viewModel.getUser()
+            viewModel.getUser(requireActivity().getToken())
         }
     }
+
+    fun setEnableDialog(dialog: Dialog, enable: Boolean) {
+        val viewGroup = dialog.window?.decorView?.findViewById<ViewGroup>(android.R.id.content)
+        viewGroup?.let { disableEnableControls(enable, it) }
+    }
+
+    private fun disableEnableControls(enable: Boolean, viewGroup: ViewGroup) {
+        for (i in 0 until viewGroup.childCount) {
+            val child = viewGroup.getChildAt(i)
+            child.isEnabled = enable
+            if (child is ViewGroup) {
+                disableEnableControls(enable, child)
+            }
+        }
+    }
+
 
     private fun makeRequest(request: () -> Unit) {
         val repo = if (requireActivity().isOnline()) {
@@ -103,6 +119,7 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
         viewModel.db = AppDatabase.getDatabase(requireContext())
         viewModel.navigator = this
         b.viewModel = viewModel
+
         b.rvSettings.adapter = SettingAdapter(viewModel.settings, object : SettingClickListener {
             override fun settingClicked(setting: Setting) {
                 when (setting.type) {
@@ -128,6 +145,13 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
     }
 
     private fun setClicks() {
+        b.cvLeague.setOnClickListener {
+            if (hasLeague) {
+                shouldNavigate(R.id.profile_to_league)
+            } else {
+                initDialogs()
+            }
+        }
         b.clLogout.setOnClickListener {
             activity.startLoading()
             viewModel.logout()
@@ -135,6 +159,7 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
     }
 
     private fun setUser(user: User) {
+        hasLeague = user.idLeague != 0L
         b.tvName.text = user.name
         b.tvScore.text = user.score.toString()
         b.tvWeight.text = "${user.weight}${getString(R.string.kg)}"
@@ -152,14 +177,6 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
     }
 
     private fun setupObserver() {
-        viewModel.ldInLeague.observe(viewLifecycleOwner, EventObserver {
-            if (it) {
-                shouldNavigate(R.id.profile_to_league)
-            } else {
-                openLeagueDialogs()
-            }
-            activity.stopLoading()
-        })
         viewModel.ldUser.observe(viewLifecycleOwner) {
             setUser(it)
             activity.stopLoading()
@@ -189,19 +206,37 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
             requireActivity().startActivity(Intent(requireActivity(), AuthActivity::class.java))
             requireActivity().finish()
         })
+        viewModel.ldJoinLeague.observe(viewLifecycleOwner, EventObserver {
+            setEnableDialog(joinLeagueDialog, true)
+            setEnableDialog(createLeagueDialog, true)
+
+            hasLeague = true
+
+            createLeagueDialog.dismiss()
+            joinLeagueDialog.dismiss()
+
+            activity.stopLoading()
+
+            shouldNavigate(R.id.profile_to_league)
+        })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
+            setEnableDialog(joinLeagueDialog, true)
+            setEnableDialog(createLeagueDialog, true)
+
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
             activity.stopLoading()
         })
     }
 
-    private fun openLeagueDialogs() {
+    private fun initDialogs() {
         val joinClick = OnClickListener {
             joinLeagueDialog = requireActivity().joinLeagueDialog(object : AddLeagueListener {
                 override fun addLeague(input: String) {
-                    //TODO validation for join
-                    createLeagueDialog.dismiss()
-                    joinLeagueDialog.dismiss()
+                    activity.startLoading()
+                    setEnableDialog(joinLeagueDialog, false)
+                    makeApiRequest {
+                        viewModel.joinLeague(input, requireActivity().getToken())
+                    }
                 }
             })
             joinLeagueDialog.show()

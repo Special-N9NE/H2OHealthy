@@ -262,4 +262,42 @@ class ProfileRepoApiImpl(private val client: Client) : ProfileRepo {
                 }
             })
     }
+
+    override suspend fun joinLeague(code: String, token: String?, callback: RepoCallback<Long>) {
+        client.getApiService().joinLeague(token!!, code)
+            .enqueue(object : Callback<Message> {
+                override fun onResponse(
+                    call: Call<Message>, response: Response<Message>
+                ) {
+                    if (response.isSuccessful) {
+                        val result = response.body()!!
+
+                        if (result.status) {
+                            callback.onSuccessful(result.message.toLong())
+                        } else {
+                            val message = result.message
+                            if (message == "-1")
+                                callback.onError(message, isToken = true)
+                            else
+                                callback.onError(message)
+                        }
+
+                    } else {
+                        val result = response.code().toString()
+                        callback.onError(result)
+                    }
+                }
+
+                override fun onFailure(call: Call<Message>, t: Throwable) {
+
+                    if (t.message?.contains(Messages.NO_INTERNET) == true) {
+                        val result = Messages.errorNetwork
+                        callback.onError(result, true)
+                    } else {
+                        val result = t.message.toString()
+                        callback.onError(result)
+                    }
+                }
+            })
+    }
 }

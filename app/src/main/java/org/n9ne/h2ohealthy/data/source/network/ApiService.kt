@@ -5,7 +5,6 @@ import org.n9ne.h2ohealthy.data.source.objects.GetProgress
 import org.n9ne.h2ohealthy.data.source.objects.GetUser
 import org.n9ne.h2ohealthy.data.source.objects.Login
 import org.n9ne.h2ohealthy.data.source.objects.Message
-import org.n9ne.h2ohealthy.data.source.objects.UpdateActivity
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -24,6 +23,7 @@ interface ApiService {
     @FormUrlEncoded
     @POST("user.php")
     fun completeProfile(@Field("insertUser") data: String): Call<Message>
+
     @FormUrlEncoded
     @POST("user.php")
     fun updateUser(
@@ -86,16 +86,25 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Field("getUserAmout") data: String = ""
     ): Call<GetProgress>
+
     @FormUrlEncoded
     @POST("water.php")
     fun updateActivity(
         @Header("Authorization") token: String,
         @Field("updateAmout") data: String
     ): Call<Message>
+
     @FormUrlEncoded
     @POST("water.php")
     fun removeActivity(
         @Header("Authorization") token: String,
         @Field("deleteWater") data: String
+    ): Call<Message>
+
+    @FormUrlEncoded
+    @POST("user.php")
+    fun joinLeague(
+        @Header("Authorization") token: String,
+        @Field("joinLeague") code: String
     ): Call<Message>
 }

@@ -247,7 +247,6 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
-                android:onClick="@{ () ->viewModel.leagueClick()}"
                 app:cardBackgroundColor="@color/purpleAlpha"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"

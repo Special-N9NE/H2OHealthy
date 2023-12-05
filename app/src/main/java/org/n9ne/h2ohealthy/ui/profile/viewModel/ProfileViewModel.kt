@@ -1,6 +1,5 @@
 package org.n9ne.h2ohealthy.ui.profile.viewModel
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,15 +25,23 @@ class ProfileViewModel : ViewModel() {
 
     lateinit var navigator: Navigator
 
+
+    val ldJoinLeague = MutableLiveData<Event<Unit>>()
+
     val ldLogout = MutableLiveData<Event<Unit>>()
-    val ldInLeague = MutableLiveData<Event<Boolean>>()
     val ldUser = MutableLiveData<User>()
     val ldContactClick = MutableLiveData<Event<String>>()
     val ldError = MutableLiveData<Event<String>>()
     val ldToken = MutableLiveData<Event<Unit>>()
 
+    val settings = listOf(
+        Setting("Password", R.drawable.ic_password, SettingItem.PASSWORD),
+        Setting("Activity History", R.drawable.ic_history, SettingItem.HISTORY),
+        Setting("Workout Progress", R.drawable.ic_progress, SettingItem.PROGRESS),
+        Setting("Glasses", R.drawable.ic_password, SettingItem.GLASS),
+    )
 
-    fun getUser(token: String? = null) {
+    fun getUser(token: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             repo?.getUser(token, object : RepoCallback<User> {
                 override fun onSuccessful(response: User) {
@@ -49,6 +56,36 @@ class ProfileViewModel : ViewModel() {
                     else ldError.postValue(Event(error))
                 }
             })
+        }
+    }
+
+    fun joinLeague(code: String, token: String?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo?.joinLeague(code, token, object : RepoCallback<Long> {
+                override fun onSuccessful(response: Long) {
+
+                    syncLeague(response)
+                }
+
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
+                    if (isToken) ldToken.postValue(Event(Unit))
+                    else ldError.postValue(Event(error))
+                }
+            })
+        }
+    }
+
+    private fun syncLeague(idLeague: Long) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    db?.roomDao()?.joinLeague(idLeague)
+                    ldJoinLeague.postValue(Event(Unit))
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 
@@ -69,20 +106,8 @@ class ProfileViewModel : ViewModel() {
     }
 
 
-    val settings = listOf(
-        Setting("Password", R.drawable.ic_password, SettingItem.PASSWORD),
-        Setting("Activity History", R.drawable.ic_history, SettingItem.HISTORY),
-        Setting("Workout Progress", R.drawable.ic_progress, SettingItem.PROGRESS),
-        Setting("Glasses", R.drawable.ic_password, SettingItem.GLASS),
-    )
-
     fun editClick() {
         navigator.shouldNavigate(R.id.profile_to_editProfile)
-    }
-
-    fun leagueClick() {
-        //TODO check if user is joined in a league
-        ldInLeague.postValue(Event(true))
     }
 
     fun contactUsClick() {

@@ -1,6 +1,7 @@
 package org.n9ne.h2ohealthy.ui.profile
 
 import android.app.DatePickerDialog
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,16 +15,19 @@ import androidx.navigation.fragment.findNavController
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.api.PersianPickerDate
 import ir.hamsaa.persiandatepicker.api.PersianPickerListener
+import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
+import org.n9ne.h2ohealthy.data.model.UpdateUser
+import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoApiImpl
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoLocalImpl
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentEditProfileBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.profile.viewModel.EditProfileViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
+import org.n9ne.h2ohealthy.util.Saver.getToken
 import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
-import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
 
 
 class EditProfileFragment : Fragment(), Navigator {
@@ -31,8 +35,10 @@ class EditProfileFragment : Fragment(), Navigator {
     private lateinit var b: FragmentEditProfileBinding
     private lateinit var viewModel: EditProfileViewModel
     private lateinit var localRepo: ProfileRepoLocalImpl
+    private lateinit var apiRepo: ProfileRepoApiImpl
     private lateinit var date: String
     private lateinit var activity: MainActivity
+    private var newProfile: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -45,13 +51,13 @@ class EditProfileFragment : Fragment(), Navigator {
         super.onViewCreated(view, savedInstanceState)
 
         init()
-        activity.showNavigation()
+        activity.hideNavigation()
 
         setupObserver()
         setClicks()
 
         makeLocalRequest {
-            viewModel.getUser()
+            viewModel.getUser(requireActivity().getToken())
         }
     }
 
@@ -60,8 +66,30 @@ class EditProfileFragment : Fragment(), Navigator {
             b.bSubmit.isEnabled = false
 
             activity.startLoading()
-            makeRequest {
-                viewModel.saveData()
+            makeApiRequest {
+
+                //TODO show loading dialog
+
+                val name = b.etName.text.toString()
+                val email = b.etEmail.text.toString()
+                val activityLevel = b.spActivity.text.toString()
+                val gender = b.spGender.text.toString()
+                val birthdate = b.etBirthday.text.toString()
+                val weight = b.etWeight.text.toString()
+                val height = b.etHeight.text.toString()
+
+                val user = UpdateUser(
+                    activityLevel,
+                    email,
+                    name,
+                    birthdate,
+                    weight,
+                    height,
+                    gender
+                )
+                makeApiRequest {
+                    viewModel.saveData(user, requireActivity().getToken())
+                }
             }
         }
         b.etBirthday.setOnClickListener {
@@ -74,8 +102,13 @@ class EditProfileFragment : Fragment(), Navigator {
 
     private fun init() {
         activity = requireActivity() as MainActivity
+        val client = (requireActivity().application as App).client
+
         localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
+        apiRepo = ProfileRepoApiImpl(client)
+
         viewModel = ViewModelProvider(this)[EditProfileViewModel::class.java]
+        viewModel.db = AppDatabase.getDatabase(requireContext())
         b.viewModel = viewModel
 
         setupSpinners()
@@ -138,8 +171,7 @@ class EditProfileFragment : Fragment(), Navigator {
 
     private fun makeRequest(request: () -> Unit) {
         val repo = if (requireActivity().isOnline()) {
-            //TODO pass apiRepo
-            localRepo
+            apiRepo
         } else {
             localRepo
         }
@@ -153,8 +185,7 @@ class EditProfileFragment : Fragment(), Navigator {
     }
 
     private fun makeApiRequest(request: () -> Unit) {
-        //TODO change this
-        viewModel.repo = localRepo
+        viewModel.repo = apiRepo
         request.invoke()
     }
 
@@ -171,9 +202,9 @@ class EditProfileFragment : Fragment(), Navigator {
     }
 
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) {
-        val galleryUri = it
+        newProfile = it
         try {
-            b.ivProfile.setImageURI(galleryUri)
+            b.ivProfile.setImageURI(newProfile)
             //TODO save image
         } catch (e: Exception) {
             e.printStackTrace()

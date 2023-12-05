@@ -8,11 +8,11 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Setting
@@ -143,11 +143,11 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
         b.tvAge.text = user.age
 
         if (user.profile.isNotEmpty()) {
-            Glide.with(requireContext()).load(user.profile).into(b.ivProfile).onLoadFailed(
-                AppCompatResources.getDrawable(
-                    requireContext(), R.drawable.image_profile
-                )
-            )
+            Glide.with(requireContext()).load(user.profile)
+                .apply(
+                    RequestOptions().placeholder(R.drawable.image_profile)
+                        .error(R.drawable.image_profile)
+                ).into(b.ivProfile)
         }
     }
 

@@ -24,7 +24,12 @@ interface ApiService {
     @FormUrlEncoded
     @POST("user.php")
     fun completeProfile(@Field("insertUser") data: String): Call<Message>
-
+    @FormUrlEncoded
+    @POST("user.php")
+    fun updateUser(
+        @Header("Authorization") token: String,
+        @Field("updateUser") data: String
+    ): Call<GetUser>
 
     @FormUrlEncoded
     @POST("user.php")

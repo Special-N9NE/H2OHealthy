@@ -1,6 +1,7 @@
 package org.n9ne.h2ohealthy.data.source.network
 
 import org.n9ne.h2ohealthy.data.source.objects.GetCups
+import org.n9ne.h2ohealthy.data.source.objects.GetProgress
 import org.n9ne.h2ohealthy.data.source.objects.GetUser
 import org.n9ne.h2ohealthy.data.source.objects.Login
 import org.n9ne.h2ohealthy.data.source.objects.Message
@@ -72,4 +73,11 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Field("getTarget") data: String = ""
     ): Call<Message>
+
+    @FormUrlEncoded
+    @POST("water.php")
+    fun getProgress(
+        @Header("Authorization") token: String,
+        @Field("getUserAmout") data: String = ""
+    ): Call<GetProgress>
 }

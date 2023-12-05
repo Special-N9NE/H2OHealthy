@@ -14,6 +14,9 @@ interface RoomDao {
     @Query("SELECT * FROM UserEntity")
     fun getUser(): List<UserEntity>
 
+    @Query("UPDATE UserEntity SET target = :target")
+    fun updateTarget(target: Int)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertWater(water: WaterEntity): Long
 
@@ -38,8 +41,13 @@ interface RoomDao {
     @Query("DELETE FROM GlassEntity WHERE id = :id")
     fun removeCup(id: Long)
 
+
     @Query("DELETE FROM UserEntity")
     fun removeUser()
+
+    @Query("DELETE FROM WaterEntity")
+    fun removeProgress()
+
     @Query("DELETE FROM GlassEntity")
     fun removeCups()
 }

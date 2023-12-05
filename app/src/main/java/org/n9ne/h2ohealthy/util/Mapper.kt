@@ -8,9 +8,19 @@ import org.n9ne.h2ohealthy.data.source.local.GlassEntity
 import org.n9ne.h2ohealthy.data.source.local.UserEntity
 import org.n9ne.h2ohealthy.data.source.local.WaterEntity
 import org.n9ne.h2ohealthy.data.source.objects.GetCups
+import org.n9ne.h2ohealthy.data.source.objects.GetProgress
 import org.n9ne.h2ohealthy.data.source.objects.GetUser
 
 object Mapper {
+
+    fun List<GetProgress.Data>.toActivities(): ArrayList<Activity> {
+        val result = arrayListOf<Activity>()
+        this.forEach {
+            result.add(Activity(it.id.toLong(), it.idUser.toLong(), it.amout, it.date, it.time))
+        }
+        return result
+    }
+
     fun List<WaterEntity>.toActivityList(): ArrayList<Activity> {
         val result = arrayListOf<Activity>()
         this.forEach {

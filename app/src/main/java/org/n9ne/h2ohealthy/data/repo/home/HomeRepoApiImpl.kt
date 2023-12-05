@@ -2,7 +2,9 @@ package org.n9ne.h2ohealthy.data.repo.home
 
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.source.network.Client
+import org.n9ne.h2ohealthy.data.source.objects.GetProgress
 import org.n9ne.h2ohealthy.data.source.objects.Message
+import org.n9ne.h2ohealthy.util.Mapper.toActivities
 import org.n9ne.h2ohealthy.util.Messages
 import org.n9ne.h2ohealthy.util.RepoCallback
 import retrofit2.Call
@@ -50,7 +52,42 @@ class HomeRepoApiImpl(private val client: Client) : HomeRepo {
     }
 
     override suspend fun getProgress(token: String?, callback: RepoCallback<List<Activity>>) {
-        //TODO
+        client.getApiService().getProgress(token!!)
+            .enqueue(object : Callback<GetProgress> {
+                override fun onResponse(
+                    call: Call<GetProgress>, response: Response<GetProgress>
+                ) {
+                    if (response.isSuccessful) {
+                        val result = response.body()!!
+
+                        if (result.status) {
+                            callback.onSuccessful(result.data!!.toActivities())
+                        } else {
+                            val message = result.message!!
+                            if (message == "-1")
+                                callback.onError(message, isToken = true)
+                            else
+                                callback.onError(message)
+                        }
+
+                    } else {
+                        val result = response.code().toString()
+                        callback.onError(result)
+                    }
+                }
+
+                override fun onFailure(call: Call<GetProgress>, t: Throwable) {
+
+                    if (t.message?.contains(Messages.NO_INTERNET) == true) {
+                        val result = Messages.errorNetwork
+                        callback.onError(result, true)
+                    } else {
+                        val result = t.message.toString()
+                        callback.onError(result)
+                    }
+                }
+            })
+
     }
 
 

@@ -76,6 +76,7 @@ class HomeFragment : Fragment(), RefreshListener {
         apiRepo = HomeRepoApiImpl(client)
         localRepo = HomeRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+        viewModel.db = AppDatabase.getDatabase(requireContext())
 
         b.viewModel = viewModel
     }
@@ -144,8 +145,7 @@ class HomeFragment : Fragment(), RefreshListener {
         viewModel.ldTarget.observe(viewLifecycleOwner) {
             b.tvTarget.text = it.toString() + "L"
 
-            //TODO change this
-            makeLocalRequest {
+            makeRequest {
                 viewModel.getProgress(requireActivity().getToken())
             }
         }

@@ -5,12 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.Progress
 import org.n9ne.h2ohealthy.data.repo.home.HomeRepo
+import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.util.Event
+import org.n9ne.h2ohealthy.util.Mapper.toGlass
 import org.n9ne.h2ohealthy.util.Mapper.toLiter
 import org.n9ne.h2ohealthy.util.Mapper.toMilliLiter
+import org.n9ne.h2ohealthy.util.Mapper.toWater
 import org.n9ne.h2ohealthy.util.RepoCallback
 import org.n9ne.h2ohealthy.util.Utils
 import kotlin.math.roundToInt
@@ -18,6 +22,7 @@ import kotlin.math.roundToInt
 class HomeViewModel : ViewModel() {
     var target: Int? = null
     var repo: HomeRepo? = null
+    var db: AppDatabase? = null
 
     val ldTarget = MutableLiveData<Int>()
     val ldDayProgress = MutableLiveData<Int>()
@@ -29,8 +34,7 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             repo?.getTarget(token, object : RepoCallback<Int> {
                 override fun onSuccessful(response: Int) {
-                    target = response
-                    ldTarget.postValue(response)
+                    syncTarget(response)
                 }
 
                 override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
@@ -47,6 +51,7 @@ class HomeViewModel : ViewModel() {
 
                     val dayProgress = Utils.calculateDayProgress(response)
                     val progress = (100 * dayProgress) / (target!!.toDouble().toMilliLiter())
+
                     ldDayProgress.postValue(progress.toInt())
 
                     val weekProgress = Utils.calculateWeekProgress(response)
@@ -54,9 +59,12 @@ class HomeViewModel : ViewModel() {
                         it.progress =
                             (100 * it.progress) / (target!!.toDouble().toMilliLiter().toInt())
                     }
+
                     ldWeekProgress.postValue(weekProgress)
 
                     ldActivities.postValue(Utils.calculateActivities(response))
+
+                    syncProgress(response)
                 }
 
                 override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
@@ -124,6 +132,37 @@ class HomeViewModel : ViewModel() {
                     ldError.postValue(Event(error))
                 }
             })
+        }
+    }
+
+    private fun syncTarget(data: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    db?.roomDao()!!.updateTarget(data)
+
+                    target = data
+                    ldTarget.postValue(data)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
+    private fun syncProgress(list: List<Activity>) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    db?.roomDao()?.removeProgress()
+
+                    list.forEach {
+                        db?.roomDao()!!.insertWater(it.toWater())
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 }

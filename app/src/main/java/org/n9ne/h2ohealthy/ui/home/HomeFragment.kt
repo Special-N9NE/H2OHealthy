@@ -9,8 +9,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.Progress
+import org.n9ne.h2ohealthy.data.repo.home.HomeRepoApiImpl
 import org.n9ne.h2ohealthy.data.repo.home.HomeRepoLocalImpl
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentHomeBinding
@@ -32,6 +34,7 @@ import org.nine.linearprogressbar.LinearVerticalProgressBar
 
 class HomeFragment : Fragment(), RefreshListener {
     private lateinit var localRepo: HomeRepoLocalImpl
+    private lateinit var apiRepo: HomeRepoApiImpl
 
     private lateinit var b: FragmentHomeBinding
     private lateinit var viewModel: HomeViewModel
@@ -61,22 +64,25 @@ class HomeFragment : Fragment(), RefreshListener {
 
             activity.startLoading()
             makeRequest {
-                viewModel.getTarget()
+                viewModel.getTarget(requireActivity().getToken())
             }
         }
     }
 
     private fun init() {
         activity = requireActivity() as MainActivity
+        val client = (requireActivity().application as App).client
+
+        apiRepo = HomeRepoApiImpl(client)
         localRepo = HomeRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+
         b.viewModel = viewModel
     }
 
     private fun makeRequest(request: () -> Unit) {
         val repo = if (requireActivity().isOnline()) {
-            //TODO pass apiRepo
-            localRepo
+            apiRepo
         } else {
             localRepo
         }
@@ -85,7 +91,10 @@ class HomeFragment : Fragment(), RefreshListener {
     }
 
     private fun makeApiRequest(request: () -> Unit) {
-        //TODO change to api
+        viewModel.repo = apiRepo
+        request.invoke()
+    }
+    private fun makeLocalRequest(request: () -> Unit) {
         viewModel.repo = localRepo
         request.invoke()
     }
@@ -98,7 +107,7 @@ class HomeFragment : Fragment(), RefreshListener {
                         item.amount = amount.toDouble().toLiter().toString()
 
                         activity.startLoading()
-                        makeRequest {
+                        makeApiRequest {
                             viewModel.updateWater(item)
                         }
                     }
@@ -107,7 +116,7 @@ class HomeFragment : Fragment(), RefreshListener {
                     override fun onRemove() {
 
                         activity.startLoading()
-                        makeRequest {
+                        makeApiRequest {
                             viewModel.removeWater(item)
                         }
                     }
@@ -135,8 +144,9 @@ class HomeFragment : Fragment(), RefreshListener {
         viewModel.ldTarget.observe(viewLifecycleOwner) {
             b.tvTarget.text = it.toString() + "L"
 
-            makeRequest {
-                viewModel.getProgress()
+            //TODO change this
+            makeLocalRequest {
+                viewModel.getProgress(requireActivity().getToken())
             }
         }
         viewModel.ldDayProgress.observe(viewLifecycleOwner) {
@@ -159,7 +169,7 @@ class HomeFragment : Fragment(), RefreshListener {
 
     override fun onRefresh() {
         makeApiRequest {
-            viewModel.getTarget()
+            viewModel.getTarget(requireActivity().getToken())
         }
     }
 }

@@ -25,9 +25,9 @@ class HomeViewModel : ViewModel() {
     val ldActivities = MutableLiveData<List<Activity>>()
     val ldError = MutableLiveData<Event<String>>()
 
-    fun getTarget() {
+    fun getTarget(token: String?) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.getTarget(object : RepoCallback<Int> {
+            repo?.getTarget(token, object : RepoCallback<Int> {
                 override fun onSuccessful(response: Int) {
                     target = response
                     ldTarget.postValue(response)
@@ -40,9 +40,9 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun getProgress() {
+    fun getProgress(token: String?) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.getProgress(object : RepoCallback<List<Activity>> {
+            repo?.getProgress(token, object : RepoCallback<List<Activity>> {
                 override fun onSuccessful(response: List<Activity>) {
 
                     val dayProgress = Utils.calculateDayProgress(response)

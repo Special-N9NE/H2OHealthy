@@ -64,4 +64,12 @@ interface ApiService {
         @Field("insertWater") data: String,
         @Header("Authorization") token: String
     ): Call<Message>
+
+
+    @FormUrlEncoded
+    @POST("user.php")
+    fun getTarget(
+        @Header("Authorization") token: String,
+        @Field("getTarget") data: String = ""
+    ): Call<Message>
 }

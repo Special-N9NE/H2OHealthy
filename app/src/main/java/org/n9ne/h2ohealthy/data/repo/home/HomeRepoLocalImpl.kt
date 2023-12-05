@@ -12,7 +12,7 @@ import org.n9ne.h2ohealthy.util.RepoCallback
 class HomeRepoLocalImpl(private val dao: RoomDao) : HomeRepo {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun getTarget(callback: RepoCallback<Int>) {
+    override suspend fun getTarget(token : String? ,callback: RepoCallback<Int>) {
         withContext(Dispatchers.IO) {
             val users = async { dao.getUser() }
             users.invokeOnCompletion {
@@ -22,7 +22,7 @@ class HomeRepoLocalImpl(private val dao: RoomDao) : HomeRepo {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun getProgress(callback: RepoCallback<List<Activity>>) {
+    override suspend fun getProgress(token : String? ,callback: RepoCallback<List<Activity>>) {
         withContext(Dispatchers.IO) {
             val progress = async { dao.getProgress() }
             progress.invokeOnCompletion {

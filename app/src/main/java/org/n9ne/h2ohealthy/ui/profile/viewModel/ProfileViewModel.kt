@@ -99,7 +99,7 @@ class ProfileViewModel : ViewModel() {
             repo?.createLeague(name, token, object : RepoCallback<CreateLeague> {
                 override fun onSuccessful(response: CreateLeague) {
 
-                    val league = League(response.id.toLong(), null, name, response.code)
+                    val league = League(response.id.toLong(), null, null,  name, response.code)
                     syncLeague(league.id!!, league, true)
                     joinLeague(response.code, token)
                 }

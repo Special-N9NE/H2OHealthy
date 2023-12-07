@@ -7,6 +7,9 @@
     <data>
 
         <variable
+            name="league"
+            type="org.n9ne.h2ohealthy.data.model.League" />
+        <variable
             name="viewModel"
             type="org.n9ne.h2ohealthy.ui.profile.viewModel.LeagueViewModel" />
     </data>
@@ -28,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
                 android:padding="2dp"
-                android:text="My League"
+                android:text="@{league.name}"
                 android:textColor="@color/blackText"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -41,7 +44,6 @@
                 android:id="@+id/cvSettings"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:onClick="@{() ->viewModel.settingClick()}"
                 app:cardBackgroundColor="@color/grayLight"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="0dp"

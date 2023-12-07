@@ -4,12 +4,14 @@ import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.ActivityType
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.model.League
+import org.n9ne.h2ohealthy.data.model.Member
 import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.source.local.GlassEntity
 import org.n9ne.h2ohealthy.data.source.local.LeagueEntity
 import org.n9ne.h2ohealthy.data.source.local.UserEntity
 import org.n9ne.h2ohealthy.data.source.local.WaterEntity
 import org.n9ne.h2ohealthy.data.source.objects.GetCups
+import org.n9ne.h2ohealthy.data.source.objects.GetMembers
 import org.n9ne.h2ohealthy.data.source.objects.GetProgress
 import org.n9ne.h2ohealthy.data.source.objects.GetUser
 
@@ -34,10 +36,24 @@ object Mapper {
     fun Activity.toWater(): WaterEntity {
         return WaterEntity(id!!, idUser, date, amount, time)
     }
+
     fun League.toLeagueEntity(): LeagueEntity {
         return LeagueEntity(
-            id!!, idUser , name , code)
+            id!!, idUser, name, code
+        )
     }
+
+    fun GetMembers.toMembers(): List<Member> {
+
+        val result = ArrayList<Member>()
+        members!!.forEach {
+            result.add(
+                Member(it.id, it.name, it.score, it.profile)
+            )
+        }
+        return result
+    }
+
     fun UserEntity.toUser(): User {
 
         val activity = ActivityType.entries[idActivity.toInt()]

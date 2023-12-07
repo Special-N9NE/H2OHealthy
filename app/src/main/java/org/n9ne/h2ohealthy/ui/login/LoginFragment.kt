@@ -16,6 +16,7 @@ import org.n9ne.h2ohealthy.databinding.FragmentLoginBinding
 import org.n9ne.h2ohealthy.ui.AuthActivity
 import org.n9ne.h2ohealthy.ui.login.viewModel.LoginViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
+import org.n9ne.h2ohealthy.util.Saver.saveEmail
 import org.n9ne.h2ohealthy.util.Saver.saveToken
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
@@ -25,6 +26,8 @@ class LoginFragment : Fragment(), Navigator {
     private lateinit var b: FragmentLoginBinding
     private lateinit var viewModel: LoginViewModel
     private lateinit var activity: AuthActivity
+
+    private lateinit var email: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,9 +60,10 @@ class LoginFragment : Fragment(), Navigator {
         b.bLogin.setOnClickListener {
             b.bLogin.isEnabled = true
 
+            email = b.etEmail.text.toString().trim()
             activity.startLoading()
             viewModel.login(
-                b.etEmail.text.toString(),
+                email,
                 b.etPassword.text.toString(),
                 requireContext()
             )
@@ -79,6 +83,7 @@ class LoginFragment : Fragment(), Navigator {
             b.etPassword.setSelection(b.etPassword.text.toString().length)
         }
         viewModel.ldToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
+            requireActivity().saveEmail(email)
             requireActivity().saveToken(it)
             activity.stopLoading()
         })

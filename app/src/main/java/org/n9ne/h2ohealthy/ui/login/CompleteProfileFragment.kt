@@ -20,6 +20,7 @@ import org.n9ne.h2ohealthy.databinding.FragmentCompleteProfileBinding
 import org.n9ne.h2ohealthy.ui.AuthActivity
 import org.n9ne.h2ohealthy.ui.login.viewModel.CompleteProfileViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
+import org.n9ne.h2ohealthy.util.Saver.saveEmail
 import org.n9ne.h2ohealthy.util.Saver.saveToken
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
@@ -98,7 +99,9 @@ class CompleteProfileFragment : Fragment(), Navigator {
 
     private fun setObservers() {
         viewModel.ldToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bNext)) {
+            requireActivity().saveEmail(email)
             requireActivity().saveToken(it)
+
             val data = Bundle().apply {
                 putString("name", name)
             }

@@ -3,6 +3,7 @@ package org.n9ne.h2ohealthy.ui.profile
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -123,9 +124,12 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
         b.rvSettings.adapter = SettingAdapter(viewModel.settings, object : SettingClickListener {
             override fun settingClicked(setting: Setting) {
                 when (setting.type) {
-                    SettingItem.PASSWORD -> TODO()
-                    SettingItem.HISTORY -> TODO()
-                    SettingItem.PROGRESS -> TODO()
+                    //TODO
+                    SettingItem.PASSWORD -> Log.e("WWW", "")
+                    //TODO
+                    SettingItem.HISTORY -> Log.e("WWW", "")
+                    //TODO
+                    SettingItem.PROGRESS -> Log.e("WWW", "")
                     SettingItem.GLASS -> shouldNavigate(R.id.profile_to_cups)
                 }
             }

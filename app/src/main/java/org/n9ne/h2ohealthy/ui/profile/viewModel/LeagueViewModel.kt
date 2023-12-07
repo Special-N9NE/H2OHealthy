@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.n9ne.h2ohealthy.data.model.GetLeague
 import org.n9ne.h2ohealthy.data.model.League
 import org.n9ne.h2ohealthy.data.model.Member
@@ -19,6 +20,7 @@ class LeagueViewModel : ViewModel() {
     var db: AppDatabase? = null
 
 
+    val ldLeave = MutableLiveData<Event<Unit>>()
     val ldLeague = MutableLiveData<Event<League>>()
     val ldMembers = MutableLiveData<Event<List<Member>>>()
     val ldError = MutableLiveData<Event<String>>()
@@ -33,8 +35,8 @@ class LeagueViewModel : ViewModel() {
                     val league =
                         League(null, null, response.adminEmail, response.name, response.code)
 
-                    ldLeague.postValue(Event(league))
                     ldMembers.postValue(Event(members.asReversed()))
+                    ldLeague.postValue(Event(league))
                 }
 
                 override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
@@ -76,6 +78,34 @@ class LeagueViewModel : ViewModel() {
                     else ldError.postValue(Event(error))
                 }
             })
+        }
+    }
+
+    fun leave(token: String?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo?.leaveLeague(token, object : RepoCallback<String> {
+                override fun onSuccessful(response: String) {
+                    syncLeague()
+                }
+
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
+                    if (isToken) ldToken.postValue(Event(Unit))
+                    else ldError.postValue(Event(error))
+                }
+            })
+        }
+    }
+
+    private fun syncLeague() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    db?.roomDao()?.joinLeague(0L)
+                    ldLeave.postValue(Event(Unit))
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 }

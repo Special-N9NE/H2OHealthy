@@ -1,13 +1,17 @@
 package org.n9ne.h2ohealthy.ui.profile
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.App
+import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.League
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoApiImpl
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoLocalImpl
@@ -121,10 +125,22 @@ class LeagueFragment : Fragment(), RefreshListener {
             }
         } else null
         val shareClick = View.OnClickListener {
-            //TODO share code and name
+            val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "Hi there. Use '${league!!.code}' code to join ${league!!.name} League in H2O Healthy Application."
+                )
+                type = "text/plain"
+            }
+            val shareIntent = Intent.createChooser(sendIntent, getString(R.string.share))
+            requireActivity().startActivity(shareIntent)
         }
         val leaveClick = View.OnClickListener {
-            //TODO leave league
+            activity.startLoading()
+            makeApiRequest {
+                viewModel.leave(requireActivity().getToken())
+            }
         }
 
         league?.let {
@@ -149,8 +165,13 @@ class LeagueFragment : Fragment(), RefreshListener {
             b.league = it
             activity.stopLoading()
         })
+        viewModel.ldLeave.observe(viewLifecycleOwner, EventObserver {
+            findNavController().navigateUp()
+            activity.stopLoading()
+        })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
             activity.stopLoading()
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
     }
 

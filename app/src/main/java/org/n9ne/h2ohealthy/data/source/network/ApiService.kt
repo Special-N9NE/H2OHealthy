@@ -128,4 +128,11 @@ interface ApiService {
     fun renameLeague(
         @Field("updateLeague") data: String
     ): Call<Message>
+
+    @FormUrlEncoded
+    @POST("user.php")
+    fun leaveLeague(
+        @Header("Authorization") token: String,
+        @Field("leaveLeague") data: String = ""
+    ): Call<Message>
 }

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.widget.FrameLayout
+import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.DialogCreateLeagueBinding
 import org.n9ne.h2ohealthy.databinding.DialogJoinLeagueBinding
 import org.n9ne.h2ohealthy.databinding.DialogLeagueSettingBinding
@@ -13,12 +14,12 @@ import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
 
 
 fun Activity.createLeagueDialog(
-    joinListener: View.OnClickListener,
+    editMode: Boolean,
+    joinListener: View.OnClickListener?,
     createListener: AddLeagueListener
 ): Dialog {
     val dialog = Dialog(this)
     val binding = DialogCreateLeagueBinding.inflate(layoutInflater)
-    dialog.setCanceledOnTouchOutside(true)
     dialog.setContentView(binding.root)
     dialog.window?.setLayout(
         FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT
@@ -28,8 +29,19 @@ fun Activity.createLeagueDialog(
     binding.ivClose.setOnClickListener {
         dialog.dismiss()
     }
+
+    if (editMode) {
+        binding.tvJoin.visibility = View.GONE
+        binding.tvTitle.text = getString(R.string.rename_league)
+        binding.bCreate.text = getString(R.string.rename)
+    } else {
+        binding.tvJoin.visibility = View.VISIBLE
+        binding.tvTitle.text = getString(R.string.create_league)
+        binding.bCreate.text = getString(R.string.create)
+    }
+
     binding.tvJoin.setOnClickListener {
-        joinListener.onClick(binding.tvJoin)
+        joinListener!!.onClick(binding.tvJoin)
     }
     binding.bCreate.setOnClickListener {
         createListener.addLeague(binding.etName.text.toString())

@@ -1,6 +1,5 @@
 package org.n9ne.h2ohealthy.data.source.network
 
-import org.n9ne.h2ohealthy.data.model.CreateLeague
 import org.n9ne.h2ohealthy.data.source.objects.GetCups
 import org.n9ne.h2ohealthy.data.source.objects.GetMembers
 import org.n9ne.h2ohealthy.data.source.objects.GetProgress
@@ -121,6 +120,12 @@ interface ApiService {
     @POST("league.php")
     fun getLeague(
         @Header("Authorization") token: String,
-        @Field("getLeague") name: String =""
+        @Field("getLeague") name: String = ""
     ): Call<GetMembers>
+
+    @FormUrlEncoded
+    @POST("league.php")
+    fun renameLeague(
+        @Field("updateLeague") data: String
+    ): Call<Message>
 }

@@ -44,4 +44,38 @@ class LeagueViewModel : ViewModel() {
             })
         }
     }
+
+
+    fun renameLeague(name: String, code: String) {
+
+        if (name.trim().isBlank()) {
+            ldError.postValue(Event("enter name"))
+            return
+        }
+        if (name.trim().length <= 2) {
+            ldError.postValue(Event("name is too short"))
+            return
+        }
+        if (!name.trim().matches("([A-Za-z0-9]+\\-*)".toRegex())) {
+            ldError.postValue(Event("name can only be letters, digits and dashes"))
+            return
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            repo?.renameLeague(name, code, object : RepoCallback<String> {
+                override fun onSuccessful(response: String) {
+
+                    val league = ldLeague.value!!.peekContent()
+                    league.name = name
+
+                    ldLeague.postValue(Event(league))
+                }
+
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
+                    if (isToken) ldToken.postValue(Event(Unit))
+                    else ldError.postValue(Event(error))
+                }
+            })
+        }
+    }
 }

@@ -225,10 +225,10 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
 
-            joinLeagueDialog?.let {d->
+            joinLeagueDialog?.let { d ->
                 setEnableDialog(d, true)
             }
-            createLeagueDialog?.let {d->
+            createLeagueDialog?.let { d ->
                 setEnableDialog(d, true)
             }
 
@@ -258,7 +258,7 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
                 createLeagueDialog!!.dismiss()
             }
         }
-        createLeagueDialog = requireActivity().createLeagueDialog(joinClick, createClick)
+        createLeagueDialog = requireActivity().createLeagueDialog(false, joinClick, createClick)
 
         createLeagueDialog!!.show()
     }

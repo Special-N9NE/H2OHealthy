@@ -12,6 +12,7 @@ import org.n9ne.h2ohealthy.data.source.objects.GetMembers
 import org.n9ne.h2ohealthy.data.source.objects.GetUser
 import org.n9ne.h2ohealthy.data.source.objects.InsertCup
 import org.n9ne.h2ohealthy.data.source.objects.Message
+import org.n9ne.h2ohealthy.data.source.objects.RenameLeague
 import org.n9ne.h2ohealthy.data.source.objects.UpdateCup
 import org.n9ne.h2ohealthy.util.Mapper.toCups
 import org.n9ne.h2ohealthy.util.Mapper.toMembers
@@ -378,6 +379,45 @@ class ProfileRepoApiImpl(private val client: Client) : ProfileRepo {
                 }
 
                 override fun onFailure(call: Call<GetMembers>, t: Throwable) {
+
+                    if (t.message?.contains(Messages.NO_INTERNET) == true) {
+                        val result = Messages.errorNetwork
+                        callback.onError(result, true)
+                    } else {
+                        val result = t.message.toString()
+                        callback.onError(result)
+                    }
+                }
+            })
+    }
+
+    override suspend fun renameLeague(name: String, code: String, callback: RepoCallback<String>) {
+        val json = Gson().toJson(RenameLeague(name, code))
+        client.getApiService().renameLeague(json)
+            .enqueue(object : Callback<Message> {
+                override fun onResponse(
+                    call: Call<Message>, response: Response<Message>
+                ) {
+                    if (response.isSuccessful) {
+                        val result = response.body()!!
+
+                        if (result.status) {
+                            callback.onSuccessful(result.message)
+                        } else {
+                            val message = result.message
+                            if (message == "-1")
+                                callback.onError(message, isToken = true)
+                            else
+                                callback.onError(message)
+                        }
+
+                    } else {
+                        val result = response.code().toString()
+                        callback.onError(result)
+                    }
+                }
+
+                override fun onFailure(call: Call<Message>, t: Throwable) {
 
                     if (t.message?.contains(Messages.NO_INTERNET) == true) {
                         val result = Messages.errorNetwork

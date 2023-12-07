@@ -1,5 +1,6 @@
 package org.n9ne.h2ohealthy.ui.profile
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoLocalImpl
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentLeagueBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
+import org.n9ne.h2ohealthy.ui.dialog.createLeagueDialog
 import org.n9ne.h2ohealthy.ui.dialog.leagueSettingDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.MemberAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.LeagueViewModel
@@ -20,6 +22,7 @@ import org.n9ne.h2ohealthy.util.EventObserver
 import org.n9ne.h2ohealthy.util.Saver.getEmail
 import org.n9ne.h2ohealthy.util.Saver.getToken
 import org.n9ne.h2ohealthy.util.Utils.isOnline
+import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
 import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
 
 
@@ -34,6 +37,7 @@ class LeagueFragment : Fragment(), RefreshListener {
     private lateinit var activity: MainActivity
 
     private var league: League? = null
+    private lateinit var dialogRename: Dialog
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -50,6 +54,7 @@ class LeagueFragment : Fragment(), RefreshListener {
         setClicks()
         setupObserver()
 
+        activity.startLoading()
         makeApiRequest {
             viewModel.getMembers(requireActivity().getToken())
         }
@@ -101,7 +106,18 @@ class LeagueFragment : Fragment(), RefreshListener {
 
         val renameClick = if (isAdmin) {
             View.OnClickListener {
-                //TODO open rename dialog
+                dialogRename =
+                    requireActivity().createLeagueDialog(true, null, object : AddLeagueListener {
+                        override fun addLeague(input: String) {
+                            activity.startLoading()
+                            makeApiRequest {
+                                viewModel.renameLeague(input, league!!.code)
+                            }
+                            dialogRename.dismiss()
+                        }
+                    })
+
+                dialogRename.show()
             }
         } else null
         val shareClick = View.OnClickListener {
@@ -127,11 +143,11 @@ class LeagueFragment : Fragment(), RefreshListener {
     private fun setupObserver() {
         viewModel.ldMembers.observe(viewLifecycleOwner, EventObserver {
             b.rvMember.adapter = MemberAdapter(it)
-            activity.stopLoading()
         })
         viewModel.ldLeague.observe(viewLifecycleOwner, EventObserver {
             league = it
             b.league = it
+            activity.stopLoading()
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
             activity.stopLoading()

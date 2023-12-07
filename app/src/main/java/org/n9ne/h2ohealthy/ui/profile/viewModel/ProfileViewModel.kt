@@ -94,12 +94,16 @@ class ProfileViewModel : ViewModel() {
             ldError.postValue(Event("name is too short"))
             return
         }
+        if (!name.trim().matches("([A-Za-z0-9]+\\-*)".toRegex())) {
+            ldError.postValue(Event("name can only be letters, digits and dashes"))
+            return
+        }
 
         viewModelScope.launch(Dispatchers.IO) {
             repo?.createLeague(name, token, object : RepoCallback<CreateLeague> {
                 override fun onSuccessful(response: CreateLeague) {
 
-                    val league = League(response.id.toLong(), null, null,  name, response.code)
+                    val league = League(response.id.toLong(), null, null, name, response.code)
                     syncLeague(league.id!!, league, true)
                     joinLeague(response.code, token)
                 }

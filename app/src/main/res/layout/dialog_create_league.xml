@@ -8,7 +8,7 @@
     android:padding="32dp">
 
     <TextView
-        android:id="@+id/_textView3"
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_bold"
@@ -26,12 +26,12 @@
         android:layout_height="0dp"
         android:padding="4dp"
         android:src="@drawable/ic_close"
-        app:layout_constraintBottom_toBottomOf="@+id/_textView3"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
         app:layout_constraintDimensionRatio="1"
-        app:layout_constraintEnd_toStartOf="@+id/_textView3"
+        app:layout_constraintEnd_toStartOf="@+id/tvTitle"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/_textView3" />
+        app:layout_constraintTop_toTopOf="@+id/tvTitle" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/_cardView"
@@ -44,7 +44,7 @@
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/_textView3">
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle">
 
         <EditText
             android:id="@+id/etName"

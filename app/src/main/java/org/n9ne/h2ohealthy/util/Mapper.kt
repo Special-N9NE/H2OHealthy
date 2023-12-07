@@ -19,7 +19,7 @@ object Mapper {
 
     fun List<GetProgress.Data>.toActivities(): ArrayList<Activity> {
         val result = arrayListOf<Activity>()
-        this.forEach {
+        forEach {
             result.add(Activity(it.id.toLong(), it.idUser.toLong(), it.amout, it.date, it.time))
         }
         return result
@@ -27,7 +27,7 @@ object Mapper {
 
     fun List<WaterEntity>.toActivityList(): ArrayList<Activity> {
         val result = arrayListOf<Activity>()
-        this.forEach {
+        forEach {
             result.add(Activity(it.id, it.idUser, it.amount, it.date, it.time))
         }
         return result
@@ -74,7 +74,7 @@ object Mapper {
             weight,
             height,
             genderText,
-            score,
+            score.toInt(),
             profile
         )
     }
@@ -82,49 +82,49 @@ object Mapper {
     fun User.toUserEntity(): UserEntity {
         var idActivity = 0
         ActivityType.entries.forEachIndexed { index, it ->
-            if (it == this.activityType)
+            if (it == activityType)
                 idActivity = index
         }
 
         val gender = if (this.gender == "Male") 1 else 0
 
         return UserEntity(
-            this.id, idActivity.toLong(), this.idLeague,
-            this.email, this.password,
-            this.joinDate, this.name,
-            this.birthDate, this.weight,
-            this.height, gender,
-            this.score, this.target, this.profile
+            id, idActivity.toLong(), idLeague,
+            email, password,
+            joinDate, name,
+            birthDate, weight,
+            height, gender,
+            score.toString(), target, profile
         )
     }
 
     fun GetUser.User.toUser(): User {
 
-        val activity = ActivityType.entries[this.idActivity - 1]
-        val age = DateUtils.calculateAge(this.birthdate)
-        val genderText = if (this.gender == 1) "Male" else "Female"
+        val activity = ActivityType.entries[idActivity - 1]
+        val age = DateUtils.calculateAge(birthdate)
+        val genderText = if (gender == 1) "Male" else "Female"
 
         return User(
-            this.id.toLong(),
+            id.toLong(),
             activity,
-            this.idleague.toLong(),
-            this.email,
-            this.password,
-            this.name,
-            this.date,
-            this.target,
+            idleague.toLong(),
+            email,
+            password,
+            name,
+            date,
+            target,
             age.toString(),
-            this.birthdate,
-            this.weight.toString(),
-            this.height.toString(),
+            birthdate,
+            weight.toString(),
+            height.toString(),
             genderText,
-            this.score,
-            this.profile
+            score,
+            profile
         )
     }
 
     fun GetCups.toCups(): List<Cup> {
-        val cups = this.data!!
+        val cups = data!!
         val result = arrayListOf<Cup>()
         cups.forEach {
             result.add(
@@ -142,7 +142,7 @@ object Mapper {
 
     fun List<GlassEntity>.toCupList(): ArrayList<Cup> {
         val result = arrayListOf<Cup>()
-        this.forEach {
+        forEach {
             result.add(Cup(it.id, it.idUser, it.name, it.capacity.toInt(), it.color))
         }
         return result

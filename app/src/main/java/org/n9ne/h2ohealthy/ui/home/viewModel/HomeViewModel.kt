@@ -63,8 +63,6 @@ class HomeViewModel : ViewModel() {
 
                     ldActivities.postValue(Utils.calculateActivities(response))
 
-                    val score = calculateScore(Utils.calculateActivities(response))
-                    syncScore(score)
                     syncProgress(response)
                 }
 
@@ -152,7 +150,7 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    db?.roomDao()!!.updateScore(score)
+                    db?.roomDao()!!.updateScore(score.toString())
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

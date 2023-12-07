@@ -17,7 +17,7 @@ data class UserEntity(
     @ColumnInfo val weight: String,
     @ColumnInfo val height: String,
     @ColumnInfo val gender: Int,
-    @ColumnInfo val score: Int,
+    @ColumnInfo val score: String,
     @ColumnInfo val target: String,
     @ColumnInfo val profile: String
 )

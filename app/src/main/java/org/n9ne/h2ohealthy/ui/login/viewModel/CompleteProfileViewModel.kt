@@ -114,7 +114,7 @@ class CompleteProfileViewModel : ViewModel() {
                     data.date, data.name,
                     data.birthdate, data.weight,
                     data.height, data.gender.toInt(),
-                    data.score.toInt(), data.target, data.profile
+                    data.score, data.target, data.profile
                 )
                 AppDatabase.getDatabase(context).roomDao().insertUser(user)
             }

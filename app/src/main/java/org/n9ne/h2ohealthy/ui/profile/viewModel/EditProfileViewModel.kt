@@ -13,7 +13,6 @@ import org.n9ne.h2ohealthy.data.model.UpdateUser
 import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepo
 import org.n9ne.h2ohealthy.data.source.local.AppDatabase
-import org.n9ne.h2ohealthy.data.source.objects.Auth
 import org.n9ne.h2ohealthy.util.Event
 import org.n9ne.h2ohealthy.util.Mapper.toUserEntity
 import org.n9ne.h2ohealthy.util.RepoCallback
@@ -51,9 +50,7 @@ class EditProfileViewModel : ViewModel() {
     }
 
     fun saveData(user: UpdateUser, token: String?) {
-        //TODO save image
-
-        if (!isUserValid(user)) {
+       if (!isUserValid(user)) {
             return
         }
 

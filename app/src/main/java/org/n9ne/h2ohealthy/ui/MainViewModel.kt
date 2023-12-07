@@ -26,6 +26,11 @@ class MainViewModel : ViewModel() {
     val ldError = MutableLiveData<Event<String>>()
 
     fun insertWater(amount: String, token: String?) {
+        if (amount.toDouble() >= 3) {
+            ldError.postValue(Event("amount is too high"))
+            return
+        }
+
         val date = DateUtils.getDate()
         val time = DateUtils.getTime()
 

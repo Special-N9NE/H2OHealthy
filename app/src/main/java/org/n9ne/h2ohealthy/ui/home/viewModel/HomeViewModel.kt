@@ -75,6 +75,11 @@ class HomeViewModel : ViewModel() {
 
 
     fun updateWater(activity: Activity, token: String?) {
+        if (activity.amount.toDouble() >= 3) {
+            ldError.postValue(Event("amount is too high"))
+            return
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
             repo?.updateWater(activity.id!!, activity.amount, token, object : RepoCallback<String> {
                 override fun onSuccessful(response: String) {

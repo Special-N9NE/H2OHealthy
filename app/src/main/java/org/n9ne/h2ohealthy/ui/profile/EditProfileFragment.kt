@@ -1,14 +1,12 @@
 package org.n9ne.h2ohealthy.ui.profile
 
 import android.app.DatePickerDialog
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -38,7 +36,6 @@ class EditProfileFragment : Fragment(), Navigator {
     private lateinit var apiRepo: ProfileRepoApiImpl
     private lateinit var date: String
     private lateinit var activity: MainActivity
-    private var newProfile: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -46,6 +43,7 @@ class EditProfileFragment : Fragment(), Navigator {
         b = FragmentEditProfileBinding.inflate(inflater)
         return b.root
     }
+    //TODO set some default profiles so user can pick it
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,8 +65,6 @@ class EditProfileFragment : Fragment(), Navigator {
 
             activity.startLoading()
             makeApiRequest {
-
-                //TODO show loading dialog
 
                 val name = b.etName.text.toString()
                 val email = b.etEmail.text.toString()
@@ -94,9 +90,6 @@ class EditProfileFragment : Fragment(), Navigator {
         }
         b.etBirthday.setOnClickListener {
             showDateDialog()
-        }
-        b.ivProfile.setOnClickListener {
-            galleryLauncher.launch("image/*")
         }
     }
 
@@ -199,16 +192,6 @@ class EditProfileFragment : Fragment(), Navigator {
             requireContext(), R.layout.view_drop_down, viewModel.genders
         )
         b.spGender.setAdapter(adapterGender)
-    }
-
-    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) {
-        newProfile = it
-        try {
-            b.ivProfile.setImageURI(newProfile)
-            //TODO save image
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
     private fun setupObserver() {

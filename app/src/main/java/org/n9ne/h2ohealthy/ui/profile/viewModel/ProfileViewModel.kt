@@ -157,8 +157,7 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun contactUsClick() {
-        //TODO change email
-        ldContactClick.postValue(Event("abigdeli42@gmail.com"))
+        ldContactClick.postValue(Event("dev.kaizen.team@gmail.com"))
     }
 
     fun logout() {

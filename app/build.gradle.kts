@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("kotlin-android")
+
 }
 
 android {
@@ -41,6 +43,8 @@ android {
 }
 
 dependencies {
+    implementation("com.github.BoyzDroizy:SimpleAndroidBarChart:1.0.1")
+
     implementation("com.github.SimformSolutionsPvtLtd:SSPullToRefresh:1.5.1")
 
     implementation("com.airbnb.android:lottie:6.1.0")

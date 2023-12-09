@@ -15,7 +15,6 @@ import org.n9ne.h2ohealthy.data.source.objects.GetMembers
 import org.n9ne.h2ohealthy.data.source.objects.GetProgress
 import org.n9ne.h2ohealthy.data.source.objects.GetUser
 
-
 object Mapper {
 
     fun List<GetProgress.Data>.toActivities(): ArrayList<Activity> {

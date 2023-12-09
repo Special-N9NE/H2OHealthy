@@ -3,7 +3,6 @@ package org.n9ne.h2ohealthy.util
 import android.view.View
 import androidx.lifecycle.Observer
 
-
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.
  */

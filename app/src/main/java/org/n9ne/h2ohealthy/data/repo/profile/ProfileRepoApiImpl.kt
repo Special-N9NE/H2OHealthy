@@ -1,6 +1,7 @@
 package org.n9ne.h2ohealthy.data.repo.profile
 
 import com.google.gson.Gson
+import org.n9ne.h2ohealthy.data.model.Activity
 import org.n9ne.h2ohealthy.data.model.CreateLeague
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.model.GetLeague
@@ -9,11 +10,13 @@ import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.source.network.Client
 import org.n9ne.h2ohealthy.data.source.objects.GetCups
 import org.n9ne.h2ohealthy.data.source.objects.GetMembers
+import org.n9ne.h2ohealthy.data.source.objects.GetProgress
 import org.n9ne.h2ohealthy.data.source.objects.GetUser
 import org.n9ne.h2ohealthy.data.source.objects.InsertCup
 import org.n9ne.h2ohealthy.data.source.objects.Message
 import org.n9ne.h2ohealthy.data.source.objects.RenameLeague
 import org.n9ne.h2ohealthy.data.source.objects.UpdateCup
+import org.n9ne.h2ohealthy.util.Mapper.toActivities
 import org.n9ne.h2ohealthy.util.Mapper.toCups
 import org.n9ne.h2ohealthy.util.Mapper.toMembers
 import org.n9ne.h2ohealthy.util.Mapper.toUser
@@ -24,6 +27,43 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ProfileRepoApiImpl(private val client: Client) : ProfileRepo {
+    override suspend fun getAllActivity(token: String?, callback: RepoCallback<List<Activity>>) {
+        client.getApiService().getProgress(token!!)
+            .enqueue(object : Callback<GetProgress> {
+                override fun onResponse(
+                    call: Call<GetProgress>, response: Response<GetProgress>
+                ) {
+                    if (response.isSuccessful) {
+                        val result = response.body()!!
+
+                        if (result.status) {
+                            callback.onSuccessful(result.data!!.toActivities())
+                        } else {
+                            val message = result.message!!
+                            if (message == "-1")
+                                callback.onError(message, isToken = true)
+                            else
+                                callback.onError(message)
+                        }
+
+                    } else {
+                        val result = response.code().toString()
+                        callback.onError(result)
+                    }
+                }
+
+                override fun onFailure(call: Call<GetProgress>, t: Throwable) {
+
+                    if (t.message?.contains(Messages.NO_INTERNET) == true) {
+                        val result = Messages.errorNetwork
+                        callback.onError(result, true)
+                    } else {
+                        val result = t.message.toString()
+                        callback.onError(result)
+                    }
+                }
+            })
+    }
 
     override suspend fun getUser(token: String?, callback: RepoCallback<User>) {
         client.getApiService().getUser(token!!)

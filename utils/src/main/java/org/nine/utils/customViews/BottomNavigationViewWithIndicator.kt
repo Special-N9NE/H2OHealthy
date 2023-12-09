@@ -7,9 +7,11 @@ import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Shader
+import android.os.Build
 import android.util.AttributeSet
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.doOnPreDraw
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator

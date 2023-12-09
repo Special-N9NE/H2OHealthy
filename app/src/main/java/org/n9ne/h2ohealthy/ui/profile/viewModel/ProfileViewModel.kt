@@ -39,8 +39,7 @@ class ProfileViewModel : ViewModel() {
 
     val settings = listOf(
         Setting("Password", R.drawable.ic_password, SettingItem.PASSWORD),
-        Setting("Activity History", R.drawable.ic_history, SettingItem.HISTORY),
-        Setting("Workout Progress", R.drawable.ic_progress, SettingItem.PROGRESS),
+        Setting("Stats", R.drawable.ic_progress, SettingItem.STATS),
         Setting("Glasses", R.drawable.ic_password, SettingItem.GLASS),
     )
 

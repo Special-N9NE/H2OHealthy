@@ -24,9 +24,6 @@
         <action
             android:id="@+id/profile_to_cups"
             app:destination="@id/cups" />
-        <action
-            android:id="@+id/profile_to_stats"
-            app:destination="@id/stats" />
     </fragment>
     <fragment
         android:id="@+id/editProfile"
@@ -43,9 +40,4 @@
         android:name="org.n9ne.h2ohealthy.ui.profile.CupsFragment"
         android:label="CupsFragment"
         tools:layout="@layout/fragment_cups" />
-    <fragment
-        android:id="@+id/stats"
-        android:name="org.n9ne.h2ohealthy.ui.profile.StatsFragment"
-        android:label="StatsFragment"
-        tools:layout="@layout/fragment_stats"/>
 </navigation>

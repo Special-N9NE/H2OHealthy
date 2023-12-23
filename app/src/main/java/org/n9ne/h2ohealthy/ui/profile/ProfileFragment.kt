@@ -126,7 +126,7 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
                 when (setting.type) {
                     //TODO
                     SettingItem.PASSWORD -> Log.e("WWW", "")
-                    SettingItem.STATS -> shouldNavigate(R.id.profile_to_stats)
+                    SettingItem.STATS -> Log.e("WWW", "")
                     SettingItem.GLASS -> shouldNavigate(R.id.profile_to_cups)
                 }
             }

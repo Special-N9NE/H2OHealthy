@@ -13,7 +13,9 @@
         <item name="colorAccent">@color/black</item>
     </style>
 
-    <style name="Theme.AquaTracker" parent="Base.Theme.AquaTracker" />
+    <style name="Theme.AquaTracker" parent="Base.Theme.AquaTracker">
+        <item name="android:layoutDirection">ltr</item>
+    </style>
 
     <style name="VerticalProgressBarStyle">
         <item name="gradient">true</item>
@@ -45,5 +47,14 @@
         <item name="android:paddingBottom">16dp</item>
         <item name="android:textColor">@color/blackText</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Spinner" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:background">@drawable/shape_et</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:inputType">none</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/gray</item>
     </style>
 </resources>

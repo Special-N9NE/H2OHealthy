@@ -43,6 +43,7 @@ android {
 }
 
 dependencies {
+    implementation("com.github.majorkik:SparkLineLayout:1.0.1")
     implementation("com.github.BoyzDroizy:SimpleAndroidBarChart:1.0.1")
 
     implementation("com.github.SimformSolutionsPvtLtd:SSPullToRefresh:1.5.1")
@@ -62,7 +63,7 @@ dependencies {
     implementation("me.saket.cascade:cascade-compose:2.3.0")
 
     implementation("com.github.bumptech.glide:glide:4.15.1")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+    kapt ("com.github.bumptech.glide:compiler:4.12.0")
 
     val roomVersion = "2.5.2"
     implementation("androidx.room:room-ktx:$roomVersion")

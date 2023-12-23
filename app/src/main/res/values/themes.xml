@@ -13,7 +13,9 @@
         <item name="colorAccent">@color/black</item>
     </style>
 
-    <style name="Theme.AquaTracker" parent="Base.Theme.AquaTracker" />
+    <style name="Theme.AquaTracker" parent="Base.Theme.AquaTracker">
+        <item name="android:layoutDirection">ltr</item>
+    </style>
 
     <style name="VerticalProgressBarStyle">
         <item name="gradient">true</item>

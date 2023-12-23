@@ -38,8 +38,8 @@ class ProfileViewModel : ViewModel() {
     val ldToken = MutableLiveData<Event<Unit>>()
 
     val settings = listOf(
-        Setting("Password", R.drawable.ic_password, SettingItem.PASSWORD),
-        Setting("Stats", R.drawable.ic_progress, SettingItem.STATS),
+//        Setting("Password", R.drawable.ic_password, SettingItem.PASSWORD),
+//        Setting("Stats", R.drawable.ic_progress, SettingItem.STATS),
         Setting("Glasses", R.drawable.ic_password, SettingItem.GLASS),
     )
 

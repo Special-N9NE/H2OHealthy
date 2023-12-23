@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "254407794176",
+    "project_id": "h2o-healthy",
+    "storage_bucket": "h2o-healthy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:254407794176:android:d1db046c810b8aa2e2c2e5",
+        "android_client_info": {
+          "package_name": "org.n9ne.h2ohealthy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFfPydokHH1LuQeVBekA-0fXMXIV4LnZg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

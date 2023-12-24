@@ -67,6 +67,8 @@ class MainViewModel : ViewModel() {
     }
 
     fun getCups(token: String?) {
+        if (token == null)
+            return
 
         viewModelScope.launch(Dispatchers.IO) {
             repo?.getCups(token, object : RepoCallback<List<Cup>> {

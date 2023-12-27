@@ -14,8 +14,8 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.doOnPreDraw
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import org.n9ne.h2ohealthy.R
-
+import org.n9ne.common.R.color
+import org.n9ne.common.R.dimen
 
 private const val DEFAULT_SCALE = 1f
 
@@ -27,8 +27,8 @@ class BottomNavigationViewWithIndicator : BottomNavigationView,
     private var animator: ValueAnimator? = null
 
     private val indicator = RectF()
-    private val ps = ResourcesCompat.getColor(resources, R.color.linearPurpleStart, context.theme)
-    private val pe = ResourcesCompat.getColor(resources, R.color.linearPurpleEnd, context.theme)
+    private val ps = ResourcesCompat.getColor(resources, color.linearPurpleStart, context.theme)
+    private val pe = ResourcesCompat.getColor(resources, color.linearPurpleEnd, context.theme)
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         shader = LinearGradient(
             0f,
@@ -41,8 +41,8 @@ class BottomNavigationViewWithIndicator : BottomNavigationView,
         )
     }
 
-    private val bottomOffset = resources.getDimension(R.dimen.bottom_margin)
-    private val defaultSize = resources.getDimension(R.dimen.default_size)
+    private val bottomOffset = resources.getDimension(dimen.bottom_margin)
+    private val defaultSize = resources.getDimension(dimen.default_size)
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -54,7 +54,8 @@ class BottomNavigationViewWithIndicator : BottomNavigationView,
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        if (externalSelectedListener?.onNavigationItemSelected(item) != false && item.itemId != R.id.add
+        val add = org.n9ne.common.R.id.add
+        if (externalSelectedListener?.onNavigationItemSelected(item) != false && item.itemId != add
         ) {
             onItemSelected(item.itemId)
             return true

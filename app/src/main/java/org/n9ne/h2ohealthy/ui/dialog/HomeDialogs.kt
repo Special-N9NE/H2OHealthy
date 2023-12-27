@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.res.ResourcesCompat
-import org.n9ne.h2ohealthy.R
+import org.n9ne.common.R.color
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.databinding.DialogActivityOptionsBinding
 import org.n9ne.h2ohealthy.databinding.DialogAddBinding
@@ -46,8 +46,8 @@ fun Activity.addWaterDialog(
             }
         }
     }
-    val blue = ResourcesCompat.getColor(this.resources, R.color.linearBlueEnd, this.theme)
-    val white = ResourcesCompat.getColor(this.resources, R.color.white, this.theme)
+    val blue = ResourcesCompat.getColor(this.resources, color.linearBlueEnd, this.theme)
+    val white = ResourcesCompat.getColor(this.resources, color.white, this.theme)
 
     if (selectedCup == null) {
         binding.etAmount.setText("")

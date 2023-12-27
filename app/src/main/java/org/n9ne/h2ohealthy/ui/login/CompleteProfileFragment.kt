@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.api.PersianPickerDate
 import ir.hamsaa.persiandatepicker.api.PersianPickerListener
+import org.n9ne.common.R.color
 import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.repo.auth.AuthRepoImpl
@@ -84,15 +85,16 @@ class CompleteProfileFragment : Fragment(), Navigator {
     }
 
     private fun setupSpinners() {
+        val view = org.n9ne.common.R.layout.view_drop_down
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
             requireContext(),
-            R.layout.view_drop_down, viewModel.activityLevels
+            view, viewModel.activityLevels
         )
         b.spActivity.setAdapter(adapter)
 
         val adapterGender: ArrayAdapter<String> = ArrayAdapter<String>(
             requireContext(),
-            R.layout.view_drop_down, viewModel.genders
+            view, viewModel.genders
         )
         b.spGender.setAdapter(adapterGender)
     }
@@ -152,7 +154,7 @@ class CompleteProfileFragment : Fragment(), Navigator {
             .setMaxMonth(PersianDatePickerDialog.THIS_MONTH)
             .setMaxDay(PersianDatePickerDialog.THIS_DAY)
             .setInitDate(1380, 7, 26)
-            .setActionTextColor(resources.getColor(R.color.linearBlueEnd, requireContext().theme))
+            .setActionTextColor(resources.getColor(color.linearBlueEnd, requireContext().theme))
 //            .setTypeFace(
 //                Typeface.createFromAsset(
 //                    requireContext().assets,

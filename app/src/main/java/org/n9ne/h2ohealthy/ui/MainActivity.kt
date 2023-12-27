@@ -42,6 +42,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var navController: NavController
 
+    val home = org.n9ne.common.R.id.home
+    val add = org.n9ne.common.R.id.add
+    val profile = org.n9ne.common.R.id.profile
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         b = ActivityMainBinding.inflate(layoutInflater)
@@ -73,18 +77,18 @@ class MainActivity : AppCompatActivity() {
 
         b.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.home -> {
+                home -> {
                     navController.popBackStack()
-                    navController.navigate(R.id.home)
+                    navController.navigate(home)
                 }
 
-                R.id.add -> {
+                add -> {
                     navigationAddClick()
                 }
 
-                R.id.profile -> {
+                profile -> {
                     navController.popBackStack()
-                    navController.navigate(R.id.profile)
+                    navController.navigate(profile)
                 }
 
                 else -> {}
@@ -133,7 +137,7 @@ class MainActivity : AppCompatActivity() {
 
     fun goHome() {
         navController.popBackStack()
-        navController.navigate(R.id.home)
+        navController.navigate(home)
     }
 
     fun reloadCups(list: List<Cup>) {

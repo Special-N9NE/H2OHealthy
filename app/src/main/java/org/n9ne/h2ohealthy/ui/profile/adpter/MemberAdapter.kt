@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.n9ne.h2ohealthy.R
+import org.n9ne.common.R.color
 import org.n9ne.h2ohealthy.data.model.Member
 import org.n9ne.h2ohealthy.databinding.ItemMemberBinding
 import org.n9ne.h2ohealthy.util.setGradient
@@ -20,8 +20,8 @@ class MemberAdapter(
         fun setData(item: Member, position: Int) {
             b.item = item
 
-            b.tvNumber.setGradient(context, R.color.linearPurpleStart, R.color.linearPurpleEnd)
-            b.tvScore.setGradient(context, R.color.linearPurpleStart, R.color.linearPurpleEnd)
+            b.tvNumber.setGradient(context, color.linearPurpleStart, color.linearPurpleEnd)
+            b.tvScore.setGradient(context, color.linearPurpleStart, color.linearPurpleEnd)
 
             b.tvNumber.text = (position + 1).toString()
             b.tvScore.text = item.score.toString()

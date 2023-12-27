@@ -14,6 +14,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import org.n9ne.common.R.color
+import org.n9ne.common.R.drawable
+import org.n9ne.common.R.string
 import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.Setting
@@ -38,7 +41,6 @@ import org.n9ne.h2ohealthy.util.interfaces.Navigator
 import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
 import org.n9ne.h2ohealthy.util.interfaces.SettingClickListener
 import org.n9ne.h2ohealthy.util.setGradient
-
 
 class ProfileFragment : Fragment(), Navigator, RefreshListener {
 
@@ -137,12 +139,12 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
     }
 
     private fun setGradients() {
-        b.tvAge.setGradient(requireContext(), R.color.linearBlueStart, R.color.linearBlueEnd)
-        b.tvWeight.setGradient(requireContext(), R.color.linearBlueStart, R.color.linearBlueEnd)
-        b.tvHeight.setGradient(requireContext(), R.color.linearBlueStart, R.color.linearBlueEnd)
-        b.tvLeague.setGradient(requireContext(), R.color.linearBlueStart, R.color.linearBlueEnd)
+        b.tvAge.setGradient(requireContext(),    color.linearBlueStart, color.linearBlueEnd)
+        b.tvWeight.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
+        b.tvHeight.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
+        b.tvLeague.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
 
-        b.tvScore.setGradient(requireContext(), R.color.linearPurpleStart, R.color.linearPurpleEnd)
+        b.tvScore.setGradient(requireContext(), color.linearPurpleStart, color.linearPurpleEnd)
     }
 
     private fun setClicks() {
@@ -163,16 +165,16 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
         hasLeague = user.idLeague != 0L
         b.tvName.text = user.name
         b.tvScore.text = user.score.toString()
-        b.tvWeight.text = "${user.weight}${getString(R.string.kg)}"
-        b.tvHeight.text = "${user.height}${getString(R.string.cm)}"
+        b.tvWeight.text = "${user.weight}${getString(string.kg)}"
+        b.tvHeight.text = "${user.height}${getString(string.cm)}"
 
         b.tvAge.text = user.age
 
         if (user.profile.isNotEmpty()) {
             Glide.with(requireContext()).load(user.profile)
                 .apply(
-                    RequestOptions().placeholder(R.drawable.image_profile)
-                        .error(R.drawable.image_profile)
+                    RequestOptions().placeholder(drawable.image_profile)
+                        .error(drawable.image_profile)
                 ).into(b.ivProfile)
         }
     }

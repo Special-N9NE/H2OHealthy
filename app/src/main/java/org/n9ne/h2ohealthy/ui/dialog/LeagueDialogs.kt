@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.widget.FrameLayout
 import org.n9ne.h2ohealthy.R
+import org.n9ne.common.R.string
 import org.n9ne.h2ohealthy.databinding.DialogCreateLeagueBinding
 import org.n9ne.h2ohealthy.databinding.DialogJoinLeagueBinding
 import org.n9ne.h2ohealthy.databinding.DialogLeagueSettingBinding
@@ -32,12 +33,12 @@ fun Activity.createLeagueDialog(
 
     if (editMode) {
         binding.tvJoin.visibility = View.GONE
-        binding.tvTitle.text = getString(R.string.rename_league)
-        binding.bCreate.text = getString(R.string.rename)
+        binding.tvTitle.text = getString(string.rename_league)
+        binding.bCreate.text = getString(string.rename)
     } else {
         binding.tvJoin.visibility = View.VISIBLE
-        binding.tvTitle.text = getString(R.string.create_league)
-        binding.bCreate.text = getString(R.string.create)
+        binding.tvTitle.text = getString(string.create_league)
+        binding.bCreate.text = getString(string.create)
     }
 
     binding.tvJoin.setOnClickListener {

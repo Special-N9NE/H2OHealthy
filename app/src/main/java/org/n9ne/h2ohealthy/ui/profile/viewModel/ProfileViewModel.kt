@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.n9ne.common.R.drawable
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.model.CreateLeague
 import org.n9ne.h2ohealthy.data.model.League
@@ -40,7 +41,7 @@ class ProfileViewModel : ViewModel() {
     val settings = listOf(
 //        Setting("Password", R.drawable.ic_password, SettingItem.PASSWORD),
 //        Setting("Stats", R.drawable.ic_progress, SettingItem.STATS),
-        Setting("Glasses", R.drawable.ic_password, SettingItem.GLASS),
+        Setting("Glasses", drawable.ic_password, SettingItem.GLASS),
     )
 
     fun getUser(token: String?) {

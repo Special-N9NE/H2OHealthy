@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import org.n9ne.common.R.color
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.FragmentSplashBinding
 import org.n9ne.h2ohealthy.ui.AuthActivity
@@ -54,8 +55,8 @@ class SplashFragment : Fragment(), Navigator {
     }
 
     private fun setTextColors() {
-        b.tvTitle1.setGradient(requireContext(), R.color.linearBlueStart, R.color.linearBlueEnd)
-        b.tvTitle2.setGradient(requireContext(), R.color.linearPurpleStart, R.color.linearPurpleEnd)
+        b.tvTitle1.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
+        b.tvTitle2.setGradient(requireContext(), color.linearPurpleStart, color.linearPurpleEnd)
     }
 
     override fun shouldNavigate(destination: Int, data: Bundle?) {

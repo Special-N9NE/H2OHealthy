@@ -29,6 +29,9 @@ import org.n9ne.h2ohealthy.util.Utils.isOnline
 import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
 import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
 
+import org.n9ne.common.R.color
+import org.n9ne.common.R.drawable
+import org.n9ne.common.R.string
 
 class LeagueFragment : Fragment(), RefreshListener {
 
@@ -133,7 +136,7 @@ class LeagueFragment : Fragment(), RefreshListener {
                 )
                 type = "text/plain"
             }
-            val shareIntent = Intent.createChooser(sendIntent, getString(R.string.share))
+            val shareIntent = Intent.createChooser(sendIntent, getString(string.share))
             requireActivity().startActivity(shareIntent)
         }
         val leaveClick = View.OnClickListener {

@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import me.saket.cascade.CascadePopupMenu
 import org.n9ne.h2ohealthy.R
+import org.n9ne.common.R.color
+import org.n9ne.common.R.drawable
 import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.databinding.ItemCupBinding
 import org.n9ne.h2ohealthy.util.interfaces.CupEditListener
@@ -74,14 +76,14 @@ class AddCupAdapter(
                     intArrayOf(
                         ResourcesCompat.getColor(
                             context.resources,
-                            R.color.red,
+                            color.red,
                             context.theme
                         )
                     )
                 )
 
-                add("Edit").setIcon(R.drawable.ic_edit)
-                add("Remove").setIcon(R.drawable.ic_close).iconTintList = colorStateList
+                add("Edit").setIcon(drawable.ic_edit)
+                add("Remove").setIcon(drawable.ic_close).iconTintList = colorStateList
             }
         }
 

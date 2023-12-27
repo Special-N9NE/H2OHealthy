@@ -21,6 +21,8 @@ import org.n9ne.h2ohealthy.ui.login.viewModel.RegisterViewModel
 import org.n9ne.h2ohealthy.util.EventObserver
 import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
+import org.n9ne.common.R.color
+import org.n9ne.common.R.drawable
 
 class RegisterFragment : Fragment(), Navigator {
 
@@ -83,8 +85,8 @@ class RegisterFragment : Fragment(), Navigator {
                 intArrayOf(-android.R.attr.state_checked),
                 intArrayOf(android.R.attr.state_checked)
             ), intArrayOf(
-                ResourcesCompat.getColor(resources, R.color.gray, requireContext().theme),
-                ResourcesCompat.getColor(resources, R.color.linearBlueEnd, requireContext().theme)
+                ResourcesCompat.getColor(resources, color.gray, requireContext().theme),
+                ResourcesCompat.getColor(resources, color.linearBlueEnd, requireContext().theme)
             )
         )
         CompoundButtonCompat.setButtonTintList(b.cbPolicy, colorStateList)
@@ -93,11 +95,11 @@ class RegisterFragment : Fragment(), Navigator {
     private fun setupObserver() {
         viewModel.ldPasswordClick.observe(viewLifecycleOwner) {
             if (it) {
-                b.ivPassword.setImageResource(R.drawable.ic_show_password)
+                b.ivPassword.setImageResource(drawable.ic_show_password)
                 b.etPassword.transformationMethod = null
 
             } else {
-                b.ivPassword.setImageResource(R.drawable.ic_hide)
+                b.ivPassword.setImageResource(drawable.ic_hide)
                 b.etPassword.transformationMethod = PasswordTransformationMethod()
             }
             b.etPassword.setSelection(b.etPassword.text.toString().length)

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
+import org.n9ne.common.R.drawable
 import org.n9ne.h2ohealthy.data.repo.auth.AuthRepoImpl
 import org.n9ne.h2ohealthy.databinding.FragmentLoginBinding
 import org.n9ne.h2ohealthy.ui.AuthActivity
@@ -73,11 +74,11 @@ class LoginFragment : Fragment(), Navigator {
     private fun setupObserver() {
         viewModel.ldPasswordClick.observe(viewLifecycleOwner) {
             if (it) {
-                b.ivPassword.setImageResource(R.drawable.ic_show_password)
+                b.ivPassword.setImageResource(drawable.ic_show_password)
                 b.etPassword.transformationMethod = null
 
             } else {
-                b.ivPassword.setImageResource(R.drawable.ic_hide)
+                b.ivPassword.setImageResource(drawable.ic_hide)
                 b.etPassword.transformationMethod = PasswordTransformationMethod()
             }
             b.etPassword.setSelection(b.etPassword.text.toString().length)

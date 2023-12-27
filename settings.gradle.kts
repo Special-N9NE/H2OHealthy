@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "H2OHealthy"
 include(":app")
+include(":common")

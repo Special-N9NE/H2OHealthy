@@ -10,24 +10,24 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.simform.refresh.SSPullToRefreshLayout
+import org.n9ne.common.model.Cup
+import org.n9ne.common.source.local.AppDatabase
+import org.n9ne.common.util.EventObserver
+import org.n9ne.common.util.Mapper.toLiter
+import org.n9ne.common.util.Saver.getToken
+import org.n9ne.common.util.Utils.isOnline
+import org.n9ne.common.util.interfaces.AddWaterListener
+import org.n9ne.common.util.interfaces.CupClickListener
+import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
-import org.n9ne.h2ohealthy.data.model.Cup
 import org.n9ne.h2ohealthy.data.repo.MainRepo
 import org.n9ne.h2ohealthy.data.repo.MainRepoApiImpl
 import org.n9ne.h2ohealthy.data.repo.MainRepoLocalImpl
-import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.ActivityMainBinding
 import org.n9ne.h2ohealthy.ui.dialog.addWaterDialog
 import org.n9ne.h2ohealthy.ui.dialog.cupDialog
 import org.n9ne.h2ohealthy.ui.home.adpter.CupsAdapter
-import org.n9ne.h2ohealthy.util.EventObserver
-import org.n9ne.h2ohealthy.util.Mapper.toLiter
-import org.n9ne.h2ohealthy.util.Saver.getToken
-import org.n9ne.h2ohealthy.util.Utils.isOnline
-import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
-import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
-import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
 
 
 class MainActivity : AppCompatActivity() {

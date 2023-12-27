@@ -8,7 +8,7 @@
 
         <variable
             name="league"
-            type="org.n9ne.h2ohealthy.data.model.League" />
+            type="org.n9ne.common.model.League" />
         <variable
             name="viewModel"
             type="org.n9ne.h2ohealthy.ui.profile.viewModel.LeagueViewModel" />

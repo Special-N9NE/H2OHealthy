@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.n9ne.h2ohealthy.databinding.FragmentLoginDoneBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
-import org.n9ne.h2ohealthy.util.Saver.setFirstTime
+import org.n9ne.common.util.Saver.setFirstTime
 
 
 class LoginDoneFragment : Fragment() {

@@ -6,7 +6,7 @@
 
         <variable
             name="item"
-            type="org.n9ne.h2ohealthy.data.model.Member" />
+            type="org.n9ne.common.model.Member" />
 
     </data>
 

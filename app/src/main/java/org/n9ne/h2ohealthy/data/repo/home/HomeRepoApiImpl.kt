@@ -1,14 +1,14 @@
 package org.n9ne.h2ohealthy.data.repo.home
 
 import com.google.gson.Gson
-import org.n9ne.h2ohealthy.data.model.Activity
-import org.n9ne.h2ohealthy.data.source.network.Client
-import org.n9ne.h2ohealthy.data.source.objects.GetProgress
-import org.n9ne.h2ohealthy.data.source.objects.Message
-import org.n9ne.h2ohealthy.data.source.objects.UpdateActivity
-import org.n9ne.h2ohealthy.util.Mapper.toActivities
-import org.n9ne.h2ohealthy.util.Messages
-import org.n9ne.h2ohealthy.util.RepoCallback
+import org.n9ne.common.model.Activity
+import org.n9ne.common.source.network.Client
+import org.n9ne.common.source.objects.GetProgress
+import org.n9ne.common.source.objects.Message
+import org.n9ne.common.source.objects.UpdateActivity
+import org.n9ne.common.util.Mapper.toActivities
+import org.n9ne.common.util.Messages
+import org.n9ne.common.util.RepoCallback
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

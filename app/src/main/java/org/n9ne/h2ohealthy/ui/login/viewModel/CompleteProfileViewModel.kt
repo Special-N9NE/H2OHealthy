@@ -9,16 +9,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import org.n9ne.h2ohealthy.data.model.ActivityType
-import org.n9ne.h2ohealthy.data.model.CompleteProfileResult
+import org.n9ne.common.model.ActivityType
+import org.n9ne.common.model.CompleteProfileResult
+import org.n9ne.common.source.local.AppDatabase
+import org.n9ne.common.source.local.UserEntity
+import org.n9ne.common.source.objects.Auth
+import org.n9ne.common.util.Event
+import org.n9ne.common.util.RepoCallback
+import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.h2ohealthy.data.repo.auth.AuthRepo
-import org.n9ne.h2ohealthy.data.source.local.AppDatabase
-import org.n9ne.h2ohealthy.data.source.local.UserEntity
-import org.n9ne.h2ohealthy.data.source.objects.Auth
-import org.n9ne.h2ohealthy.util.DateUtils
-import org.n9ne.h2ohealthy.util.Event
-import org.n9ne.h2ohealthy.util.RepoCallback
-import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
 
 class CompleteProfileViewModel : ViewModel() {
@@ -51,7 +50,7 @@ class CompleteProfileViewModel : ViewModel() {
         height: String,
         context: Context
     ) {
-        val date = DateUtils.getDate()
+        val date = org.n9ne.common.util.DateUtils.getDate()
         val genderId = if (gender == "Male") 1 else 0
         var activityId = "0"
         activityLevels.forEachIndexed { index, s ->
@@ -69,7 +68,7 @@ class CompleteProfileViewModel : ViewModel() {
 
         runBlocking {
             repo?.completeProfile(data, object : RepoCallback<CompleteProfileResult> {
-                override fun onSuccessful(response: CompleteProfileResult) {
+                override fun onSuccessful(response: org.n9ne.common.model.CompleteProfileResult) {
 
                     initDatabase(context, data, response.id)
                     ldToken.postValue(Event(response.token))

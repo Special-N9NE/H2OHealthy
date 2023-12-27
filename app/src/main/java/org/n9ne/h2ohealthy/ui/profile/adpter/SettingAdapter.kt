@@ -4,9 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.n9ne.h2ohealthy.data.model.Setting
+import org.n9ne.common.model.Setting
+import org.n9ne.common.util.interfaces.SettingClickListener
 import org.n9ne.h2ohealthy.databinding.ItemSettingBinding
-import org.n9ne.h2ohealthy.util.interfaces.SettingClickListener
 
 class SettingAdapter(
     private val list: List<Setting>,

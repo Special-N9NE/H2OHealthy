@@ -8,15 +8,14 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.n9ne.h2ohealthy.data.model.ActivityType
-import org.n9ne.h2ohealthy.data.model.UpdateUser
-import org.n9ne.h2ohealthy.data.model.User
+import org.n9ne.common.model.UpdateUser
+import org.n9ne.common.util.Event
+import org.n9ne.common.util.Mapper.toUserEntity
+import org.n9ne.common.util.RepoCallback
+import org.n9ne.common.util.interfaces.Navigator
+import org.n9ne.common.model.User
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepo
-import org.n9ne.h2ohealthy.data.source.local.AppDatabase
-import org.n9ne.h2ohealthy.util.Event
-import org.n9ne.h2ohealthy.util.Mapper.toUserEntity
-import org.n9ne.h2ohealthy.util.RepoCallback
-import org.n9ne.h2ohealthy.util.interfaces.Navigator
+import org.n9ne.common.source.local.AppDatabase
 
 class EditProfileViewModel : ViewModel() {
 
@@ -56,7 +55,7 @@ class EditProfileViewModel : ViewModel() {
 
         var idActivity = 0
         val gender = if (user.gender == "Male") 1 else 0
-        ActivityType.entries.forEachIndexed { index, it ->
+        org.n9ne.common.model.ActivityType.entries.forEachIndexed { index, it ->
             if (it.text == user.idActivity) {
                 idActivity = index + 1
             }

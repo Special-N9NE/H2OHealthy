@@ -14,18 +14,18 @@ import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.api.PersianPickerDate
 import ir.hamsaa.persiandatepicker.api.PersianPickerListener
 import org.n9ne.common.R.color
+import org.n9ne.common.model.UpdateUser
+import org.n9ne.common.source.local.AppDatabase
+import org.n9ne.common.util.EventObserver
+import org.n9ne.common.util.Saver.getToken
+import org.n9ne.common.util.Utils.isOnline
+import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.h2ohealthy.App
-import org.n9ne.h2ohealthy.data.model.UpdateUser
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoApiImpl
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoLocalImpl
-import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentEditProfileBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.profile.viewModel.EditProfileViewModel
-import org.n9ne.h2ohealthy.util.EventObserver
-import org.n9ne.h2ohealthy.util.Saver.getToken
-import org.n9ne.h2ohealthy.util.Utils.isOnline
-import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
 
 class EditProfileFragment : Fragment(), Navigator {

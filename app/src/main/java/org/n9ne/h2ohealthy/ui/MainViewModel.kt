@@ -6,14 +6,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.n9ne.h2ohealthy.data.model.Activity
-import org.n9ne.h2ohealthy.data.model.Cup
+import org.n9ne.common.source.local.AppDatabase
+import org.n9ne.common.util.Event
+import org.n9ne.common.util.Mapper.toWater
+import org.n9ne.common.util.RepoCallback
+import org.n9ne.common.model.Cup
 import org.n9ne.h2ohealthy.data.repo.MainRepo
-import org.n9ne.h2ohealthy.data.source.local.AppDatabase
-import org.n9ne.h2ohealthy.util.DateUtils
-import org.n9ne.h2ohealthy.util.Event
-import org.n9ne.h2ohealthy.util.Mapper.toWater
-import org.n9ne.h2ohealthy.util.RepoCallback
 
 class MainViewModel : ViewModel() {
 
@@ -31,10 +29,10 @@ class MainViewModel : ViewModel() {
             return
         }
 
-        val date = DateUtils.getDate()
-        val time = DateUtils.getTime()
+        val date = org.n9ne.common.util.DateUtils.getDate()
+        val time = org.n9ne.common.util.DateUtils.getTime()
 
-        val water = Activity(null, null, amount, date, time)
+        val water = org.n9ne.common.model.Activity(null, null, amount, date, time)
 
         viewModelScope.launch(Dispatchers.IO) {
             repo?.insertWater(water, token, object : RepoCallback<Long> {
@@ -52,7 +50,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    private fun syncWater(water: Activity) {
+    private fun syncWater(water: org.n9ne.common.model.Activity) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {

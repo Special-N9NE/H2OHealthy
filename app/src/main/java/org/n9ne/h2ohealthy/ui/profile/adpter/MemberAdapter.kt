@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.n9ne.common.R.color
-import org.n9ne.h2ohealthy.data.model.Member
+import org.n9ne.common.model.Member
+import org.n9ne.common.util.setGradient
 import org.n9ne.h2ohealthy.databinding.ItemMemberBinding
-import org.n9ne.h2ohealthy.util.setGradient
 
 class MemberAdapter(
     private val list: List<Member>

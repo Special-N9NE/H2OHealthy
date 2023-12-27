@@ -6,12 +6,11 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.widget.FrameLayout
-import org.n9ne.h2ohealthy.R
 import org.n9ne.common.R.string
+import org.n9ne.common.util.interfaces.AddLeagueListener
 import org.n9ne.h2ohealthy.databinding.DialogCreateLeagueBinding
 import org.n9ne.h2ohealthy.databinding.DialogJoinLeagueBinding
 import org.n9ne.h2ohealthy.databinding.DialogLeagueSettingBinding
-import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
 
 
 fun Activity.createLeagueDialog(

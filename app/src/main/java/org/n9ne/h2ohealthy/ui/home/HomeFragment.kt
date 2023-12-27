@@ -9,26 +9,25 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import org.n9ne.common.model.Progress
+import org.n9ne.common.source.local.AppDatabase
+import org.n9ne.common.util.EventObserver
+import org.n9ne.common.util.Mapper.toLiter
+import org.n9ne.common.util.Saver.getToken
+import org.n9ne.common.util.Utils.isOnline
+import org.n9ne.common.util.interfaces.AddWaterListener
+import org.n9ne.common.util.interfaces.MenuClickListener
+import org.n9ne.common.util.interfaces.RefreshListener
+import org.n9ne.common.util.interfaces.RemoveActivityListener
 import org.n9ne.h2ohealthy.App
-import org.n9ne.h2ohealthy.data.model.Activity
-import org.n9ne.h2ohealthy.data.model.Progress
 import org.n9ne.h2ohealthy.data.repo.home.HomeRepoApiImpl
 import org.n9ne.h2ohealthy.data.repo.home.HomeRepoLocalImpl
-import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentHomeBinding
 import org.n9ne.h2ohealthy.ui.AuthActivity
 import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.dialog.activityOptionDialog
 import org.n9ne.h2ohealthy.ui.home.adpter.ActivityAdapter
 import org.n9ne.h2ohealthy.ui.home.viewModel.HomeViewModel
-import org.n9ne.h2ohealthy.util.EventObserver
-import org.n9ne.h2ohealthy.util.Mapper.toLiter
-import org.n9ne.h2ohealthy.util.Saver.getToken
-import org.n9ne.h2ohealthy.util.Utils.isOnline
-import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
-import org.n9ne.h2ohealthy.util.interfaces.MenuClickListener
-import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
-import org.n9ne.h2ohealthy.util.interfaces.RemoveActivityListener
 import org.nine.linearprogressbar.LinearVerticalProgressBar
 
 
@@ -38,7 +37,7 @@ class HomeFragment : Fragment(), RefreshListener {
 
     private lateinit var b: FragmentHomeBinding
     private lateinit var viewModel: HomeViewModel
-    private var activityList = arrayListOf<Activity>()
+    private var activityList = arrayListOf<org.n9ne.common.model.Activity>()
     private lateinit var activity: MainActivity
 
     override fun onCreateView(
@@ -101,9 +100,9 @@ class HomeFragment : Fragment(), RefreshListener {
         request.invoke()
     }
 
-    private fun setActivityAdapter(list: List<Activity>) {
+    private fun setActivityAdapter(list: List<org.n9ne.common.model.Activity>) {
         val adapter = ActivityAdapter(list, object : MenuClickListener {
-            override fun onMenuClick(item: Activity) {
+            override fun onMenuClick(item: org.n9ne.common.model.Activity) {
                 val editListener = object : AddWaterListener {
                     override fun onAdd(amount: String) {
                         item.amount = amount.toDouble().toLiter().toString()

@@ -1,12 +1,12 @@
 package org.n9ne.h2ohealthy.data.repo.profile
 
-import org.n9ne.h2ohealthy.data.model.Activity
-import org.n9ne.h2ohealthy.data.model.CreateLeague
-import org.n9ne.h2ohealthy.data.model.Cup
-import org.n9ne.h2ohealthy.data.model.GetLeague
-import org.n9ne.h2ohealthy.data.model.UpdateUser
-import org.n9ne.h2ohealthy.data.model.User
-import org.n9ne.h2ohealthy.util.RepoCallback
+import org.n9ne.common.model.Activity
+import org.n9ne.common.model.CreateLeague
+import org.n9ne.common.model.Cup
+import org.n9ne.common.model.GetLeague
+import org.n9ne.common.model.UpdateUser
+import org.n9ne.common.model.User
+import org.n9ne.common.util.RepoCallback
 
 interface ProfileRepo {
     suspend fun getAllActivity(token: String? = null, callback: RepoCallback<List<Activity>>)

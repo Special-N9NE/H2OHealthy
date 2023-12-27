@@ -9,11 +9,11 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.res.ResourcesCompat
 import org.n9ne.common.R.color
-import org.n9ne.h2ohealthy.data.model.Cup
+import org.n9ne.common.model.Cup
+import org.n9ne.common.util.interfaces.AddWaterListener
+import org.n9ne.common.util.interfaces.RemoveActivityListener
 import org.n9ne.h2ohealthy.databinding.DialogActivityOptionsBinding
 import org.n9ne.h2ohealthy.databinding.DialogAddBinding
-import org.n9ne.h2ohealthy.util.interfaces.AddWaterListener
-import org.n9ne.h2ohealthy.util.interfaces.RemoveActivityListener
 
 fun Activity.addWaterDialog(
     layoutInflater: LayoutInflater,
@@ -63,7 +63,7 @@ fun Activity.addWaterDialog(
 }
 
 fun Activity.activityOptionDialog(
-    item: org.n9ne.h2ohealthy.data.model.Activity,
+    item: org.n9ne.common.model.Activity,
     listener: AddWaterListener,
     removeListener: RemoveActivityListener
 ): Dialog {

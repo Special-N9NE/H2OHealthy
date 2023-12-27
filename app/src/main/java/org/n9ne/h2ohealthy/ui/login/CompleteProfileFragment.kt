@@ -20,10 +20,10 @@ import org.n9ne.h2ohealthy.data.repo.auth.AuthRepoImpl
 import org.n9ne.h2ohealthy.databinding.FragmentCompleteProfileBinding
 import org.n9ne.h2ohealthy.ui.AuthActivity
 import org.n9ne.h2ohealthy.ui.login.viewModel.CompleteProfileViewModel
-import org.n9ne.h2ohealthy.util.EventObserver
-import org.n9ne.h2ohealthy.util.Saver.saveEmail
-import org.n9ne.h2ohealthy.util.Saver.saveToken
-import org.n9ne.h2ohealthy.util.interfaces.Navigator
+import org.n9ne.common.util.EventObserver
+import org.n9ne.common.util.Saver.saveEmail
+import org.n9ne.common.util.Saver.saveToken
+import org.n9ne.common.util.interfaces.Navigator
 
 
 class CompleteProfileFragment : Fragment(), Navigator {

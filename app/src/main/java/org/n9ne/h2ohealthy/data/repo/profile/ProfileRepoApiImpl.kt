@@ -1,27 +1,27 @@
 package org.n9ne.h2ohealthy.data.repo.profile
 
 import com.google.gson.Gson
-import org.n9ne.h2ohealthy.data.model.Activity
-import org.n9ne.h2ohealthy.data.model.CreateLeague
-import org.n9ne.h2ohealthy.data.model.Cup
-import org.n9ne.h2ohealthy.data.model.GetLeague
-import org.n9ne.h2ohealthy.data.model.UpdateUser
-import org.n9ne.h2ohealthy.data.model.User
-import org.n9ne.h2ohealthy.data.source.network.Client
-import org.n9ne.h2ohealthy.data.source.objects.GetCups
-import org.n9ne.h2ohealthy.data.source.objects.GetMembers
-import org.n9ne.h2ohealthy.data.source.objects.GetProgress
-import org.n9ne.h2ohealthy.data.source.objects.GetUser
-import org.n9ne.h2ohealthy.data.source.objects.InsertCup
-import org.n9ne.h2ohealthy.data.source.objects.Message
-import org.n9ne.h2ohealthy.data.source.objects.RenameLeague
-import org.n9ne.h2ohealthy.data.source.objects.UpdateCup
-import org.n9ne.h2ohealthy.util.Mapper.toActivities
-import org.n9ne.h2ohealthy.util.Mapper.toCups
-import org.n9ne.h2ohealthy.util.Mapper.toMembers
-import org.n9ne.h2ohealthy.util.Mapper.toUser
-import org.n9ne.h2ohealthy.util.Messages
-import org.n9ne.h2ohealthy.util.RepoCallback
+import org.n9ne.common.model.Activity
+import org.n9ne.common.model.CreateLeague
+import org.n9ne.common.model.Cup
+import org.n9ne.common.model.GetLeague
+import org.n9ne.common.model.UpdateUser
+import org.n9ne.common.model.User
+import org.n9ne.common.source.network.Client
+import org.n9ne.common.source.objects.GetCups
+import org.n9ne.common.source.objects.GetMembers
+import org.n9ne.common.source.objects.GetProgress
+import org.n9ne.common.source.objects.GetUser
+import org.n9ne.common.source.objects.InsertCup
+import org.n9ne.common.source.objects.Message
+import org.n9ne.common.source.objects.RenameLeague
+import org.n9ne.common.source.objects.UpdateCup
+import org.n9ne.common.util.Mapper.toActivities
+import org.n9ne.common.util.Mapper.toCups
+import org.n9ne.common.util.Mapper.toMembers
+import org.n9ne.common.util.Mapper.toUser
+import org.n9ne.common.util.Messages
+import org.n9ne.common.util.RepoCallback
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -360,7 +360,12 @@ class ProfileRepoApiImpl(private val client: Client) : ProfileRepo {
                         val result = response.body()!!
 
                         if (result.status) {
-                            callback.onSuccessful(CreateLeague(result.id!!, result.message))
+                            callback.onSuccessful(
+                                org.n9ne.common.model.CreateLeague(
+                                    result.id!!,
+                                    result.message
+                                )
+                            )
                         } else {
                             val message = result.message
                             if (message == "-1")

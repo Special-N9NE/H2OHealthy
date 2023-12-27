@@ -6,12 +6,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.n9ne.h2ohealthy.data.model.Activity
+import org.n9ne.common.model.Activity
+import org.n9ne.common.util.Mapper.toWater
+import org.n9ne.common.util.RepoCallback
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepo
-import org.n9ne.h2ohealthy.data.source.local.AppDatabase
-import org.n9ne.h2ohealthy.util.Event
-import org.n9ne.h2ohealthy.util.Mapper.toWater
-import org.n9ne.h2ohealthy.util.RepoCallback
+import org.n9ne.common.source.local.AppDatabase
+import org.n9ne.common.util.Event
 
 class StatsViewModel : ViewModel() {
 
@@ -20,7 +20,7 @@ class StatsViewModel : ViewModel() {
 
 
     val ldBarData = MutableLiveData<Event<List<Double>>>()
-    val ldActivities = MutableLiveData<Event<List<Activity>>>()
+    val ldActivities = MutableLiveData<Event<List<org.n9ne.common.model.Activity>>>()
     val ldError = MutableLiveData<Event<String>>()
     val ldToken = MutableLiveData<Event<Unit>>()
 
@@ -28,7 +28,7 @@ class StatsViewModel : ViewModel() {
     fun getActivities(token: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             repo?.getAllActivity(token, object : RepoCallback<List<Activity>> {
-                override fun onSuccessful(response: List<Activity>) {
+                override fun onSuccessful(response: List<org.n9ne.common.model.Activity>) {
 
                     syncActivities(response)
 
@@ -62,7 +62,7 @@ class StatsViewModel : ViewModel() {
         }
     }
 
-    private fun syncActivities(list: List<Activity>) {
+    private fun syncActivities(list: List<org.n9ne.common.model.Activity>) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {

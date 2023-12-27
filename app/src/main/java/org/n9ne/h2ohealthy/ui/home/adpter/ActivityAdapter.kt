@@ -4,25 +4,24 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import org.n9ne.h2ohealthy.data.model.Activity
+import org.n9ne.common.util.interfaces.MenuClickListener
 import org.n9ne.h2ohealthy.databinding.ItemActiviyBinding
-import org.n9ne.h2ohealthy.util.interfaces.MenuClickListener
 
 class ActivityAdapter(
-    private val list: List<Activity>,
+    private val list: List<org.n9ne.common.model.Activity>,
     private val listener: MenuClickListener
 ) : RecyclerView.Adapter<ActivityAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val b: ItemActiviyBinding) :
         RecyclerView.ViewHolder(b.root) {
-        fun setData(item: Activity) {
+        fun setData(item: org.n9ne.common.model.Activity) {
             b.tvAmount.text = item.amount
             b.tvTime.text = item.time
 
             setupClick(item)
         }
 
-        private fun setupClick(item: Activity) {
+        private fun setupClick(item: org.n9ne.common.model.Activity) {
             b.ivMenu.setOnClickListener {
                 listener.onMenuClick(item)
             }

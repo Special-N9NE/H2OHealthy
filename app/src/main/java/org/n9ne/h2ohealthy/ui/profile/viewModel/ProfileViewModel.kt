@@ -7,20 +7,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.n9ne.common.R.drawable
+import org.n9ne.common.model.CreateLeague
+import org.n9ne.common.model.League
+import org.n9ne.common.model.Setting
+import org.n9ne.common.model.SettingItem
+import org.n9ne.common.model.User
+import org.n9ne.common.source.local.AppDatabase
+import org.n9ne.common.util.Event
+import org.n9ne.common.util.Mapper.toLeagueEntity
+import org.n9ne.common.util.Mapper.toUserEntity
+import org.n9ne.common.util.RepoCallback
+import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.h2ohealthy.R
-import org.n9ne.h2ohealthy.data.model.CreateLeague
-import org.n9ne.h2ohealthy.data.model.League
-import org.n9ne.h2ohealthy.data.model.Setting
-import org.n9ne.h2ohealthy.data.model.SettingItem
-import org.n9ne.h2ohealthy.data.model.User
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepo
-import org.n9ne.h2ohealthy.data.source.local.AppDatabase
-import org.n9ne.h2ohealthy.util.DateUtils
-import org.n9ne.h2ohealthy.util.Event
-import org.n9ne.h2ohealthy.util.Mapper.toLeagueEntity
-import org.n9ne.h2ohealthy.util.Mapper.toUserEntity
-import org.n9ne.h2ohealthy.util.RepoCallback
-import org.n9ne.h2ohealthy.util.interfaces.Navigator
 
 class ProfileViewModel : ViewModel() {
 
@@ -48,7 +47,7 @@ class ProfileViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             repo?.getUser(token, object : RepoCallback<User> {
                 override fun onSuccessful(response: User) {
-                    val age = DateUtils.calculateAge(response.birthDate)
+                    val age = org.n9ne.common.util.DateUtils.calculateAge(response.birthDate)
                     response.age = age.toString()
 
                     syncUser(response)
@@ -101,7 +100,7 @@ class ProfileViewModel : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             repo?.createLeague(name, token, object : RepoCallback<CreateLeague> {
-                override fun onSuccessful(response: CreateLeague) {
+                override fun onSuccessful(response: org.n9ne.common.model.CreateLeague) {
 
                     val league = League(response.id.toLong(), null, null, name, response.code)
                     syncLeague(league.id!!, league, true)

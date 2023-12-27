@@ -10,28 +10,24 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import org.n9ne.common.R.string
+import org.n9ne.common.model.League
+import org.n9ne.common.source.local.AppDatabase
+import org.n9ne.common.util.EventObserver
+import org.n9ne.common.util.Saver.getEmail
+import org.n9ne.common.util.Saver.getToken
+import org.n9ne.common.util.Utils.isOnline
+import org.n9ne.common.util.interfaces.AddLeagueListener
+import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.h2ohealthy.App
-import org.n9ne.h2ohealthy.R
-import org.n9ne.h2ohealthy.data.model.League
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoApiImpl
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoLocalImpl
-import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentLeagueBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.dialog.createLeagueDialog
 import org.n9ne.h2ohealthy.ui.dialog.leagueSettingDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.MemberAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.LeagueViewModel
-import org.n9ne.h2ohealthy.util.EventObserver
-import org.n9ne.h2ohealthy.util.Saver.getEmail
-import org.n9ne.h2ohealthy.util.Saver.getToken
-import org.n9ne.h2ohealthy.util.Utils.isOnline
-import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
-import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
-
-import org.n9ne.common.R.color
-import org.n9ne.common.R.drawable
-import org.n9ne.common.R.string
 
 class LeagueFragment : Fragment(), RefreshListener {
 

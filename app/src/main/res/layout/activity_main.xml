@@ -29,7 +29,7 @@
 
     </com.simform.refresh.SSPullToRefreshLayout>
 
-    <org.n9ne.h2ohealthy.util.customViews.BottomNavigationViewWithIndicator
+    <org.n9ne.common.util.customViews.BottomNavigationViewWithIndicator
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,5 +52,5 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:src="@drawable/ic_add" />
-    </org.n9ne.h2ohealthy.util.customViews.BottomNavigationViewWithIndicator>
+    </org.n9ne.common.util.customViews.BottomNavigationViewWithIndicator>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,9 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.simform.refresh.SSPullToRefreshLayout
+import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.ActivityAuthBinding
-import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
 
 
 class AuthActivity : AppCompatActivity() {

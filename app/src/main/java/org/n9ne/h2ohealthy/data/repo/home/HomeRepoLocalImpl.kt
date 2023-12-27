@@ -4,10 +4,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
-import org.n9ne.h2ohealthy.data.model.Activity
-import org.n9ne.h2ohealthy.data.source.local.RoomDao
-import org.n9ne.h2ohealthy.util.Mapper.toActivityList
-import org.n9ne.h2ohealthy.util.RepoCallback
+import org.n9ne.common.source.local.RoomDao
+import org.n9ne.common.util.Mapper.toActivityList
+import org.n9ne.common.util.RepoCallback
 
 class HomeRepoLocalImpl(private val dao: RoomDao) : HomeRepo {
 
@@ -25,7 +24,7 @@ class HomeRepoLocalImpl(private val dao: RoomDao) : HomeRepo {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun getProgress(token: String?, callback: RepoCallback<List<Activity>>) {
+    override suspend fun getProgress(token: String?, callback: RepoCallback<List<org.n9ne.common.model.Activity>>) {
         withContext(Dispatchers.IO) {
             val progress = async { dao.getProgress() }
             progress.invokeOnCompletion {

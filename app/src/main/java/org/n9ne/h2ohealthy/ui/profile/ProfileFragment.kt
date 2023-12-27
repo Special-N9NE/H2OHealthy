@@ -1,6 +1,7 @@
 package org.n9ne.h2ohealthy.ui.profile
 
 import android.app.Dialog
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,14 +18,22 @@ import com.bumptech.glide.request.RequestOptions
 import org.n9ne.common.R.color
 import org.n9ne.common.R.drawable
 import org.n9ne.common.R.string
+import org.n9ne.common.model.SettingItem
+import org.n9ne.common.source.local.AppDatabase
+import org.n9ne.common.util.EventObserver
+import org.n9ne.common.util.Saver.getToken
+import org.n9ne.common.util.Saver.saveToken
+import org.n9ne.common.util.Utils.isOnline
+import org.n9ne.common.util.interfaces.AddLeagueListener
+import org.n9ne.common.util.interfaces.RefreshListener
+import org.n9ne.common.util.interfaces.SettingClickListener
+import org.n9ne.common.util.setGradient
 import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
-import org.n9ne.h2ohealthy.data.model.Setting
-import org.n9ne.h2ohealthy.data.model.SettingItem
-import org.n9ne.h2ohealthy.data.model.User
+import org.n9ne.common.model.Setting
+import org.n9ne.common.model.User
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoApiImpl
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoLocalImpl
-import org.n9ne.h2ohealthy.data.source.local.AppDatabase
 import org.n9ne.h2ohealthy.databinding.FragmentProfileBinding
 import org.n9ne.h2ohealthy.ui.AuthActivity
 import org.n9ne.h2ohealthy.ui.MainActivity
@@ -32,15 +41,7 @@ import org.n9ne.h2ohealthy.ui.dialog.createLeagueDialog
 import org.n9ne.h2ohealthy.ui.dialog.joinLeagueDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.SettingAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.ProfileViewModel
-import org.n9ne.h2ohealthy.util.EventObserver
-import org.n9ne.h2ohealthy.util.Saver.getToken
-import org.n9ne.h2ohealthy.util.Saver.saveToken
-import org.n9ne.h2ohealthy.util.Utils.isOnline
-import org.n9ne.h2ohealthy.util.interfaces.AddLeagueListener
-import org.n9ne.h2ohealthy.util.interfaces.Navigator
-import org.n9ne.h2ohealthy.util.interfaces.RefreshListener
-import org.n9ne.h2ohealthy.util.interfaces.SettingClickListener
-import org.n9ne.h2ohealthy.util.setGradient
+import org.n9ne.common.util.interfaces.Navigator
 
 class ProfileFragment : Fragment(), Navigator, RefreshListener {
 
@@ -197,7 +198,7 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
 
             try {
                 startActivity(Intent.createChooser(intent, "Choose an Email client :"))
-            } catch (ex: android.content.ActivityNotFoundException) {
+            } catch (ex: ActivityNotFoundException) {
                 Toast.makeText(
                     requireContext(), "There are no email clients installed.", Toast.LENGTH_SHORT
                 ).show()

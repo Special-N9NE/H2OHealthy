@@ -1,15 +1,15 @@
 package org.n9ne.h2ohealthy.data.repo.auth
 
 import com.google.gson.Gson
-import org.n9ne.h2ohealthy.data.model.CompleteProfileResult
-import org.n9ne.h2ohealthy.data.model.LoginResult
-import org.n9ne.h2ohealthy.data.source.network.Client
-import org.n9ne.h2ohealthy.data.source.objects.Auth
-import org.n9ne.h2ohealthy.data.source.objects.Login
-import org.n9ne.h2ohealthy.data.source.objects.Message
-import org.n9ne.h2ohealthy.util.Mapper.toUser
-import org.n9ne.h2ohealthy.util.Messages
-import org.n9ne.h2ohealthy.util.RepoCallback
+import org.n9ne.common.model.CompleteProfileResult
+import org.n9ne.common.model.LoginResult
+import org.n9ne.common.source.network.Client
+import org.n9ne.common.source.objects.Auth
+import org.n9ne.common.source.objects.Login
+import org.n9ne.common.source.objects.Message
+import org.n9ne.common.util.Mapper.toUser
+import org.n9ne.common.util.Messages
+import org.n9ne.common.util.RepoCallback
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -117,7 +117,7 @@ class AuthRepoImpl(private val client: Client) : AuthRepo {
 
                         if (result.status) {
                             callback.onSuccessful(
-                                CompleteProfileResult(
+                                org.n9ne.common.model.CompleteProfileResult(
                                     result.id!!,
                                     result.message
                                 )

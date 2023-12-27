@@ -6,12 +6,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.n9ne.h2ohealthy.data.model.Cup
+import org.n9ne.common.model.Cup
+import org.n9ne.common.source.local.AppDatabase
+import org.n9ne.common.util.Event
+import org.n9ne.common.util.Mapper.toGlass
+import org.n9ne.common.util.RepoCallback
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepo
-import org.n9ne.h2ohealthy.data.source.local.AppDatabase
-import org.n9ne.h2ohealthy.util.Event
-import org.n9ne.h2ohealthy.util.Mapper.toGlass
-import org.n9ne.h2ohealthy.util.RepoCallback
 
 class CupsViewModel : ViewModel() {
 

@@ -1,11 +1,10 @@
 package org.n9ne.h2ohealthy.data.repo.home
 
-import org.n9ne.h2ohealthy.data.model.Activity
-import org.n9ne.h2ohealthy.util.RepoCallback
+import org.n9ne.common.util.RepoCallback
 
 interface HomeRepo {
     suspend fun getTarget(token: String?, callback: RepoCallback<Int>)
-    suspend fun getProgress(token: String?, callback: RepoCallback<List<Activity>>)
+    suspend fun getProgress(token: String?, callback: RepoCallback<List<org.n9ne.common.model.Activity>>)
     suspend fun updateWater(
         id: Long,
         amount: String,

@@ -9,10 +9,10 @@ import android.widget.FrameLayout
 import androidx.core.text.isDigitsOnly
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
-import org.n9ne.h2ohealthy.data.model.Cup
+import org.n9ne.common.model.Cup
+import org.n9ne.common.util.interfaces.CupClickListener
 import org.n9ne.h2ohealthy.databinding.DialogAddCupBinding
 import org.n9ne.h2ohealthy.databinding.DialogCupBinding
-import org.n9ne.h2ohealthy.util.interfaces.CupClickListener
 import kotlin.math.roundToInt
 
 fun Activity.cupDialog(

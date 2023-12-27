@@ -12,12 +12,11 @@ import androidx.core.view.MenuCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import me.saket.cascade.CascadePopupMenu
-import org.n9ne.h2ohealthy.R
 import org.n9ne.common.R.color
 import org.n9ne.common.R.drawable
-import org.n9ne.h2ohealthy.data.model.Cup
+import org.n9ne.common.model.Cup
+import org.n9ne.common.util.interfaces.CupEditListener
 import org.n9ne.h2ohealthy.databinding.ItemCupBinding
-import org.n9ne.h2ohealthy.util.interfaces.CupEditListener
 
 class AddCupAdapter(
     private val list: List<Cup>,

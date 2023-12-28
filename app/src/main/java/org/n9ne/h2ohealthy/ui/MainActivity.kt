@@ -34,7 +34,6 @@ class MainActivity : BaseActivity() {
     private lateinit var localRepo: MainRepo
     private lateinit var apiRepo: MainRepo
 
-    private var cups = listOf<Cup>()
     private lateinit var b: ActivityMainBinding
     private lateinit var cupAdapter: CupsAdapter
     private var selectedCup: Cup? = null
@@ -132,10 +131,6 @@ class MainActivity : BaseActivity() {
     fun goHome() {
         navController.popBackStack()
         navController.navigate(home)
-    }
-
-    fun reloadCups(list: List<Cup>) {
-        cups = list
     }
 
     private fun setObserver() {

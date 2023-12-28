@@ -39,16 +39,17 @@ android {
 
 dependencies {
 
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
     val roomVersion = "2.5.2"
     api("androidx.room:room-ktx:$roomVersion")
     api("androidx.room:room-runtime:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
 
     api("com.squareup.retrofit2:retrofit:2.9.0")
     api("com.squareup.retrofit2:converter-gson:2.9.0")
     api("com.squareup.okhttp3:logging-interceptor:4.9.0")
+
+    api("androidx.navigation:navigation-fragment-ktx:2.7.4")
+    api("androidx.navigation:navigation-ui-ktx:2.7.4")
+
 
     api("androidx.core:core-ktx:1.12.0")
     api("androidx.appcompat:appcompat:1.6.1")

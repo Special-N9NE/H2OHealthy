@@ -26,10 +26,11 @@ class HomeViewModel : ViewModel() {
     val ldTarget = MutableLiveData<Int>()
     val ldDayProgress = MutableLiveData<Int>()
     val ldWeekProgress = MutableLiveData<List<Progress>>()
-    val ldActivities = MutableLiveData<List<org.n9ne.common.model.Activity>>()
+    val ldActivities = MutableLiveData<List<Activity>>()
     val ldError = MutableLiveData<Event<String>>()
 
     fun getTarget(token: String?) {
+
         viewModelScope.launch(Dispatchers.IO) {
             repo?.getTarget(token, object : RepoCallback<Int> {
                 override fun onSuccessful(response: Int) {
@@ -46,7 +47,7 @@ class HomeViewModel : ViewModel() {
     fun getProgress(token: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             repo?.getProgress(token, object : RepoCallback<List<Activity>> {
-                override fun onSuccessful(response: List<org.n9ne.common.model.Activity>) {
+                override fun onSuccessful(response: List<Activity>) {
 
                     val dayProgress = Utils.calculateDayProgress(response)
                     val progress = (100 * dayProgress) / (target!!.toDouble().toMilliLiter())
@@ -74,7 +75,7 @@ class HomeViewModel : ViewModel() {
     }
 
 
-    fun updateWater(activity: org.n9ne.common.model.Activity, token: String?) {
+    fun updateWater(activity: Activity, token: String?) {
         if (activity.amount.toDouble() >= 3) {
             ldError.postValue(Event("amount is too high"))
             return
@@ -112,7 +113,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun removeWater(activity: org.n9ne.common.model.Activity, token: String?) {
+    fun removeWater(activity: Activity, token: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             repo?.removeWater(activity.id!!, token, object : RepoCallback<String> {
                 override fun onSuccessful(response: String) {
@@ -121,10 +122,10 @@ class HomeViewModel : ViewModel() {
                     activities.removeIf { it.id == activity.id }
 
 
-                    val list = arrayListOf<org.n9ne.common.model.Activity>()
+                    val list = arrayListOf<Activity>()
                     activities.forEach {
                         list.add(
-                            org.n9ne.common.model.Activity(
+                            Activity(
                                 it.id,
                                 it.idUser,
                                 (it.amount.toDouble().toLiter()).toString(),
@@ -178,7 +179,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    private fun syncActivity(data: org.n9ne.common.model.Activity, deleted: Boolean) {
+    private fun syncActivity(data: Activity, deleted: Boolean) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
@@ -195,7 +196,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    private fun syncProgress(list: List<org.n9ne.common.model.Activity>) {
+    private fun syncProgress(list: List<Activity>) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
@@ -211,7 +212,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    private fun calculateScore(list: List<org.n9ne.common.model.Activity>): Int {
+    private fun calculateScore(list: List<Activity>): Int {
         var total = 0.0
         list.forEach {
             total += it.amount.toDouble()

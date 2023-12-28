@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.home.adpter.ActivityAdapter
 import com.example.home.databinding.FragmentHomeBinding
-import com.example.home.home.HomeRepoApiImpl
-import com.example.home.home.HomeRepoLocalImpl
+import com.example.home.repo.HomeRepoApiImpl
+import com.example.home.repo.HomeRepoLocalImpl
 import com.example.home.viewModel.HomeViewModel
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.dialog.activityOptionDialog

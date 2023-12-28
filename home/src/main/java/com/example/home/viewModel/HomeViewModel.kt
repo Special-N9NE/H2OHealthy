@@ -1,15 +1,14 @@
 package com.example.home.viewModel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.home.home.HomeRepo
+import com.example.home.repo.HomeRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.n9ne.common.BaseViewModel
 import org.n9ne.common.model.Activity
 import org.n9ne.common.model.Progress
-import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.Mapper.toLiter
 import org.n9ne.common.util.Mapper.toMilliLiter
@@ -18,16 +17,13 @@ import org.n9ne.common.util.RepoCallback
 import org.n9ne.common.util.Utils
 import kotlin.math.roundToInt
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel : BaseViewModel<HomeRepo>() {
     var target: Int? = null
-    var repo: HomeRepo? = null
-    var db: AppDatabase? = null
 
     val ldTarget = MutableLiveData<Int>()
     val ldDayProgress = MutableLiveData<Int>()
     val ldWeekProgress = MutableLiveData<List<Progress>>()
     val ldActivities = MutableLiveData<List<Activity>>()
-    val ldError = MutableLiveData<Event<String>>()
 
     fun getTarget(token: String?) {
 

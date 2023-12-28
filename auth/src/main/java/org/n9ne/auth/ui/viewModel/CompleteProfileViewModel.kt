@@ -3,13 +3,13 @@ package org.n9ne.auth.ui.viewModel
 import android.content.Context
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.n9ne.auth.repo.AuthRepo
+import org.n9ne.common.BaseViewModel
 import org.n9ne.common.model.ActivityType
 import org.n9ne.common.model.CompleteProfileResult
 import org.n9ne.common.source.local.AppDatabase
@@ -17,18 +17,10 @@ import org.n9ne.common.source.local.UserEntity
 import org.n9ne.common.source.objects.Auth
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.RepoCallback
-import org.n9ne.common.util.interfaces.Navigator
 
 
-class CompleteProfileViewModel : ViewModel() {
-    lateinit var navigator: Navigator
-
-    var repo: AuthRepo? = null
-
-
+class CompleteProfileViewModel : BaseViewModel<AuthRepo>() {
     val ldShowDate = MutableLiveData<Event<Unit>>()
-    val ldToken = MutableLiveData<Event<String>>()
-    val ldError = MutableLiveData<Event<String>>()
 
     val genders = arrayListOf("Male", "Female")
     val activityLevels = arrayListOf(
@@ -38,6 +30,8 @@ class CompleteProfileViewModel : ViewModel() {
         ActivityType.HIGH.text,
         ActivityType.ATHLETE.text
     )
+
+    val ldUserToken = MutableLiveData<Event<String>>()
 
     fun completeProfile(
         name: String,
@@ -68,10 +62,10 @@ class CompleteProfileViewModel : ViewModel() {
 
         runBlocking {
             repo?.completeProfile(data, object : RepoCallback<CompleteProfileResult> {
-                override fun onSuccessful(response: org.n9ne.common.model.CompleteProfileResult) {
+                override fun onSuccessful(response: CompleteProfileResult) {
 
                     initDatabase(context, data, response.id)
-                    ldToken.postValue(Event(response.token))
+                    ldUserToken.postValue(Event(response.token))
                 }
 
                 override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {

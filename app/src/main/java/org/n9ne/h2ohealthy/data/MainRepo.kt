@@ -1,4 +1,4 @@
-package org.n9ne.h2ohealthy.data.repo
+package org.n9ne.h2ohealthy.data
 
 import org.n9ne.common.model.Cup
 import org.n9ne.common.util.RepoCallback

@@ -1,34 +1,26 @@
 package org.n9ne.profile.ui.viewModel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.n9ne.common.BaseViewModel
 import org.n9ne.common.model.Activity
+import org.n9ne.common.util.Event
 import org.n9ne.common.util.Mapper.toWater
 import org.n9ne.common.util.RepoCallback
-import org.n9ne.common.source.local.AppDatabase
-import org.n9ne.common.util.Event
 import org.n9ne.profile.repo.ProfileRepo
 
-class StatsViewModel : ViewModel() {
-
-    var repo: ProfileRepo? = null
-    var db: AppDatabase? = null
-
+class StatsViewModel : BaseViewModel<ProfileRepo>() {
 
     val ldBarData = MutableLiveData<Event<List<Double>>>()
-    val ldActivities = MutableLiveData<Event<List<org.n9ne.common.model.Activity>>>()
-    val ldError = MutableLiveData<Event<String>>()
-    val ldToken = MutableLiveData<Event<Unit>>()
-
+    val ldActivities = MutableLiveData<Event<List<Activity>>>()
 
     fun getActivities(token: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             repo?.getAllActivity(token, object : RepoCallback<List<Activity>> {
-                override fun onSuccessful(response: List<org.n9ne.common.model.Activity>) {
+                override fun onSuccessful(response: List<Activity>) {
 
                     syncActivities(response)
 
@@ -62,7 +54,7 @@ class StatsViewModel : ViewModel() {
         }
     }
 
-    private fun syncActivities(list: List<org.n9ne.common.model.Activity>) {
+    private fun syncActivities(list: List<Activity>) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {

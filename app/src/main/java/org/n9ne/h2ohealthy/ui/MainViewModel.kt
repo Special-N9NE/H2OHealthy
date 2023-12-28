@@ -1,27 +1,21 @@
 package org.n9ne.h2ohealthy.ui
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.n9ne.common.source.local.AppDatabase
+import org.n9ne.common.BaseViewModel
+import org.n9ne.common.model.Cup
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.Mapper.toWater
 import org.n9ne.common.util.RepoCallback
-import org.n9ne.common.model.Cup
-import org.n9ne.h2ohealthy.data.repo.MainRepo
+import org.n9ne.h2ohealthy.data.MainRepo
 
-class MainViewModel : ViewModel() {
-
-    var repo: MainRepo? = null
-    var db: AppDatabase? = null
+class MainViewModel : BaseViewModel<MainRepo>() {
 
     val ldCups = MutableLiveData<List<Cup>>()
     val ldInsertWater = MutableLiveData<Event<Unit>>()
-
-    val ldError = MutableLiveData<Event<String>>()
 
     fun insertWater(amount: String, token: String?) {
         if (amount.toDouble() >= 3) {

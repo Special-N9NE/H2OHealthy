@@ -1,9 +1,6 @@
 package org.n9ne.auth.ui.viewModel
 
-import androidx.lifecycle.ViewModel
-import org.n9ne.common.util.interfaces.Navigator
+import org.n9ne.auth.repo.AuthRepo
+import org.n9ne.common.BaseViewModel
 
-class SplashViewModel : ViewModel() {
-    lateinit var navigator: Navigator
-
-}
+class SplashViewModel : BaseViewModel<AuthRepo>()

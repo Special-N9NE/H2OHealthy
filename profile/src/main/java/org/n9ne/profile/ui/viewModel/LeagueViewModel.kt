@@ -1,31 +1,23 @@
 package org.n9ne.profile.ui.viewModel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.n9ne.common.BaseViewModel
 import org.n9ne.common.model.GetLeague
 import org.n9ne.common.model.League
 import org.n9ne.common.model.Member
-import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.RepoCallback
 import org.n9ne.profile.repo.ProfileRepo
 
-class LeagueViewModel : ViewModel() {
-
-    var repo: ProfileRepo? = null
-    var db: AppDatabase? = null
-
+class LeagueViewModel : BaseViewModel<ProfileRepo>() {
 
     val ldLeave = MutableLiveData<Event<Unit>>()
     val ldLeague = MutableLiveData<Event<League>>()
     val ldMembers = MutableLiveData<Event<List<Member>>>()
-    val ldError = MutableLiveData<Event<String>>()
-    val ldToken = MutableLiveData<Event<Unit>>()
-
 
     fun getMembers(token: String?) {
         viewModelScope.launch(Dispatchers.IO) {

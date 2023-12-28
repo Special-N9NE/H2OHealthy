@@ -23,9 +23,9 @@ import org.n9ne.common.util.interfaces.CupClickListener
 import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
-import org.n9ne.h2ohealthy.data.repo.MainRepo
-import org.n9ne.h2ohealthy.data.repo.MainRepoApiImpl
-import org.n9ne.h2ohealthy.data.repo.MainRepoLocalImpl
+import org.n9ne.h2ohealthy.data.MainRepo
+import org.n9ne.h2ohealthy.data.MainRepoApiImpl
+import org.n9ne.h2ohealthy.data.MainRepoLocalImpl
 import org.n9ne.h2ohealthy.databinding.ActivityMainBinding
 
 

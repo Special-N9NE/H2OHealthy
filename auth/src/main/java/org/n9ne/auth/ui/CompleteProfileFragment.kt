@@ -100,7 +100,7 @@ class CompleteProfileFragment : Fragment(), Navigator {
     }
 
     private fun setObservers() {
-        viewModel.ldToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bNext)) {
+        viewModel.ldUserToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bNext)) {
             requireActivity().saveEmail(email)
             requireActivity().saveToken(it)
 

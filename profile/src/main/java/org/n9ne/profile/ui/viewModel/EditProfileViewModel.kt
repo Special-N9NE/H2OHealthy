@@ -3,30 +3,22 @@ package org.n9ne.profile.ui.viewModel
 import android.util.Patterns
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.n9ne.common.BaseViewModel
 import org.n9ne.common.model.UpdateUser
 import org.n9ne.common.model.User
-import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.Mapper.toUserEntity
 import org.n9ne.common.util.RepoCallback
-import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.profile.repo.ProfileRepo
 
-class EditProfileViewModel : ViewModel() {
-
-    lateinit var navigator: Navigator
+class EditProfileViewModel : BaseViewModel<ProfileRepo>() {
 
     val ldSubmit = MutableLiveData<Event<Unit>>()
     val ldUser = MutableLiveData<Event<User>>()
-    val ldError = MutableLiveData<Event<String>>()
-
-    var repo: ProfileRepo? = null
-    var db: AppDatabase? = null
 
     val genders = arrayListOf("Male", "Female")
     val activityLevels = arrayListOf("Never", "Low", "Sometimes", "High", "Athlete")

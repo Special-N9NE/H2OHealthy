@@ -83,7 +83,7 @@ class LoginFragment : Fragment(), Navigator {
             }
             b.etPassword.setSelection(b.etPassword.text.toString().length)
         }
-        viewModel.ldToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
+        viewModel.ldUserToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
             requireActivity().saveEmail(email)
             requireActivity().saveToken(it)
             activity.stopLoading()

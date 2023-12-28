@@ -3,32 +3,26 @@ package org.n9ne.auth.ui.viewModel
 import android.content.Context
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.n9ne.auth.R
 import org.n9ne.auth.repo.AuthRepo
+import org.n9ne.common.BaseViewModel
 import org.n9ne.common.model.LoginResult
 import org.n9ne.common.model.User
 import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.Mapper.toUserEntity
 import org.n9ne.common.util.RepoCallback
-import org.n9ne.common.util.interfaces.Navigator
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel : BaseViewModel<AuthRepo>() {
     private var passwordIsVisible = false
-    lateinit var navigator: Navigator
     val ldPasswordClick = MutableLiveData<Boolean>()
 
-
     val ldName = MutableLiveData<Event<String>>()
-    val ldToken = MutableLiveData<Event<String>>()
-    val ldError = MutableLiveData<Event<String>>()
-
-    var repo: AuthRepo? = null
+    val ldUserToken = MutableLiveData<Event<String>>()
 
     fun passwordClick() {
         passwordIsVisible = !passwordIsVisible
@@ -44,7 +38,7 @@ class LoginViewModel : ViewModel() {
             repo?.login(email, password, object : RepoCallback<LoginResult> {
                 override fun onSuccessful(response: LoginResult) {
                     initDatabase(context, response.user)
-                    ldToken.postValue(Event(response.token))
+                    ldUserToken.postValue(Event(response.token))
                     ldName.postValue(Event(response.user.name))
                 }
 
@@ -92,7 +86,7 @@ class LoginViewModel : ViewModel() {
     }
 
     fun registerClick() {
-        navigator.shouldNavigate(R.id.login_to_register)
+        navigator?.shouldNavigate(R.id.login_to_register)
     }
 
     fun forgetPasswordClick() {

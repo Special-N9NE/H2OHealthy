@@ -2,23 +2,20 @@ package org.n9ne.auth.ui.viewModel
 
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.runBlocking
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.n9ne.auth.R
 import org.n9ne.auth.repo.AuthRepo
+import org.n9ne.common.BaseViewModel
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.RepoCallback
-import org.n9ne.common.util.interfaces.Navigator
 
-class RegisterViewModel : ViewModel() {
+class RegisterViewModel : BaseViewModel<AuthRepo>() {
     private var passwordIsVisible = false
-    lateinit var navigator: Navigator
     val ldPasswordClick = MutableLiveData<Boolean>()
 
     val ldRegister = MutableLiveData<Event<Unit>>()
-    val ldError = MutableLiveData<Event<String>>()
-
-    var repo: AuthRepo? = null
 
     fun passwordClick() {
         passwordIsVisible = !passwordIsVisible
@@ -26,7 +23,7 @@ class RegisterViewModel : ViewModel() {
     }
 
     fun loginClick() {
-        navigator.shouldNavigate(R.id.register_to_login)
+        navigator?.shouldNavigate(R.id.register_to_login)
     }
 
     fun googleClick() {
@@ -38,7 +35,7 @@ class RegisterViewModel : ViewModel() {
         if (!isDataValid(name, email, password))
             return
 
-        runBlocking {
+        viewModelScope.launch(Dispatchers.IO) {
             repo?.register(name.trim(), email, password, object : RepoCallback<Unit> {
                 override fun onSuccessful(response: Unit) {
                     ldRegister.postValue(Event(Unit))
@@ -47,7 +44,6 @@ class RegisterViewModel : ViewModel() {
                 override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
                     ldError.postValue(Event(error))
                 }
-
             })
         }
     }

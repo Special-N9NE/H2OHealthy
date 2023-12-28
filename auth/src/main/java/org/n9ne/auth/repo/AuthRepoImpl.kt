@@ -1,20 +1,15 @@
 package org.n9ne.auth.repo
 
 import com.google.gson.Gson
+import org.n9ne.common.BaseRepoImpl
 import org.n9ne.common.model.CompleteProfileResult
 import org.n9ne.common.model.LoginResult
 import org.n9ne.common.source.network.Client
 import org.n9ne.common.source.objects.Auth
-import org.n9ne.common.source.objects.Login
-import org.n9ne.common.source.objects.Message
 import org.n9ne.common.util.Mapper.toUser
-import org.n9ne.common.util.Messages
 import org.n9ne.common.util.RepoCallback
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class AuthRepoImpl(private val client: Client) : AuthRepo {
+class AuthRepoImpl(private val client: Client) : BaseRepoImpl(), AuthRepo {
 
     override suspend fun login(
         email: String,
@@ -22,42 +17,19 @@ class AuthRepoImpl(private val client: Client) : AuthRepo {
         callback: RepoCallback<LoginResult>
     ) {
         val json = Gson().toJson(Auth.Login(email, password))
-        client.getApiService().login(json)
-            .enqueue(object : Callback<Login> {
-                override fun onResponse(
-                    call: Call<Login>, response: Response<Login>
-                ) {
-                    if (response.isSuccessful) {
-                        val result = response.body()!!
-
-                        if (result.status) {
-                            callback.onSuccessful(
-                                LoginResult(
-                                    result.user!![0].toUser(),
-                                    result.message
-                                )
-                            )
-                        } else {
-                            callback.onError(result.message)
-                        }
-
-                    } else {
-                        val result = response.code().toString()
-                        callback.onError(result)
-                    }
-                }
-
-                override fun onFailure(call: Call<Login>, t: Throwable) {
-
-                    if (t.message?.contains(Messages.NO_INTERNET) == true) {
-                        val result = Messages.errorNetwork
-                        callback.onError(result, true)
-                    } else {
-                        val result = t.message.toString()
-                        callback.onError(result)
-                    }
-                }
-            })
+        val call = client.getApiService().login(json)
+        getResponse(call, callback).collect {
+            if (it.status) {
+                callback.onSuccessful(
+                    LoginResult(
+                        it.user!![0].toUser(),
+                        it.message
+                    )
+                )
+            } else {
+                handleError(it.message, callback)
+            }
+        }
     }
 
 
@@ -68,37 +40,14 @@ class AuthRepoImpl(private val client: Client) : AuthRepo {
         callback: RepoCallback<Unit>
     ) {
         val json = Gson().toJson(Auth.Register(name, email, password))
-        client.getApiService().register(json)
-            .enqueue(object : Callback<Message> {
-                override fun onResponse(
-                    call: Call<Message>, response: Response<Message>
-                ) {
-                    if (response.isSuccessful) {
-                        val result = response.body()!!
-
-                        if (result.status) {
-                            callback.onSuccessful(Unit)
-                        } else {
-                            callback.onError(result.message)
-                        }
-
-                    } else {
-                        val result = response.code().toString()
-                        callback.onError(result)
-                    }
-                }
-
-                override fun onFailure(call: Call<Message>, t: Throwable) {
-
-                    if (t.message?.contains(Messages.NO_INTERNET) == true) {
-                        val result = Messages.errorNetwork
-                        callback.onError(result, true)
-                    } else {
-                        val result = t.message.toString()
-                        callback.onError(result)
-                    }
-                }
-            })
+        val call = client.getApiService().register(json)
+        getResponse(call, callback).collect {
+            if (it.status) {
+                callback.onSuccessful(Unit)
+            } else {
+                handleError(it.message, callback)
+            }
+        }
     }
 
 
@@ -107,41 +56,18 @@ class AuthRepoImpl(private val client: Client) : AuthRepo {
         callback: RepoCallback<CompleteProfileResult>
     ) {
         val json = Gson().toJson(data)
-        client.getApiService().completeProfile(json)
-            .enqueue(object : Callback<Message> {
-                override fun onResponse(
-                    call: Call<Message>, response: Response<Message>
-                ) {
-                    if (response.isSuccessful) {
-                        val result = response.body()!!
-
-                        if (result.status) {
-                            callback.onSuccessful(
-                                org.n9ne.common.model.CompleteProfileResult(
-                                    result.id!!,
-                                    result.message
-                                )
-                            )
-                        } else {
-                            callback.onError(result.message)
-                        }
-
-                    } else {
-                        val result = response.code().toString()
-                        callback.onError(result)
-                    }
-                }
-
-                override fun onFailure(call: Call<Message>, t: Throwable) {
-
-                    if (t.message?.contains(Messages.NO_INTERNET) == true) {
-                        val result = Messages.errorNetwork
-                        callback.onError(result, true)
-                    } else {
-                        val result = t.message.toString()
-                        callback.onError(result)
-                    }
-                }
-            })
+        val call = client.getApiService().completeProfile(json)
+        getResponse(call, callback).collect {
+            if (it.status) {
+                callback.onSuccessful(
+                    CompleteProfileResult(
+                        it.id!!,
+                        it.message
+                    )
+                )
+            } else {
+                handleError(it.message, callback)
+            }
+        }
     }
 }

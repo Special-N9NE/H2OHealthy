@@ -1,41 +1,31 @@
 package org.n9ne.profile.ui.viewModel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.n9ne.common.BaseViewModel
 import org.n9ne.common.R.drawable
 import org.n9ne.common.model.CreateLeague
 import org.n9ne.common.model.League
 import org.n9ne.common.model.Setting
 import org.n9ne.common.model.SettingItem
 import org.n9ne.common.model.User
-import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.Mapper.toLeagueEntity
 import org.n9ne.common.util.Mapper.toUserEntity
 import org.n9ne.common.util.RepoCallback
-import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.profile.R
 import org.n9ne.profile.repo.ProfileRepo
 
-class ProfileViewModel : ViewModel() {
-
-    var repo: ProfileRepo? = null
-    var db: AppDatabase? = null
-
-    lateinit var navigator: Navigator
-
+class ProfileViewModel : BaseViewModel<ProfileRepo>() {
 
     val ldJoinLeague = MutableLiveData<Event<Unit>>()
 
     val ldLogout = MutableLiveData<Event<Unit>>()
     val ldUser = MutableLiveData<User>()
     val ldContactClick = MutableLiveData<Event<String>>()
-    val ldError = MutableLiveData<Event<String>>()
-    val ldToken = MutableLiveData<Event<Unit>>()
 
     val settings = listOf(
 //        Setting("Password", R.drawable.ic_password, SettingItem.PASSWORD),
@@ -152,7 +142,7 @@ class ProfileViewModel : ViewModel() {
 
 
     fun editClick() {
-        navigator.shouldNavigate(R.id.profile_to_editProfile)
+        navigator?.shouldNavigate(R.id.profile_to_editProfile)
     }
 
     fun contactUsClick() {

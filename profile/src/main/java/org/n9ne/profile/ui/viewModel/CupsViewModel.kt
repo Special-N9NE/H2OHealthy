@@ -1,30 +1,24 @@
 package org.n9ne.profile.ui.viewModel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.n9ne.common.BaseViewModel
 import org.n9ne.common.model.Cup
-import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.Mapper.toGlass
 import org.n9ne.common.util.RepoCallback
 import org.n9ne.profile.repo.ProfileRepo
 
-class CupsViewModel : ViewModel() {
-
-    var repo: ProfileRepo? = null
-    var db: AppDatabase? = null
+class CupsViewModel : BaseViewModel<ProfileRepo>() {
 
     val ldCups = MutableLiveData<List<Cup>>()
 
     val ldShowDialog = MutableLiveData<Event<Boolean>>()
     val ldAddCup = MutableLiveData<Event<Unit>>()
     val ldRemoveCup = MutableLiveData<Event<Unit>>()
-    val ldError = MutableLiveData<Event<String>>()
-
 
     fun addCupClick() {
         ldCups.value?.let {

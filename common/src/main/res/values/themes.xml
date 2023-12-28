@@ -1,0 +1,60 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.AquaTracker" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="android:colorPrimary">@color/linearBlueEnd</item>
+        <item name="android:colorPrimaryDark">@color/linearBlueEnd</item>
+        <item name="colorSecondary">@color/linearBlueEnd</item>
+        <item name="android:statusBarColor">@color/linearBlueEnd</item>
+        <item name="android:navigationBarColor">@color/white</item>
+    </style>
+
+    <style name="checkboxTheme">
+        <item name="colorAccent">@color/black</item>
+    </style>
+
+    <style name="Theme.AquaTracker" parent="Base.Theme.AquaTracker">
+        <item name="android:layoutDirection">ltr</item>
+    </style>
+
+    <style name="VerticalProgressBarStyle">
+        <item name="gradient">true</item>
+        <item name="progressBackgroundColor">@color/grayLight</item>
+        <item name="radius">20dp</item>
+        <item name="textVisibility">gone</item>
+        <item name="thickness">20dp</item>
+    </style>
+
+    <style name="ProgressCaption">
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="circleImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/shape_et</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingEnd">48dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:textColor">@color/blackText</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Spinner" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:background">@drawable/shape_et</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:inputType">none</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+</resources>

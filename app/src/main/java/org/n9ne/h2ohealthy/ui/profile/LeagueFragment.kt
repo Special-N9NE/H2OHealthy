@@ -24,10 +24,11 @@ import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoApiImpl
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoLocalImpl
 import org.n9ne.h2ohealthy.databinding.FragmentLeagueBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
-import org.n9ne.h2ohealthy.ui.dialog.createLeagueDialog
-import org.n9ne.h2ohealthy.ui.dialog.leagueSettingDialog
+import org.n9ne.common.dialog.createLeagueDialog
+import org.n9ne.common.dialog.leagueSettingDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.MemberAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.LeagueViewModel
+import org.n9ne.common.source.network.Client
 
 class LeagueFragment : Fragment(), RefreshListener {
 
@@ -94,7 +95,7 @@ class LeagueFragment : Fragment(), RefreshListener {
 
     private fun init() {
         activity = requireActivity() as MainActivity
-        val client = (requireActivity().application as App).client
+        val client = Client.getInstance()
 
         apiRepo = ProfileRepoApiImpl(client)
         localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())

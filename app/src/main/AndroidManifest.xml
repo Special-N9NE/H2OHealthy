@@ -11,8 +11,8 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/ic_logo"
-        android:roundIcon="@drawable/ic_logo_round"
         android:label="@string/app_name"
+        android:roundIcon="@drawable/ic_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AquaTracker"
         android:usesCleartextTraffic="true"
@@ -32,7 +32,18 @@
             android:name="org.n9ne.h2ohealthy.ui.AuthActivity"
             android:configChanges="orientation"
             android:exported="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="auth"
+                    android:scheme="h2ohealthy" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -1,15 +1,17 @@
 package org.n9ne.h2ohealthy.ui
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
+import com.example.home.adpter.CupsAdapter
 import com.simform.refresh.SSPullToRefreshLayout
+import org.n9ne.common.BaseActivity
+import org.n9ne.common.dialog.addWaterDialog
+import org.n9ne.common.dialog.cupDialog
 import org.n9ne.common.model.Cup
 import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.util.EventObserver
@@ -25,12 +27,9 @@ import org.n9ne.h2ohealthy.data.repo.MainRepo
 import org.n9ne.h2ohealthy.data.repo.MainRepoApiImpl
 import org.n9ne.h2ohealthy.data.repo.MainRepoLocalImpl
 import org.n9ne.h2ohealthy.databinding.ActivityMainBinding
-import org.n9ne.h2ohealthy.ui.dialog.addWaterDialog
-import org.n9ne.h2ohealthy.ui.dialog.cupDialog
-import org.n9ne.h2ohealthy.ui.home.adpter.CupsAdapter
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var localRepo: MainRepo
     private lateinit var apiRepo: MainRepo
@@ -42,9 +41,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var navController: NavController
 
-    val home = org.n9ne.common.R.id.home
+    val home = com.example.home.R.id.homeNav
     val add = org.n9ne.common.R.id.add
-    val profile = org.n9ne.common.R.id.profile
+    val profile = org.n9ne.common.R.id.profileNav
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,14 +109,9 @@ class MainActivity : AppCompatActivity() {
         b.ssPullRefresh.setRepeatMode(SSPullToRefreshLayout.RepeatMode.REPEAT)
         b.ssPullRefresh.setRepeatCount(SSPullToRefreshLayout.RepeatCount.INFINITE)
         b.ssPullRefresh.setLottieAnimation("loading.json")
-    }
 
-    fun startLoading() {
-        b.ssPullRefresh.setRefreshing(true)
-    }
-
-    fun stopLoading() {
-        b.ssPullRefresh.setRefreshing(false)
+        initLoading(b.ssPullRefresh)
+        initNav(b.bottomNavigation)
     }
 
     private fun makeRequest(request: () -> Unit) {
@@ -162,7 +156,7 @@ class MainActivity : AppCompatActivity() {
         }
         val doneListener = object : AddWaterListener {
             override fun onAdd(amount: String) {
-                 val liter = amount.toDouble().toLiter()
+                val liter = amount.toDouble().toLiter()
                 makeApiRequest {
                     viewModel.insertWater(liter.toString(), getToken())
                 }
@@ -189,16 +183,8 @@ class MainActivity : AppCompatActivity() {
                     dialog.show()
                 }
             })
-        val rvCup = cupDialog.findViewById<RecyclerView>(R.id.rvCup)
+        val rvCup = cupDialog.findViewById<RecyclerView>(org.n9ne.common.R.id.rvCup)
         rvCup.adapter = cupAdapter
 
-    }
-
-    fun showNavigation() {
-        b.bottomNavigation.visibility = View.VISIBLE
-    }
-
-    fun hideNavigation() {
-        b.bottomNavigation.visibility = View.GONE
     }
 }

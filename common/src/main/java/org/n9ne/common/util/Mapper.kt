@@ -16,7 +16,6 @@ import org.n9ne.common.source.objects.GetProgress
 import org.n9ne.common.source.objects.GetUser
 
 object Mapper {
-
     fun List<GetProgress.Data>.toActivities(): ArrayList<Activity> {
         val result = arrayListOf<Activity>()
         forEach {

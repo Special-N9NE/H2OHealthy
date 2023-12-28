@@ -93,4 +93,5 @@ dependencies {
     androidTestApi("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation(project(":common"))
+    implementation(project(":home"))
 }

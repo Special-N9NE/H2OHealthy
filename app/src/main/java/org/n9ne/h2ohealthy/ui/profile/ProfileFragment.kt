@@ -3,6 +3,7 @@ package org.n9ne.h2ohealthy.ui.profile
 import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,30 +19,30 @@ import com.bumptech.glide.request.RequestOptions
 import org.n9ne.common.R.color
 import org.n9ne.common.R.drawable
 import org.n9ne.common.R.string
+import org.n9ne.common.dialog.createLeagueDialog
+import org.n9ne.common.dialog.joinLeagueDialog
+import org.n9ne.common.model.Setting
 import org.n9ne.common.model.SettingItem
+import org.n9ne.common.model.User
 import org.n9ne.common.source.local.AppDatabase
+import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
 import org.n9ne.common.util.Saver.saveToken
 import org.n9ne.common.util.Utils.isOnline
 import org.n9ne.common.util.interfaces.AddLeagueListener
+import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.common.util.interfaces.SettingClickListener
 import org.n9ne.common.util.setGradient
-import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
-import org.n9ne.common.model.Setting
-import org.n9ne.common.model.User
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoApiImpl
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoLocalImpl
 import org.n9ne.h2ohealthy.databinding.FragmentProfileBinding
 import org.n9ne.h2ohealthy.ui.AuthActivity
 import org.n9ne.h2ohealthy.ui.MainActivity
-import org.n9ne.h2ohealthy.ui.dialog.createLeagueDialog
-import org.n9ne.h2ohealthy.ui.dialog.joinLeagueDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.SettingAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.ProfileViewModel
-import org.n9ne.common.util.interfaces.Navigator
 
 class ProfileFragment : Fragment(), Navigator, RefreshListener {
 
@@ -113,7 +114,7 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
 
     private fun init() {
         activity = requireActivity() as MainActivity
-        val client = (requireActivity().application as App).client
+        val client = Client.getInstance()
 
         apiRepo = ProfileRepoApiImpl(client)
         localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
@@ -187,7 +188,11 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
         }
         viewModel.ldLogout.observe(viewLifecycleOwner, EventObserver {
             requireActivity().saveToken(null)
-            requireActivity().startActivity(Intent(requireActivity(), AuthActivity::class.java))
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("h2ohealthy://auth")
+            )
+            requireActivity().startActivity(intent)
             requireActivity().finish()
         })
         viewModel.ldContactClick.observe(viewLifecycleOwner, EventObserver {

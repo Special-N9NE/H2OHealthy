@@ -14,16 +14,16 @@ import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.api.PersianPickerDate
 import ir.hamsaa.persiandatepicker.api.PersianPickerListener
 import org.n9ne.common.R.color
-import org.n9ne.h2ohealthy.App
+import org.n9ne.common.source.network.Client
+import org.n9ne.common.util.EventObserver
+import org.n9ne.common.util.Saver.saveEmail
+import org.n9ne.common.util.Saver.saveToken
+import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.repo.auth.AuthRepoImpl
 import org.n9ne.h2ohealthy.databinding.FragmentCompleteProfileBinding
 import org.n9ne.h2ohealthy.ui.AuthActivity
 import org.n9ne.h2ohealthy.ui.login.viewModel.CompleteProfileViewModel
-import org.n9ne.common.util.EventObserver
-import org.n9ne.common.util.Saver.saveEmail
-import org.n9ne.common.util.Saver.saveToken
-import org.n9ne.common.util.interfaces.Navigator
 
 
 class CompleteProfileFragment : Fragment(), Navigator {
@@ -61,7 +61,7 @@ class CompleteProfileFragment : Fragment(), Navigator {
 
     private fun init() {
         activity = requireActivity() as AuthActivity
-        val client = (requireActivity().application as App).client
+        val client = Client.getInstance()
         val repo = AuthRepoImpl(client)
 
         viewModel = ViewModelProvider(this)[CompleteProfileViewModel::class.java]

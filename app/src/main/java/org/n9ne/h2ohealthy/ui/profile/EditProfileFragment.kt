@@ -26,6 +26,7 @@ import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoLocalImpl
 import org.n9ne.h2ohealthy.databinding.FragmentEditProfileBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
 import org.n9ne.h2ohealthy.ui.profile.viewModel.EditProfileViewModel
+import org.n9ne.common.source.network.Client
 
 
 class EditProfileFragment : Fragment(), Navigator {
@@ -95,7 +96,7 @@ class EditProfileFragment : Fragment(), Navigator {
 
     private fun init() {
         activity = requireActivity() as MainActivity
-        val client = (requireActivity().application as App).client
+        val client = Client.getInstance()
 
         localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
         apiRepo = ProfileRepoApiImpl(client)

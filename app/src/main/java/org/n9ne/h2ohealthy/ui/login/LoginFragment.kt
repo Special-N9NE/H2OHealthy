@@ -9,17 +9,17 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import org.n9ne.h2ohealthy.App
-import org.n9ne.h2ohealthy.R
 import org.n9ne.common.R.drawable
-import org.n9ne.h2ohealthy.data.repo.auth.AuthRepoImpl
-import org.n9ne.h2ohealthy.databinding.FragmentLoginBinding
-import org.n9ne.h2ohealthy.ui.AuthActivity
-import org.n9ne.h2ohealthy.ui.login.viewModel.LoginViewModel
+import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.saveEmail
 import org.n9ne.common.util.Saver.saveToken
 import org.n9ne.common.util.interfaces.Navigator
+import org.n9ne.h2ohealthy.R
+import org.n9ne.h2ohealthy.data.repo.auth.AuthRepoImpl
+import org.n9ne.h2ohealthy.databinding.FragmentLoginBinding
+import org.n9ne.h2ohealthy.ui.AuthActivity
+import org.n9ne.h2ohealthy.ui.login.viewModel.LoginViewModel
 
 
 class LoginFragment : Fragment(), Navigator {
@@ -49,7 +49,7 @@ class LoginFragment : Fragment(), Navigator {
 
     private fun init() {
         activity = requireActivity() as AuthActivity
-        val client = (requireActivity().application as App).client
+        val client = Client.getInstance()
         val repo = AuthRepoImpl(client)
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         viewModel.navigator = this

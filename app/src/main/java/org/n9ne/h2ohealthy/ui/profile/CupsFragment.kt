@@ -7,20 +7,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import org.n9ne.common.dialog.addCupDialog
+import org.n9ne.common.model.Cup
 import org.n9ne.common.source.local.AppDatabase
+import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
 import org.n9ne.common.util.Utils.isOnline
 import org.n9ne.common.util.interfaces.CupClickListener
 import org.n9ne.common.util.interfaces.CupEditListener
 import org.n9ne.common.util.interfaces.RefreshListener
-import org.n9ne.h2ohealthy.App
-import org.n9ne.common.model.Cup
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoApiImpl
 import org.n9ne.h2ohealthy.data.repo.profile.ProfileRepoLocalImpl
 import org.n9ne.h2ohealthy.databinding.FragmentCupsBinding
 import org.n9ne.h2ohealthy.ui.MainActivity
-import org.n9ne.h2ohealthy.ui.dialog.addCupDialog
 import org.n9ne.h2ohealthy.ui.profile.adpter.AddCupAdapter
 import org.n9ne.h2ohealthy.ui.profile.viewModel.CupsViewModel
 
@@ -57,7 +57,7 @@ class CupsFragment : Fragment(), RefreshListener {
     private fun init() {
         activity = requireActivity() as MainActivity
 
-        val client = (requireActivity().application as App).client
+        val client = Client.getInstance()
         apiRepo = ProfileRepoApiImpl(client)
         localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
 

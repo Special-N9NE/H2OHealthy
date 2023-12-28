@@ -1,17 +1,17 @@
 package org.n9ne.h2ohealthy.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.simform.refresh.SSPullToRefreshLayout
+import org.n9ne.common.BaseActivity
 import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.ActivityAuthBinding
 
 
-class AuthActivity : AppCompatActivity() {
+class AuthActivity : BaseActivity() {
 
     private lateinit var b: ActivityAuthBinding
     private lateinit var navController: NavController
@@ -49,12 +49,7 @@ class AuthActivity : AppCompatActivity() {
         b.ssPullRefresh.setRepeatMode(SSPullToRefreshLayout.RepeatMode.REPEAT)
         b.ssPullRefresh.setRepeatCount(SSPullToRefreshLayout.RepeatCount.INFINITE)
         b.ssPullRefresh.setLottieAnimation("loading.json")
-    }
-    fun startLoading() {
-        b.ssPullRefresh.setRefreshing(true)
-    }
 
-    fun stopLoading() {
-        b.ssPullRefresh.setRefreshing(false)
+        initLoading(b.ssPullRefresh)
     }
 }

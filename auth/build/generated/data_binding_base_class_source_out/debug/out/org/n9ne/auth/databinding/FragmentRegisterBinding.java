@@ -19,7 +19,7 @@ import androidx.databinding.ViewDataBinding;
 import java.lang.Deprecated;
 import java.lang.Object;
 import org.n9ne.auth.R;
-import org.n9ne.auth.viewModel.RegisterViewModel;
+import org.n9ne.auth.ui.viewModel.RegisterViewModel;
 
 public abstract class FragmentRegisterBinding extends ViewDataBinding {
   @NonNull

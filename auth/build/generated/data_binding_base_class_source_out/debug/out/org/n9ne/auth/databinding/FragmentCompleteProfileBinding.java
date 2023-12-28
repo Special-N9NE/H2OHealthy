@@ -19,7 +19,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.lang.Deprecated;
 import java.lang.Object;
 import org.n9ne.auth.R;
-import org.n9ne.auth.viewModel.CompleteProfileViewModel;
+import org.n9ne.auth.ui.viewModel.CompleteProfileViewModel;
 
 public abstract class FragmentCompleteProfileBinding extends ViewDataBinding {
   @NonNull

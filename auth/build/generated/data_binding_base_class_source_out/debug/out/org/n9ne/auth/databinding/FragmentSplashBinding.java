@@ -14,7 +14,7 @@ import androidx.databinding.ViewDataBinding;
 import java.lang.Deprecated;
 import java.lang.Object;
 import org.n9ne.auth.R;
-import org.n9ne.auth.viewModel.SplashViewModel;
+import org.n9ne.auth.ui.viewModel.SplashViewModel;
 
 public abstract class FragmentSplashBinding extends ViewDataBinding {
   @NonNull

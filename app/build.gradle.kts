@@ -93,4 +93,5 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":home"))
     implementation(project(":profile"))
+    implementation(project(":auth"))
 }

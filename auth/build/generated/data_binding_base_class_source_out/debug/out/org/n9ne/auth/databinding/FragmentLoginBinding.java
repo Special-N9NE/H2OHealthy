@@ -18,7 +18,7 @@ import androidx.databinding.ViewDataBinding;
 import java.lang.Deprecated;
 import java.lang.Object;
 import org.n9ne.auth.R;
-import org.n9ne.auth.viewModel.LoginViewModel;
+import org.n9ne.auth.ui.viewModel.LoginViewModel;
 
 public abstract class FragmentLoginBinding extends ViewDataBinding {
   @NonNull

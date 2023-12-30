@@ -35,6 +35,9 @@ interface RoomDao {
     @Query("UPDATE WaterEntity SET amount = :amount WHERE id = :id")
     fun updateWater(id: Long, amount: String)
 
+    @Query("UPDATE userentity SET profile = :profile")
+    fun updateProfile(profile: String)
+
     @Query("DELETE FROM WaterEntity WHERE id = :id")
     fun removeWater(id: Long)
 

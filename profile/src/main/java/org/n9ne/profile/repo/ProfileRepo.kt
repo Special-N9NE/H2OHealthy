@@ -21,4 +21,5 @@ interface ProfileRepo {
     suspend fun getLeagueUsers(token: String?, callback: RepoCallback<GetLeague>) {}
     suspend fun renameLeague(name: String, code: String, callback: RepoCallback<String>) {}
     suspend fun leaveLeague(token: String?, callback: RepoCallback<String>) {}
+    suspend fun updateProfile(token: String, image: String, callback: RepoCallback<String>) {}
 }

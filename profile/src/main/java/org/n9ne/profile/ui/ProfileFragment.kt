@@ -12,12 +12,9 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.BaseFragment
 import org.n9ne.common.R.color
-import org.n9ne.common.R.drawable
 import org.n9ne.common.R.string
 import org.n9ne.common.dialog.createLeagueDialog
 import org.n9ne.common.dialog.joinLeagueDialog
@@ -34,6 +31,7 @@ import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.common.util.interfaces.SettingClickListener
 import org.n9ne.common.util.setGradient
+import org.n9ne.common.util.setUserAvatar
 import org.n9ne.profile.R
 import org.n9ne.profile.databinding.FragmentProfileBinding
 import org.n9ne.profile.repo.ProfileRepo
@@ -148,13 +146,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
 
         b.tvAge.text = user.age
 
-        if (user.profile.isNotEmpty()) {
-            Glide.with(requireContext()).load(user.profile)
-                .apply(
-                    RequestOptions().placeholder(drawable.image_profile)
-                        .error(drawable.image_profile)
-                ).into(b.ivProfile)
-        }
+        b.ivProfile.setUserAvatar(user.profile)
     }
 
     private fun setupObserver() {
@@ -251,6 +243,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
 
         createLeagueDialog!!.show()
     }
+
     override fun onRefresh() {
         makeApiRequest {
             viewModel.getUser(requireActivity().getToken())

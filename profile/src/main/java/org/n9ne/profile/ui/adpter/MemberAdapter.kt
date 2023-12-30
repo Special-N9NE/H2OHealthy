@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.n9ne.common.R.color
 import org.n9ne.common.model.Member
 import org.n9ne.common.util.setGradient
+import org.n9ne.common.util.setUserAvatar
 import org.n9ne.profile.databinding.ItemMemberBinding
 
 class MemberAdapter(
@@ -19,6 +20,8 @@ class MemberAdapter(
         RecyclerView.ViewHolder(b.root) {
         fun setData(item: Member, position: Int) {
             b.item = item
+
+            b.ivProfile.setUserAvatar(item.profile)
 
             b.tvNumber.setGradient(context, color.linearPurpleStart, color.linearPurpleEnd)
             b.tvScore.setGradient(context, color.linearPurpleStart, color.linearPurpleEnd)

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.constraintlayout.widget.Group;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.databinding.Bindable;
 import androidx.databinding.DataBindingUtil;
@@ -32,6 +33,9 @@ public abstract class FragmentLoginBinding extends ViewDataBinding {
 
   @NonNull
   public final Guideline gBottom;
+
+  @NonNull
+  public final Group gGoogle;
 
   @NonNull
   public final Guideline gTop;
@@ -62,7 +66,7 @@ public abstract class FragmentLoginBinding extends ViewDataBinding {
 
   protected FragmentLoginBinding(Object _bindingComponent, View _root, int _localFieldCount,
       AppCompatButton bLogin, AppCompatEditText etEmail, AppCompatEditText etPassword,
-      Guideline gBottom, Guideline gTop, ImageView ivGoogle, ImageView ivPassword,
+      Guideline gBottom, Group gGoogle, Guideline gTop, ImageView ivGoogle, ImageView ivPassword,
       LinearLayout linearLayout2, LinearLayout llRegister, TextView textView, TextView textView2,
       TextView tvForgot) {
     super(_bindingComponent, _root, _localFieldCount);
@@ -70,6 +74,7 @@ public abstract class FragmentLoginBinding extends ViewDataBinding {
     this.etEmail = etEmail;
     this.etPassword = etPassword;
     this.gBottom = gBottom;
+    this.gGoogle = gGoogle;
     this.gTop = gTop;
     this.ivGoogle = ivGoogle;
     this.ivPassword = ivPassword;

@@ -21,6 +21,8 @@ import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
 import org.n9ne.common.util.interfaces.Navigator
+import org.n9ne.common.util.setUserAvatar
+import org.n9ne.profile.R
 import org.n9ne.profile.databinding.FragmentEditProfileBinding
 import org.n9ne.profile.repo.ProfileRepo
 import org.n9ne.profile.repo.ProfileRepoApiImpl
@@ -88,6 +90,9 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
         }
         b.etBirthday.setOnClickListener {
             showDateDialog()
+        }
+        b.ivProfile.setOnClickListener {
+            this.shouldNavigate(R.id.editProfile_to_avatar)
         }
     }
 
@@ -183,6 +188,8 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
             b.spActivity.setTextColor(resources.getColor(color.blackText, requireContext().theme))
             b.spGender.setTextColor(resources.getColor(color.blackText, requireContext().theme))
             setupSpinners()
+
+            b.ivProfile.setUserAvatar(it.profile)
 
             date = it.birthDate
         })

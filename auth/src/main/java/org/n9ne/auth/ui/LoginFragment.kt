@@ -46,7 +46,6 @@ class LoginFragment : Fragment(), Navigator {
         setClicks()
     }
 
-
     private fun init() {
         activity = requireActivity() as BaseActivity
         val client = Client.getInstance()

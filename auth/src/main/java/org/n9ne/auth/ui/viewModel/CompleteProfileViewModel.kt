@@ -15,6 +15,7 @@ import org.n9ne.common.model.CompleteProfileResult
 import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.source.local.UserEntity
 import org.n9ne.common.source.objects.Auth
+import org.n9ne.common.util.DateUtils
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.RepoCallback
 
@@ -44,7 +45,7 @@ class CompleteProfileViewModel : BaseViewModel<AuthRepo>() {
         height: String,
         context: Context
     ) {
-        val date = org.n9ne.common.util.DateUtils.getDate()
+        val date = DateUtils.getDate()
         val genderId = if (gender == "Male") 1 else 0
         var activityId = "0"
         activityLevels.forEachIndexed { index, s ->

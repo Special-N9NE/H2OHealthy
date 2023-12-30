@@ -13,6 +13,7 @@ int id etName 0x0
 int id etPassword 0x0
 int id etWeight 0x0
 int id gBottom 0x0
+int id gGoogle 0x0
 int id gTop 0x0
 int id guideline 0x0
 int id guideline2 0x0

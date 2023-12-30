@@ -31,7 +31,11 @@
         android:id="@+id/editProfile"
         android:name="org.n9ne.profile.ui.EditProfileFragment"
         android:label="EditProfileFragment"
-        tools:layout="@layout/fragment_edit_profile" />
+        tools:layout="@layout/fragment_edit_profile" >
+        <action
+            android:id="@+id/editProfile_to_avatar"
+            app:destination="@id/avatar" />
+    </fragment>
     <fragment
         android:id="@+id/cups"
         android:name="org.n9ne.profile.ui.CupsFragment"
@@ -42,4 +46,9 @@
         android:name="org.n9ne.profile.ui.StatsFragment"
         android:label="StatsFragment"
         tools:layout="@layout/fragment_stats"/>
+    <fragment
+        android:id="@+id/avatar"
+        tools:layout="@layout/fragment_avatars"
+        android:name="org.n9ne.profile.ui.AvatarFragment"
+        android:label="AvatarFragment" />
 </navigation>

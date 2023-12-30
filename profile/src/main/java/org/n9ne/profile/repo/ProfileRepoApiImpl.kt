@@ -181,4 +181,19 @@ class ProfileRepoApiImpl(private val client: Client) : BaseRepoImpl(), ProfileRe
             }
         }
     }
+
+    override suspend fun updateProfile(
+        token: String,
+        image: String,
+        callback: RepoCallback<String>
+    ) {
+        val call = client.getApiService().updateProfile(token, image)
+        getResponse(call, callback).collect {
+            if (it.status) {
+                callback.onSuccessful(it.message)
+            } else {
+                handleError(it.message, callback)
+            }
+        }
+    }
 }

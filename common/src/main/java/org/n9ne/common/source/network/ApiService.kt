@@ -135,4 +135,11 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Field("leaveLeague") data: String = ""
     ): Call<Message>
+
+    @FormUrlEncoded
+    @POST("user.php")
+    fun updateProfile(
+        @Header("Authorization") token: String,
+        @Field("updateProfile") data: String
+    ): Call<Message>
 }

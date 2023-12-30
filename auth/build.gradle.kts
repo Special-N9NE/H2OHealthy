@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    api("com.google.android.gms:play-services-auth:20.7.0")
 
     api("com.github.aliab:Persian-Date-Picker-Dialog:1.8.0")
 

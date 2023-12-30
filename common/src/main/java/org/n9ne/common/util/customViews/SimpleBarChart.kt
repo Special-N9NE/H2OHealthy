@@ -8,7 +8,6 @@ import androidx.annotation.AttrRes
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.boyzdroizy.simpleandroidbarchart.adapters.BarIntervalsAdapter
-import com.boyzdroizy.simpleandroidbarchart.utils.alphaHide
 import org.n9ne.common.databinding.BarChartBinding
 import kotlin.random.Random
 
@@ -33,7 +32,6 @@ class SimpleBarChart @JvmOverloads constructor(
 
 
     private fun initAnalyticsChartAdapter(items: MutableList<Int>) {
-        b.graphLabel.alphaHide()
         setMaxValue(items.max() ?: 0)
         val classesAdapter = BarChartAdapter(items, max)
         b.chartRecycler.layoutManager = GridLayoutManager(this.context, items.size)

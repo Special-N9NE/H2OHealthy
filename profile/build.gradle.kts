@@ -37,6 +37,11 @@ android {
 }
 
 dependencies {
+
+    implementation("com.github.AAChartModel:AAChartCore-Kotlin:7.2.1")
+    implementation("com.github.BoyzDroizy:SimpleAndroidBarChart:1.0.1")
+
+
     api("com.github.bumptech.glide:glide:4.15.1")
 
     api("com.github.aliab:Persian-Date-Picker-Dialog:1.8.0")

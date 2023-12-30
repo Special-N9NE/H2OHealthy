@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/profileNav"
-    app:startDestination="@id/profile">
+    app:startDestination="@id/stats">
     <fragment
         android:id="@+id/profile"
         android:name="org.n9ne.profile.ui.ProfileFragment"
@@ -18,6 +18,9 @@
         <action
             android:id="@+id/profile_to_cups"
             app:destination="@id/cups" />
+        <action
+            android:id="@+id/profile_to_stats"
+            app:destination="@id/stats" />
     </fragment>
     <fragment
         android:id="@+id/league"
@@ -34,4 +37,9 @@
         android:name="org.n9ne.profile.ui.CupsFragment"
         android:label="CupsFragment"
         tools:layout="@layout/fragment_cups" />
+    <fragment
+        android:id="@+id/stats"
+        android:name="org.n9ne.profile.ui.StatsFragment"
+        android:label="StatsFragment"
+        tools:layout="@layout/fragment_stats"/>
 </navigation>

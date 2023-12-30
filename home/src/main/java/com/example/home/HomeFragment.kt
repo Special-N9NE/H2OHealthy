@@ -8,14 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.home.adpter.ActivityAdapter
 import com.example.home.databinding.FragmentHomeBinding
+import com.example.home.repo.HomeRepo
 import com.example.home.repo.HomeRepoApiImpl
 import com.example.home.repo.HomeRepoLocalImpl
 import com.example.home.viewModel.HomeViewModel
 import org.n9ne.common.BaseActivity
+import org.n9ne.common.BaseFragment
 import org.n9ne.common.dialog.activityOptionDialog
 import org.n9ne.common.model.Activity
 import org.n9ne.common.model.Progress
@@ -24,7 +25,6 @@ import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Mapper.toLiter
 import org.n9ne.common.util.Saver.getToken
-import org.n9ne.common.util.Utils.isOnline
 import org.n9ne.common.util.interfaces.AddWaterListener
 import org.n9ne.common.util.interfaces.MenuClickListener
 import org.n9ne.common.util.interfaces.RefreshListener
@@ -32,10 +32,7 @@ import org.n9ne.common.util.interfaces.RemoveActivityListener
 import org.nine.linearprogressbar.LinearVerticalProgressBar
 
 
-class HomeFragment : Fragment(), RefreshListener {
-    private lateinit var localRepo: HomeRepoLocalImpl
-    private lateinit var apiRepo: HomeRepoApiImpl
-
+class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
     private lateinit var b: FragmentHomeBinding
     private lateinit var viewModel: HomeViewModel
     private var activityList = arrayListOf<Activity>()
@@ -83,26 +80,8 @@ class HomeFragment : Fragment(), RefreshListener {
         viewModel.db = AppDatabase.getDatabase(requireContext())
 
         b.viewModel = viewModel
-    }
 
-    private fun makeRequest(request: () -> Unit) {
-        val repo = if (requireActivity().isOnline()) {
-            apiRepo
-        } else {
-            localRepo
-        }
-        viewModel.repo = repo
-        request.invoke()
-    }
-
-    private fun makeApiRequest(request: () -> Unit) {
-        viewModel.repo = apiRepo
-        request.invoke()
-    }
-
-    private fun makeLocalRequest(request: () -> Unit) {
-        viewModel.repo = localRepo
-        request.invoke()
+        initRepos(apiRepo as HomeRepo, localRepo as HomeRepo, viewModel)
     }
 
     private fun setActivityAdapter(list: List<Activity>) {

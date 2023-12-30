@@ -7,33 +7,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.api.PersianPickerDate
 import ir.hamsaa.persiandatepicker.api.PersianPickerListener
 import org.n9ne.common.BaseActivity
+import org.n9ne.common.BaseFragment
 import org.n9ne.common.R.color
 import org.n9ne.common.model.UpdateUser
 import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
-import org.n9ne.common.util.Utils.isOnline
 import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.profile.databinding.FragmentEditProfileBinding
+import org.n9ne.profile.repo.ProfileRepo
 import org.n9ne.profile.repo.ProfileRepoApiImpl
 import org.n9ne.profile.repo.ProfileRepoLocalImpl
 import org.n9ne.profile.ui.viewModel.EditProfileViewModel
 
 
-class EditProfileFragment : Fragment(), Navigator {
+class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
 
     private lateinit var b: FragmentEditProfileBinding
     private lateinit var viewModel: EditProfileViewModel
-    private lateinit var localRepo: ProfileRepoLocalImpl
-    private lateinit var apiRepo: ProfileRepoApiImpl
     private lateinit var date: String
     private lateinit var activity: BaseActivity
 
@@ -104,6 +102,8 @@ class EditProfileFragment : Fragment(), Navigator {
         viewModel.db = AppDatabase.getDatabase(requireContext())
         b.viewModel = viewModel
 
+        initRepos(apiRepo as ProfileRepo, localRepo as ProfileRepo, viewModel)
+
         setupSpinners()
     }
 
@@ -162,26 +162,6 @@ class EditProfileFragment : Fragment(), Navigator {
             }).show()
     }
 
-    private fun makeRequest(request: () -> Unit) {
-        val repo = if (requireActivity().isOnline()) {
-            apiRepo
-        } else {
-            localRepo
-        }
-        viewModel.repo = repo
-        request.invoke()
-    }
-
-    private fun makeLocalRequest(request: () -> Unit) {
-        viewModel.repo = localRepo
-        request.invoke()
-    }
-
-    private fun makeApiRequest(request: () -> Unit) {
-        viewModel.repo = apiRepo
-        request.invoke()
-    }
-
     private fun setupSpinners() {
         val view = org.n9ne.common.R.layout.view_drop_down
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
@@ -216,9 +196,4 @@ class EditProfileFragment : Fragment(), Navigator {
         })
 
     }
-
-    override fun shouldNavigate(destination: Int, data: Bundle?) {
-        findNavController().navigate(destination, data)
-    }
-
 }

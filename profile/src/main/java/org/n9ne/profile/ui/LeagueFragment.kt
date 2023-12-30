@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import org.n9ne.common.BaseActivity
+import org.n9ne.common.BaseFragment
 import org.n9ne.common.R.string
 import org.n9ne.common.dialog.createLeagueDialog
 import org.n9ne.common.dialog.leagueSettingDialog
@@ -20,19 +20,16 @@ import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getEmail
 import org.n9ne.common.util.Saver.getToken
-import org.n9ne.common.util.Utils.isOnline
 import org.n9ne.common.util.interfaces.AddLeagueListener
 import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.profile.databinding.FragmentLeagueBinding
+import org.n9ne.profile.repo.ProfileRepo
 import org.n9ne.profile.repo.ProfileRepoApiImpl
 import org.n9ne.profile.repo.ProfileRepoLocalImpl
 import org.n9ne.profile.ui.adpter.MemberAdapter
 import org.n9ne.profile.ui.viewModel.LeagueViewModel
 
-class LeagueFragment : Fragment(), RefreshListener {
-
-    private lateinit var localRepo: ProfileRepoLocalImpl
-    private lateinit var apiRepo: ProfileRepoApiImpl
+class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
 
     private lateinit var b: FragmentLeagueBinding
     private lateinit var viewModel: LeagueViewModel
@@ -72,26 +69,6 @@ class LeagueFragment : Fragment(), RefreshListener {
         }
     }
 
-    private fun makeRequest(request: () -> Unit) {
-        val repo = if (requireActivity().isOnline()) {
-            apiRepo
-        } else {
-            localRepo
-        }
-        viewModel.repo = repo
-        request.invoke()
-    }
-
-    private fun makeLocalRequest(request: () -> Unit) {
-        viewModel.repo = localRepo
-        request.invoke()
-    }
-
-    private fun makeApiRequest(request: () -> Unit) {
-        viewModel.repo = apiRepo
-        request.invoke()
-    }
-
     private fun init() {
         activity = requireActivity() as BaseActivity
         val client = Client.getInstance()
@@ -102,6 +79,8 @@ class LeagueFragment : Fragment(), RefreshListener {
         viewModel = ViewModelProvider(this)[LeagueViewModel::class.java]
         viewModel.db = AppDatabase.getDatabase(requireContext())
         b.viewModel = viewModel
+
+        initRepos(apiRepo as ProfileRepo, localRepo as ProfileRepo, viewModel)
 
     }
 

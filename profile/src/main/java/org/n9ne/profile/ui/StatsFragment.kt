@@ -6,30 +6,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import org.n9ne.common.BaseActivity
+import org.n9ne.common.BaseFragment
 import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
-import org.n9ne.common.util.Utils.isOnline
 import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.profile.databinding.FragmentStatsBinding
+import org.n9ne.profile.repo.ProfileRepo
 import org.n9ne.profile.repo.ProfileRepoApiImpl
 import org.n9ne.profile.repo.ProfileRepoLocalImpl
 import org.n9ne.profile.ui.viewModel.StatsViewModel
 import kotlin.math.roundToInt
 
 
-class StatsFragment : Fragment(), RefreshListener {
-
-    private lateinit var localRepo: ProfileRepoLocalImpl
-    private lateinit var apiRepo: ProfileRepoApiImpl
+class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
 
     private lateinit var b: FragmentStatsBinding
     private lateinit var viewModel: StatsViewModel
@@ -60,27 +57,6 @@ class StatsFragment : Fragment(), RefreshListener {
         }
     }
 
-
-    private fun makeRequest(request: () -> Unit) {
-        val repo = if (requireActivity().isOnline()) {
-            apiRepo
-        } else {
-            localRepo
-        }
-        viewModel.repo = repo
-        request.invoke()
-    }
-
-    private fun makeLocalRequest(request: () -> Unit) {
-        viewModel.repo = localRepo
-        request.invoke()
-    }
-
-    private fun makeApiRequest(request: () -> Unit) {
-        viewModel.repo = apiRepo
-        request.invoke()
-    }
-
     private fun init() {
         activity = requireActivity() as BaseActivity
         val client = Client.getInstance()
@@ -91,6 +67,8 @@ class StatsFragment : Fragment(), RefreshListener {
         viewModel = ViewModelProvider(this)[StatsViewModel::class.java]
         viewModel.db = AppDatabase.getDatabase(requireContext())
         b.viewModel = viewModel
+
+        initRepos(apiRepo as ProfileRepo, localRepo as ProfileRepo, viewModel)
 
 
         val colorInt =

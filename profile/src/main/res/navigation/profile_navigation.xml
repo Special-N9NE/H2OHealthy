@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/profileNav"
-    app:startDestination="@id/stats">
+    app:startDestination="@id/profile">
     <fragment
         android:id="@+id/profile"
         android:name="org.n9ne.profile.ui.ProfileFragment"

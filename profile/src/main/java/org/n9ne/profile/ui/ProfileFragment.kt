@@ -11,12 +11,11 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import org.n9ne.common.BaseActivity
+import org.n9ne.common.BaseFragment
 import org.n9ne.common.R.color
 import org.n9ne.common.R.drawable
 import org.n9ne.common.R.string
@@ -30,7 +29,6 @@ import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
 import org.n9ne.common.util.Saver.saveToken
-import org.n9ne.common.util.Utils.isOnline
 import org.n9ne.common.util.interfaces.AddLeagueListener
 import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.common.util.interfaces.RefreshListener
@@ -38,15 +36,13 @@ import org.n9ne.common.util.interfaces.SettingClickListener
 import org.n9ne.common.util.setGradient
 import org.n9ne.profile.R
 import org.n9ne.profile.databinding.FragmentProfileBinding
+import org.n9ne.profile.repo.ProfileRepo
 import org.n9ne.profile.repo.ProfileRepoApiImpl
 import org.n9ne.profile.repo.ProfileRepoLocalImpl
 import org.n9ne.profile.ui.adpter.SettingAdapter
 import org.n9ne.profile.ui.viewModel.ProfileViewModel
 
-class ProfileFragment : Fragment(), Navigator, RefreshListener {
-
-    private lateinit var localRepo: ProfileRepoLocalImpl
-    private lateinit var apiRepo: ProfileRepoApiImpl
+class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener {
 
     private lateinit var b: FragmentProfileBinding
     private lateinit var viewModel: ProfileViewModel
@@ -90,27 +86,6 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
         }
     }
 
-
-    private fun makeRequest(request: () -> Unit) {
-        val repo = if (requireActivity().isOnline()) {
-            apiRepo
-        } else {
-            localRepo
-        }
-        viewModel.repo = repo
-        request.invoke()
-    }
-
-    private fun makeLocalRequest(request: () -> Unit) {
-        viewModel.repo = localRepo
-        request.invoke()
-    }
-
-    private fun makeApiRequest(request: () -> Unit) {
-        viewModel.repo = apiRepo
-        request.invoke()
-    }
-
     private fun init() {
         activity = requireActivity() as BaseActivity
         val client = Client.getInstance()
@@ -124,12 +99,14 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
         viewModel.navigator = this
         b.viewModel = viewModel
 
+        initRepos(apiRepo as ProfileRepo, localRepo as ProfileRepo, viewModel)
+
         b.rvSettings.adapter = SettingAdapter(viewModel.settings, object : SettingClickListener {
             override fun settingClicked(setting: Setting) {
                 when (setting.type) {
                     //TODO
                     SettingItem.PASSWORD -> Log.e("WWW", "")
-                    SettingItem.STATS -> Log.e("WWW", "")
+                    SettingItem.STATS -> shouldNavigate(R.id.profile_to_stats)
                     SettingItem.GLASS -> shouldNavigate(R.id.profile_to_cups)
                 }
             }
@@ -140,7 +117,7 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
     }
 
     private fun setGradients() {
-        b.tvAge.setGradient(requireContext(),    color.linearBlueStart, color.linearBlueEnd)
+        b.tvAge.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
         b.tvWeight.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
         b.tvHeight.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
         b.tvLeague.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
@@ -274,11 +251,6 @@ class ProfileFragment : Fragment(), Navigator, RefreshListener {
 
         createLeagueDialog!!.show()
     }
-
-    override fun shouldNavigate(destination: Int, data: Bundle?) {
-        findNavController().navigate(destination, data)
-    }
-
     override fun onRefresh() {
         makeApiRequest {
             viewModel.getUser(requireActivity().getToken())

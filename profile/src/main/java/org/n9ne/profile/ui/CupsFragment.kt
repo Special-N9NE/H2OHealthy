@@ -5,30 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import org.n9ne.common.BaseActivity
+import org.n9ne.common.BaseFragment
 import org.n9ne.common.dialog.addCupDialog
 import org.n9ne.common.model.Cup
 import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
-import org.n9ne.common.util.Utils.isOnline
 import org.n9ne.common.util.interfaces.CupClickListener
 import org.n9ne.common.util.interfaces.CupEditListener
 import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.profile.databinding.FragmentCupsBinding
+import org.n9ne.profile.repo.ProfileRepo
 import org.n9ne.profile.repo.ProfileRepoApiImpl
 import org.n9ne.profile.repo.ProfileRepoLocalImpl
 import org.n9ne.profile.ui.adpter.AddCupAdapter
 import org.n9ne.profile.ui.viewModel.CupsViewModel
 
 
-class CupsFragment : Fragment(), RefreshListener {
-    private lateinit var localRepo: ProfileRepoLocalImpl
-    private lateinit var apiRepo: ProfileRepoApiImpl
-
+class CupsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
     private var cups = listOf<Cup>()
     private lateinit var b: FragmentCupsBinding
     private lateinit var viewModel: CupsViewModel
@@ -60,27 +57,13 @@ class CupsFragment : Fragment(), RefreshListener {
         val client = Client.getInstance()
         apiRepo = ProfileRepoApiImpl(client)
         localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
-
         viewModel = ViewModelProvider(this)[CupsViewModel::class.java]
         viewModel.db = AppDatabase.getDatabase(requireContext())
 
         b.viewModel = viewModel
 
-    }
+        initRepos(apiRepo as ProfileRepo, localRepo as ProfileRepo, viewModel)
 
-    private fun makeRequest(request: () -> Unit) {
-        val repo = if (requireActivity().isOnline()) {
-            apiRepo
-        } else {
-            localRepo
-        }
-        viewModel.repo = repo
-        request.invoke()
-    }
-
-    private fun makeApiRequest(request: () -> Unit) {
-        viewModel.repo = apiRepo
-        request.invoke()
     }
 
     private fun setAdapter() {

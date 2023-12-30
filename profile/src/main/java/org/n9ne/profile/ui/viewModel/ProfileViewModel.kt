@@ -28,8 +28,8 @@ class ProfileViewModel : BaseViewModel<ProfileRepo>() {
     val ldContactClick = MutableLiveData<Event<String>>()
 
     val settings = listOf(
-//        Setting("Password", R.drawable.ic_password, SettingItem.PASSWORD),
-//        Setting("Stats", R.drawable.ic_progress, SettingItem.STATS),
+//        Setting("Password", drawable.ic_password, SettingItem.PASSWORD),
+        Setting("Stats", drawable.ic_progress, SettingItem.STATS),
         Setting("Glasses", drawable.ic_password, SettingItem.GLASS),
     )
 

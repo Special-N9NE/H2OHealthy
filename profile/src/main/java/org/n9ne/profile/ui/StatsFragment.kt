@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
+import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.source.local.AppDatabase
@@ -133,31 +134,10 @@ class StatsFragment : Fragment(), RefreshListener {
             b.tvDateAll.text = it
         })
         viewModel.ldLineOverall.observe(viewLifecycleOwner, EventObserver {
-            val arr: Array<Any> = it.toTypedArray()
-
-            chartOverall
-                .yAxisMax(it.max())
-                .yAxisMin(it.min())
-                .series(
-                    arrayOf(
-                        AASeriesElement()
-                            .data(arr)
-                    )
-                )
-            b.lineOverall.aa_drawChartWithChartModel(chartOverall)
+            setLineChart(it, b.lineOverall, chartOverall)
         })
         viewModel.ldLineMonth.observe(viewLifecycleOwner, EventObserver {
-            val arr: Array<Any> = it.toTypedArray()
-            chartMonth
-                .yAxisMax(it.max())
-                .yAxisMin(it.min())
-                .series(
-                    arrayOf(
-                        AASeriesElement()
-                            .data(arr)
-                    )
-                )
-            b.lineMonth.aa_drawChartWithChartModel(chartMonth)
+            setLineChart(it, b.lineMonth, chartMonth)
         })
     }
 
@@ -178,8 +158,22 @@ class StatsFragment : Fragment(), RefreshListener {
         b.barChart.setChartData(chartData, mutableListOf())
     }
 
+    private fun setLineChart(it: List<Double>, view: AAChartView, chart: AAChartModel) {
+        val arr: Array<Any> = it.toTypedArray()
+        chart
+            .yAxisMax(it.max())
+            .yAxisMin(it.min())
+            .series(
+                arrayOf(
+                    AASeriesElement()
+                        .data(arr)
+                )
+            )
+        view.aa_drawChartWithChartModel(chart)
+    }
+
     override fun onRefresh() {
-        makeApiRequest {
+        makeRequest {
             viewModel.getActivities(requireActivity().getToken())
         }
     }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lastMonth">Last 30 Days</string>
+    <string name="dailyAverage">Daily Average</string>
+    <string name="averageHours">Average Water per hours</string>
+    <string name="allTime">All time</string>
+</resources>

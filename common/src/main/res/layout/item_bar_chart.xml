@@ -46,7 +46,7 @@
         android:id="@+id/chart_value"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/space_20dp"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/regular"
         android:gravity="center_vertical"
         android:includeFontPadding="false"
         android:textColor="@color/gray"

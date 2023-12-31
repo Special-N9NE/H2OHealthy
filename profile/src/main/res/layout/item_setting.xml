@@ -37,7 +37,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawablePadding="16dp"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/regular"
             android:gravity="center_vertical"
             android:paddingStart="8dp"
             android:paddingTop="4dp"

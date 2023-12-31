@@ -1,7 +1,6 @@
 package org.n9ne.auth.ui
 
 import android.os.Bundle
-import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +13,11 @@ import org.n9ne.auth.databinding.FragmentLoginBinding
 import org.n9ne.auth.repo.AuthRepoImpl
 import org.n9ne.auth.ui.viewModel.LoginViewModel
 import org.n9ne.common.BaseActivity
-import org.n9ne.common.R.drawable
 import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.saveEmail
 import org.n9ne.common.util.Saver.saveToken
+import org.n9ne.common.util.Utils
 import org.n9ne.common.util.interfaces.Navigator
 
 
@@ -44,6 +43,9 @@ class LoginFragment : Fragment(), Navigator {
         init()
         setupObserver()
         setClicks()
+        b.etPassword.textDirection =
+        if (Utils.isLocalPersian()) View.TEXT_DIRECTION_RTL else View.TEXT_DIRECTION_LTR
+
     }
 
     private fun init() {
@@ -54,6 +56,8 @@ class LoginFragment : Fragment(), Navigator {
         viewModel.navigator = this
         viewModel.repo = repo
         b.viewModel = viewModel
+
+
     }
 
     private fun setClicks() {
@@ -71,17 +75,6 @@ class LoginFragment : Fragment(), Navigator {
     }
 
     private fun setupObserver() {
-        viewModel.ldPasswordClick.observe(viewLifecycleOwner) {
-            if (it) {
-                b.ivPassword.setImageResource(drawable.ic_show_password)
-                b.etPassword.transformationMethod = null
-
-            } else {
-                b.ivPassword.setImageResource(drawable.ic_hide)
-                b.etPassword.transformationMethod = PasswordTransformationMethod()
-            }
-            b.etPassword.setSelection(b.etPassword.text.toString().length)
-        }
         viewModel.ldUserToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
             requireActivity().saveEmail(email)
             requireActivity().saveToken(it)

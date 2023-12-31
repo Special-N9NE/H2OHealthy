@@ -1,15 +1,26 @@
 package org.n9ne.common.util
 
 import android.content.Context
+import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import org.n9ne.common.model.Progress
 import org.n9ne.common.util.Mapper.toMilliLiter
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 import kotlin.math.roundToInt
 
 object Utils {
+
+    fun getLocal(): Locale {
+        return Resources.getSystem().configuration.locales[0]
+    }
+
+    fun isLocalPersian(): Boolean {
+        return (getLocal().country == "IR")
+    }
+
     fun Context.isOnline(): Boolean {
         val connectivityManager =
             this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -34,7 +45,7 @@ object Utils {
     }
 
     fun calculateDayProgress(list: List<org.n9ne.common.model.Activity>): Int {
-        val today = org.n9ne.common.util.DateUtils.getDate()
+        val today = DateUtils.getDate()
         var amount = 0.0
         list.forEach {
             if (it.date == today) {
@@ -48,11 +59,11 @@ object Utils {
     fun calculateActivities(list: List<org.n9ne.common.model.Activity>): List<org.n9ne.common.model.Activity> {
         val result = arrayListOf<org.n9ne.common.model.Activity>()
 
-        val today = org.n9ne.common.util.DateUtils.getDate()
+        val today = DateUtils.getDate()
         list.forEach {
             if (it.date == today) {
 
-                val displayTime = org.n9ne.common.util.DateUtils.getCurrentTimeDiff(it.time)
+                val displayTime = DateUtils.getCurrentTimeDiff(it.time)
                 val amount = (it.amount.toDouble().toMilliLiter()).roundToInt()
                 val item = org.n9ne.common.model.Activity(
                     it.id,
@@ -75,16 +86,40 @@ object Utils {
         for (i in 1..7) {
             time.add(Calendar.DAY_OF_YEAR, -1)
             val formatter = SimpleDateFormat("yyyy/MM/dd")
-            val day = formatter.format(time.time)
+            val day = formatter.format(time.time).toEnglishNumbers()
             var amount = 0.0
             list.forEach {
                 if (it.date == day) {
                     amount += (it.amount.toDouble().toMilliLiter())
                 }
             }
-            val displayDay = org.n9ne.common.util.DateUtils.getNameOfDay(time[Calendar.YEAR], time[Calendar.DAY_OF_YEAR])
+            val displayDay = DateUtils.getNameOfDay(
+                time[Calendar.YEAR],
+                time[Calendar.DAY_OF_YEAR]
+            )
             result.add(Progress(amount.toInt(), displayDay))
         }
         return result.reversed()
+    }
+
+
+    fun String.toEnglishNumbers(): String {
+        var result = ""
+        for (ch in this) {
+            result += when (ch) {
+                '۰' -> '0'
+                '۱' -> '1'
+                '۲' -> '2'
+                '۳' -> '3'
+                '۴' -> '4'
+                '۵' -> '5'
+                '۶' -> '6'
+                '۷' -> '7'
+                '۸' -> '8'
+                '۹' -> '9'
+                else -> ch
+            }
+        }
+        return result
     }
 }

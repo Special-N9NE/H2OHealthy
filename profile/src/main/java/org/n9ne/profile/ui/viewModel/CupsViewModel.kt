@@ -10,6 +10,7 @@ import org.n9ne.common.model.Cup
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.Mapper.toGlass
 import org.n9ne.common.util.RepoCallback
+import org.n9ne.common.util.Utils
 import org.n9ne.profile.repo.ProfileRepo
 
 class CupsViewModel : BaseViewModel<ProfileRepo>() {
@@ -25,8 +26,11 @@ class CupsViewModel : BaseViewModel<ProfileRepo>() {
             if (it.size <= 5) {
                 ldShowDialog.postValue(Event(true))
             } else {
-                //TODO change error
-                ldError.postValue(Event("6 cups reached"))
+                val error = if (Utils.isLocalPersian())
+                    "تعداد لیوان ها بیش از حد مجاز"
+                else
+                    "6 cups reached"
+                ldError.postValue(Event(error))
             }
         }
     }

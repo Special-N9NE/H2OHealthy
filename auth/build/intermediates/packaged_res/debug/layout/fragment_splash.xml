@@ -12,6 +12,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layoutDirection="ltr"
         android:layout_height="match_parent" android:tag="layout/fragment_splash_0" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <TextView
@@ -22,8 +23,6 @@
             android:text="@string/h2o"
             android:textSize="36sp"
             app:layout_constraintBottom_toTopOf="@+id/bStart"
-            app:layout_constraintEnd_toEndOf="@+id/tvTitle2"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/tvTitle2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.45" />

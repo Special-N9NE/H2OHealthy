@@ -51,9 +51,6 @@ public abstract class FragmentRegisterBinding extends ViewDataBinding {
   public final ImageView ivGoogle;
 
   @NonNull
-  public final ImageView ivPassword;
-
-  @NonNull
   public final LinearLayout linearLayout2;
 
   @NonNull
@@ -68,8 +65,8 @@ public abstract class FragmentRegisterBinding extends ViewDataBinding {
   protected FragmentRegisterBinding(Object _bindingComponent, View _root, int _localFieldCount,
       AppCompatButton bRegister, CheckBox cbPolicy, AppCompatEditText etEmail,
       AppCompatEditText etName, AppCompatEditText etPassword, Guideline gBottom, Group gGoogle,
-      Guideline gTop, ImageView ivGoogle, ImageView ivPassword, LinearLayout linearLayout2,
-      LinearLayout llLogin, TextView textView) {
+      Guideline gTop, ImageView ivGoogle, LinearLayout linearLayout2, LinearLayout llLogin,
+      TextView textView) {
     super(_bindingComponent, _root, _localFieldCount);
     this.bRegister = bRegister;
     this.cbPolicy = cbPolicy;
@@ -80,7 +77,6 @@ public abstract class FragmentRegisterBinding extends ViewDataBinding {
     this.gGoogle = gGoogle;
     this.gTop = gTop;
     this.ivGoogle = ivGoogle;
-    this.ivPassword = ivPassword;
     this.linearLayout2 = linearLayout2;
     this.llLogin = llLogin;
     this.textView = textView;

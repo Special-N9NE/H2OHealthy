@@ -44,9 +44,6 @@ public abstract class FragmentLoginBinding extends ViewDataBinding {
   public final ImageView ivGoogle;
 
   @NonNull
-  public final ImageView ivPassword;
-
-  @NonNull
   public final LinearLayout linearLayout2;
 
   @NonNull
@@ -66,7 +63,7 @@ public abstract class FragmentLoginBinding extends ViewDataBinding {
 
   protected FragmentLoginBinding(Object _bindingComponent, View _root, int _localFieldCount,
       AppCompatButton bLogin, AppCompatEditText etEmail, AppCompatEditText etPassword,
-      Guideline gBottom, Group gGoogle, Guideline gTop, ImageView ivGoogle, ImageView ivPassword,
+      Guideline gBottom, Group gGoogle, Guideline gTop, ImageView ivGoogle,
       LinearLayout linearLayout2, LinearLayout llRegister, TextView textView, TextView textView2,
       TextView tvForgot) {
     super(_bindingComponent, _root, _localFieldCount);
@@ -77,7 +74,6 @@ public abstract class FragmentLoginBinding extends ViewDataBinding {
     this.gGoogle = gGoogle;
     this.gTop = gTop;
     this.ivGoogle = ivGoogle;
-    this.ivPassword = ivPassword;
     this.linearLayout2 = linearLayout2;
     this.llRegister = llRegister;
     this.textView = textView;

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.res.ResourcesCompat
+import org.n9ne.common.R
 import org.n9ne.common.R.color
 import org.n9ne.common.databinding.DialogActivityOptionsBinding
 import org.n9ne.common.databinding.DialogAddBinding
@@ -52,11 +53,11 @@ fun Activity.addWaterDialog(
     if (selectedCup == null) {
         binding.etAmount.setText("")
         binding.cvCup.setCardBackgroundColor(white)
-        binding.tvCup.text = "Select Cup"
+        binding.tvCup.text = getString(R.string.select_cup)
     } else {
         binding.etAmount.setText(selectedCup.capacity.toString())
         binding.cvCup.setCardBackgroundColor(blue)
-        binding.tvCup.text = "Cup Selected"
+        binding.tvCup.text = getString(R.string.selected_cup)
     }
 
     return dialog

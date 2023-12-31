@@ -15,11 +15,13 @@ import ir.hamsaa.persiandatepicker.api.PersianPickerListener
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.BaseFragment
 import org.n9ne.common.R.color
+import org.n9ne.common.model.ActivityType
 import org.n9ne.common.model.UpdateUser
 import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
+import org.n9ne.common.util.Utils
 import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.common.util.setUserAvatar
 import org.n9ne.profile.R
@@ -43,7 +45,6 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
         b = FragmentEditProfileBinding.inflate(inflater)
         return b.root
     }
-    //TODO set some default profiles so user can pick it
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -84,12 +85,15 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
                     gender
                 )
                 makeApiRequest {
-                    viewModel.saveData(user, requireActivity().getToken())
+                    viewModel.saveData(user, requireActivity().getToken(), requireContext())
                 }
             }
         }
         b.etBirthday.setOnClickListener {
-            showDateDialog()
+            if (Utils.isLocalPersian())
+                showPersianDateDialog()
+            else
+                showDateDialog()
         }
         b.ivProfile.setOnClickListener {
             this.shouldNavigate(R.id.editProfile_to_avatar)
@@ -170,12 +174,12 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
     private fun setupSpinners() {
         val view = org.n9ne.common.R.layout.view_drop_down
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-            requireContext(), view, viewModel.activityLevels
+            requireContext(), view, viewModel.getActivityLevels()
         )
         b.spActivity.setAdapter(adapter)
 
         val adapterGender: ArrayAdapter<String> = ArrayAdapter<String>(
-            requireContext(), view, viewModel.genders
+            requireContext(), view, viewModel.getGenders()
         )
         b.spGender.setAdapter(adapterGender)
     }
@@ -183,7 +187,7 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
     private fun setupObserver() {
         viewModel.ldUser.observe(viewLifecycleOwner, EventObserver {
             b.user = it
-            b.spActivity.setText(it.activityType.text)
+            b.spActivity.setText(ActivityType.getLocalizedText(it.activityType, Utils.getLocal()))
             b.spGender.setText(it.gender)
             b.spActivity.setTextColor(resources.getColor(color.blackText, requireContext().theme))
             b.spGender.setTextColor(resources.getColor(color.blackText, requireContext().theme))

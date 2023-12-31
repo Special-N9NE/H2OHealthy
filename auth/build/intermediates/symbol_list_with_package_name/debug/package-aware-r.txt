@@ -20,7 +20,6 @@ id guideline
 id guideline2
 id iv
 id ivGoogle
-id ivPassword
 id linearLayout2
 id llLogin
 id llRegister

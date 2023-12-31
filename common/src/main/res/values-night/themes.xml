@@ -14,7 +14,7 @@
     </style>
 
     <style name="Theme.AquaTracker" parent="Base.Theme.AquaTracker">
-<!--        <item name="android:layoutDirection">ltr</item>-->
+        <!--        <item name="android:layoutDirection">ltr</item>-->
     </style>
 
     <style name="VerticalProgressBarStyle">

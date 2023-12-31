@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -19,10 +20,12 @@ import org.n9ne.auth.repo.AuthRepoImpl
 import org.n9ne.auth.ui.viewModel.CompleteProfileViewModel
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.R.color
+import org.n9ne.common.R.layout
 import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.saveEmail
 import org.n9ne.common.util.Saver.saveToken
+import org.n9ne.common.util.Utils
 import org.n9ne.common.util.interfaces.Navigator
 
 
@@ -34,8 +37,11 @@ class CompleteProfileFragment : Fragment(), Navigator {
     private lateinit var email: String
     private lateinit var password: String
 
-    private lateinit var date: String
+    private var date: String = ""
     private lateinit var activity: BaseActivity
+
+    private var genders = listOf<String>()
+    var genderSelected = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,34 +75,53 @@ class CompleteProfileFragment : Fragment(), Navigator {
 
         viewModel.repo = repo
         b.viewModel = viewModel
+
+        genders = listOf(
+            getString(org.n9ne.common.R.string.male),
+            getString(org.n9ne.common.R.string.female),
+        )
     }
 
     private fun setClicks() {
         b.bNext.setOnClickListener {
-            b.bNext.isEnabled = false
 
-            activity.startLoading()
-            viewModel.completeProfile(
-                name, email, password, b.spActivity.text.toString(), b.spGender.text.toString(),
-                date, b.etWeight.text.toString(), b.etHeight.text.toString(),
-                requireContext()
-            )
+            if (!genderSelected) {
+                val error = if (Utils.isLocalPersian())
+                    "جنسیت را انتخاب کنید"
+                else
+                    "Choose gender"
+
+                Toast.makeText(requireContext(), error, Toast.LENGTH_LONG).show()
+            } else {
+
+                b.bNext.isEnabled = false
+
+                activity.startLoading()
+                viewModel.completeProfile(
+                    name, email, password, b.spActivity.text.toString(), b.spGender.text.toString(),
+                    date, b.etWeight.text.toString(), b.etHeight.text.toString(),
+                    requireContext()
+                )
+            }
         }
     }
 
     private fun setupSpinners() {
-        val view = org.n9ne.common.R.layout.view_drop_down
+        val view = layout.view_drop_down
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
             requireContext(),
-            view, viewModel.activityLevels
+            view, viewModel.getActivityLevels()
         )
         b.spActivity.setAdapter(adapter)
 
         val adapterGender: ArrayAdapter<String> = ArrayAdapter<String>(
             requireContext(),
-            view, viewModel.genders
+            view, genders
         )
         b.spGender.setAdapter(adapterGender)
+        b.spGender.doOnTextChanged { _, _, _, _ ->
+            genderSelected = true
+        }
     }
 
     private fun setObservers() {
@@ -116,7 +141,10 @@ class CompleteProfileFragment : Fragment(), Navigator {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
         viewModel.ldShowDate.observe(viewLifecycleOwner, EventObserver {
-            showDateDialog()
+            if (Utils.isLocalPersian())
+                showPersianDateDialog()
+            else
+                showDateDialog()
         })
     }
 

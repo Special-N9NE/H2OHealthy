@@ -69,7 +69,9 @@
             android:layout_marginEnd="32dp"
             android:drawableStart="@drawable/ic_email"
             android:hint="@string/email"
+            android:imeOptions="flagForceAscii"
             android:inputType="textEmailAddress"
+            android:textDirection="locale"
             app:layout_constraintBottom_toTopOf="@+id/bRegister"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +89,8 @@
             android:layout_marginEnd="32dp"
             android:drawableStart="@drawable/ic_lock"
             android:hint="@string/password"
-            android:inputType="textPassword"
+            android:imeOptions="flagForceAscii"
+            android:textDirection="locale"
             app:layout_constraintBottom_toTopOf="@+id/bRegister"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -112,21 +115,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
-
-        <ImageView
-            android:id="@+id/ivPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:onClick="@{() -> viewModel.passwordClick()}"
-            android:padding="8dp"
-            android:src="@drawable/ic_hide"
-            app:layout_constraintBottom_toBottomOf="@+id/etPassword"
-            app:layout_constraintDimensionRatio="1"
-            app:layout_constraintEnd_toEndOf="@+id/etPassword"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/etPassword"
-            app:layout_constraintTop_toTopOf="@+id/etPassword" />
 
         <CheckBox
             android:id="@+id/cbPolicy"

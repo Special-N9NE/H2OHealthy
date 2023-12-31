@@ -72,6 +72,7 @@
                 style="@style/EditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:imeOptions="flagForceAscii"
                 android:layout_marginTop="16dp"
                 android:drawableStart="@drawable/ic_email"
                 android:hint="@string/email"

@@ -10,6 +10,7 @@ import kotlinx.coroutines.withContext
 import org.n9ne.auth.R
 import org.n9ne.auth.repo.AuthRepo
 import org.n9ne.common.BaseViewModel
+import org.n9ne.common.R.string
 import org.n9ne.common.model.LoginResult
 import org.n9ne.common.model.User
 import org.n9ne.common.source.local.AppDatabase
@@ -31,7 +32,7 @@ class LoginViewModel : BaseViewModel<AuthRepo>() {
 
     fun login(email: String, password: String, context: Context) {
 
-        if (!isDataValid(email, password))
+        if (!isDataValid(email, password, context))
             return
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -49,21 +50,21 @@ class LoginViewModel : BaseViewModel<AuthRepo>() {
         }
     }
 
-    private fun isDataValid(email: String, password: String): Boolean {
+    private fun isDataValid(email: String, password: String, context: Context): Boolean {
         if (email.trim().isEmpty()) {
-            ldError.postValue(Event("Email is empty"))
+            ldError.postValue(Event(context.getString(string.emptyEmail)))
             return false
         }
         if (password.trim().isEmpty()) {
-            ldError.postValue(Event("Password is empty"))
+            ldError.postValue(Event(context.getString(string.emptyPassword)))
             return false
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            ldError.postValue(Event("Email is not valid"))
+            ldError.postValue(Event(context.getString(string.errorEmail)))
             return false
         }
         if (password.length < 6) {
-            ldError.postValue(Event("password is short"))
+            ldError.postValue(Event(context.getString(string.errorPassword)))
             return false
         }
 

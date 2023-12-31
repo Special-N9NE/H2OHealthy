@@ -1,10 +1,7 @@
 package org.n9ne.h2ohealthy
 
 import android.app.Application
-import android.content.Context
-import android.content.res.Configuration
 import org.n9ne.common.source.network.Client
-import java.util.Locale
 
 class App : Application() {
 
@@ -15,12 +12,12 @@ class App : Application() {
 
         client = Client.getInstance()
     }
-    override fun attachBaseContext(base: Context) {
-        val config = Configuration()
-        val locale = Locale("en")
-        Locale.setDefault(locale)
-        config.setLocale(locale)
-        val newContext = base.createConfigurationContext(config)
-        super.attachBaseContext(newContext)
-    }
+//    override fun attachBaseContext(base: Context) {
+//        val config = Configuration()
+//        val locale = Locale("en")
+//        Locale.setDefault(locale)
+//        config.setLocale(locale)
+//        val newContext = base.createConfigurationContext(config)
+//        super.attachBaseContext(newContext)
+//    }
 }

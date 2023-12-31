@@ -1,5 +1,6 @@
 package org.n9ne.profile.ui.viewModel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +17,7 @@ import org.n9ne.common.util.Event
 import org.n9ne.common.util.Mapper.toLeagueEntity
 import org.n9ne.common.util.Mapper.toUserEntity
 import org.n9ne.common.util.RepoCallback
+import org.n9ne.common.util.Utils
 import org.n9ne.profile.R
 import org.n9ne.profile.repo.ProfileRepo
 
@@ -27,11 +29,18 @@ class ProfileViewModel : BaseViewModel<ProfileRepo>() {
     val ldUser = MutableLiveData<User>()
     val ldContactClick = MutableLiveData<Event<String>>()
 
-    val settings = listOf(
-//        Setting("Password", drawable.ic_password, SettingItem.PASSWORD),
-        Setting("Stats", drawable.ic_progress, SettingItem.STATS),
-        Setting("Glasses", drawable.ic_password, SettingItem.GLASS),
-    )
+    fun getSettings(): List<Setting> {
+        return if (Utils.isLocalPersian())
+            listOf(
+                Setting("آمار", drawable.ic_progress, SettingItem.STATS),
+                Setting("لیوان ها", drawable.ic_password, SettingItem.GLASS),
+            )
+        else
+            listOf(
+                Setting("Stats", drawable.ic_progress, SettingItem.STATS),
+                Setting("Glasses", drawable.ic_password, SettingItem.GLASS),
+            )
+    }
 
     fun getUser(token: String?) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -54,7 +63,11 @@ class ProfileViewModel : BaseViewModel<ProfileRepo>() {
     fun joinLeague(code: String, token: String?) {
 
         if (code.trim().isBlank()) {
-            ldError.postValue(Event("enter code"))
+            val error = if (Utils.isLocalPersian())
+                "کد را وارد کنید"
+            else
+                "enter code"
+            ldError.postValue(Event(error))
             return
         }
 
@@ -73,24 +86,24 @@ class ProfileViewModel : BaseViewModel<ProfileRepo>() {
         }
     }
 
-    fun createLeague(name: String, token: String?) {
+    fun createLeague(name: String, token: String? , context : Context) {
 
         if (name.trim().isBlank()) {
-            ldError.postValue(Event("enter name"))
+            ldError.postValue(Event(context.getString(org.n9ne.common.R.string.emptyName)))
             return
         }
         if (name.trim().length <= 2) {
-            ldError.postValue(Event("name is too short"))
+            ldError.postValue(Event(context.getString(org.n9ne.common.R.string.errorName)))
             return
         }
         if (!name.trim().matches("([A-Za-z0-9]+\\-*)".toRegex())) {
-            ldError.postValue(Event("name can only be letters, digits and dashes"))
+            ldError.postValue(Event(context.getString(org.n9ne.common.R.string.errorLeagueName)))
             return
         }
 
         viewModelScope.launch(Dispatchers.IO) {
             repo?.createLeague(name, token, object : RepoCallback<CreateLeague> {
-                override fun onSuccessful(response: org.n9ne.common.model.CreateLeague) {
+                override fun onSuccessful(response: CreateLeague) {
 
                     val league = League(response.id.toLong(), null, null, name, response.code)
                     syncLeague(league.id!!, league, true)

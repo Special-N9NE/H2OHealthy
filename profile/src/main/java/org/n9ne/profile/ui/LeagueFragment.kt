@@ -20,6 +20,7 @@ import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getEmail
 import org.n9ne.common.util.Saver.getToken
+import org.n9ne.common.util.Utils
 import org.n9ne.common.util.interfaces.AddLeagueListener
 import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.profile.databinding.FragmentLeagueBinding
@@ -93,7 +94,7 @@ class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
                         override fun addLeague(input: String) {
                             activity.startLoading()
                             makeApiRequest {
-                                viewModel.renameLeague(input, league!!.code)
+                                viewModel.renameLeague(input, league!!.code, requireContext())
                             }
                             dialogRename.dismiss()
                         }
@@ -105,9 +106,14 @@ class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
         val shareClick = View.OnClickListener {
             val sendIntent = Intent().apply {
                 action = Intent.ACTION_SEND
+                val text = if (Utils.isLocalPersian())
+                    "سلام چطوری؟ از کد'${league!!.code}' استفاده کن تا وارد لیگ ${league!!.name} توی اپلیکیشن H2O Healthy بشی."
+                else
+                    "Hi there. Use '${league!!.code}' code to join ${league!!.name} League in H2O Healthy Application."
+
                 putExtra(
                     Intent.EXTRA_TEXT,
-                    "Hi there. Use '${league!!.code}' code to join ${league!!.name} League in H2O Healthy Application."
+                    text
                 )
                 type = "text/plain"
             }

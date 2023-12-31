@@ -73,7 +73,12 @@ class HomeViewModel : BaseViewModel<HomeRepo>() {
 
     fun updateWater(activity: Activity, token: String?) {
         if (activity.amount.toDouble() >= 3) {
-            ldError.postValue(Event("amount is too high"))
+            val error =
+                if (Utils.isLocalPersian())
+                    "مقدار بالاتر از حد مجاز است"
+                else
+                    "amount is too high"
+            ldError.postValue(Event(error))
             return
         }
 

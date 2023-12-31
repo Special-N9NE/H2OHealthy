@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import me.saket.cascade.CascadePopupMenu
 import org.n9ne.common.R.color
 import org.n9ne.common.R.drawable
+import org.n9ne.common.R.string
 import org.n9ne.common.model.Cup
 import org.n9ne.common.util.interfaces.CupEditListener
 import org.n9ne.profile.databinding.ItemCupBinding
@@ -53,7 +54,7 @@ class AddCupAdapter(
                     return if (menuItem == null)
                         false
                     else {
-                        if (menuItem.title.toString() == "Edit")
+                        if (menuItem.title.toString() == context.getString(string.edit))
                             listener.onEdit(item, true)
                         else
                             listener.onEdit(item, false)
@@ -80,8 +81,8 @@ class AddCupAdapter(
                     )
                 )
 
-                add("Edit").setIcon(drawable.ic_edit)
-                add("Remove").setIcon(drawable.ic_close).iconTintList = colorStateList
+                add(context.getString(string.edit)).setIcon(drawable.ic_edit)
+                add(context.getString(string.remove)).setIcon(drawable.ic_close).iconTintList = colorStateList
             }
         }
 

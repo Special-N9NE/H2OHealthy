@@ -1,11 +1,13 @@
 package org.n9ne.profile.ui.viewModel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.n9ne.common.BaseViewModel
+import org.n9ne.common.R
 import org.n9ne.common.model.GetLeague
 import org.n9ne.common.model.League
 import org.n9ne.common.model.Member
@@ -40,18 +42,18 @@ class LeagueViewModel : BaseViewModel<ProfileRepo>() {
     }
 
 
-    fun renameLeague(name: String, code: String) {
+    fun renameLeague(name: String, code: String, context: Context) {
 
         if (name.trim().isBlank()) {
-            ldError.postValue(Event("enter name"))
+            ldError.postValue(Event(context.getString(R.string.emptyName)))
             return
         }
         if (name.trim().length <= 2) {
-            ldError.postValue(Event("name is too short"))
+            ldError.postValue(Event(context.getString(R.string.errorName)))
             return
         }
         if (!name.trim().matches("([A-Za-z0-9]+\\-*)".toRegex())) {
-            ldError.postValue(Event("name can only be letters, digits and dashes"))
+            ldError.postValue(Event(context.getString(R.string.errorLeagueName)))
             return
         }
 

@@ -99,17 +99,18 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
 
         initRepos(apiRepo as ProfileRepo, localRepo as ProfileRepo, viewModel)
 
-        b.rvSettings.adapter = SettingAdapter(viewModel.settings, object : SettingClickListener {
-            override fun settingClicked(setting: Setting) {
-                when (setting.type) {
-                    //TODO
-                    SettingItem.PASSWORD -> Log.e("WWW", "")
-                    SettingItem.STATS -> shouldNavigate(R.id.profile_to_stats)
-                    SettingItem.GLASS -> shouldNavigate(R.id.profile_to_cups)
+        b.rvSettings.adapter =
+            SettingAdapter(viewModel.getSettings(), object : SettingClickListener {
+                override fun settingClicked(setting: Setting) {
+                    when (setting.type) {
+                        //TODO
+                        SettingItem.PASSWORD -> Log.e("WWW", "")
+                        SettingItem.STATS -> shouldNavigate(R.id.profile_to_stats)
+                        SettingItem.GLASS -> shouldNavigate(R.id.profile_to_cups)
+                    }
                 }
-            }
 
-        })
+            })
 
         setGradients()
     }
@@ -170,10 +171,15 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
             }
 
             try {
-                startActivity(Intent.createChooser(intent, "Choose an Email client :"))
+                startActivity(
+                    Intent.createChooser(
+                        intent,
+                        string.emailClient.toString()
+                    )
+                )
             } catch (ex: ActivityNotFoundException) {
                 Toast.makeText(
-                    requireContext(), "There are no email clients installed.", Toast.LENGTH_SHORT
+                    requireContext(), string.errorEmailClient.toString(), Toast.LENGTH_SHORT
                 ).show()
             }
 
@@ -234,7 +240,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
         val createClick = object : AddLeagueListener {
             override fun addLeague(input: String) {
                 makeApiRequest {
-                    viewModel.createLeague(input, requireActivity().getToken())
+                    viewModel.createLeague(input, requireActivity().getToken(), requireContext())
                 }
                 createLeagueDialog!!.dismiss()
             }

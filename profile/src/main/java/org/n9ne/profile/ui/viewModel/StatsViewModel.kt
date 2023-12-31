@@ -32,7 +32,7 @@ class StatsViewModel : BaseViewModel<ProfileRepo>() {
 
             repo?.getAllActivity(token, object : RepoCallback<List<Activity>> {
                 override fun onSuccessful(response: List<Activity>) {
-                    //syncActivities(response)
+                    syncActivities(response)
 
                     val barValues = mutableListOf<Double>()
                     for (k in 0 until 24) {

@@ -51,13 +51,14 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/header"
+                    android:layoutDirection="ltr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_blue_linear">
 
                     <TextView
                         android:id="@+id/_textView1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
                         android:fontFamily="@font/poppins_bold"
@@ -125,15 +126,15 @@
 
             <TextView
                 android:id="@+id/_textView4"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/poppins_semi_bold"
-                android:text="Activity Progress"
+                android:text="@string/activityProgress"
                 android:textColor="@color/blackText"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/gRight"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/gLeft"
                 app:layout_constraintTop_toBottomOf="@+id/_cardView"
@@ -329,15 +330,15 @@
 
             <TextView
                 android:id="@+id/_textView5"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/poppins_semi_bold"
-                android:text="Latest Activity"
+                android:text="@string/latestActivity"
                 android:textColor="@color/blackText"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/gRight"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/gLeft"
                 app:layout_constraintTop_toBottomOf="@+id/_cardView2"

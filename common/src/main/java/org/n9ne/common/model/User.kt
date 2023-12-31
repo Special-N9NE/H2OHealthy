@@ -13,7 +13,7 @@ data class User(
     val birthDate: String,
     val weight: String,
     val height: String,
-    val gender: String,
+    var gender: String,
     val score: Int,
     val profile: String
 )

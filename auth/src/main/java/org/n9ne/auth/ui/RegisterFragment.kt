@@ -2,7 +2,6 @@ package org.n9ne.auth.ui
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import org.n9ne.auth.repo.AuthRepoImpl
 import org.n9ne.auth.ui.viewModel.RegisterViewModel
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.R.color
-import org.n9ne.common.R.drawable
 import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.interfaces.Navigator
@@ -32,7 +30,7 @@ class RegisterFragment : Fragment(), Navigator {
     private lateinit var email: String
     private lateinit var password: String
 
-    private lateinit var activity : BaseActivity
+    private lateinit var activity: BaseActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,7 +72,7 @@ class RegisterFragment : Fragment(), Navigator {
             password = b.etPassword.text.toString()
 
             activity.startLoading()
-            viewModel.register(name, email, password)
+            viewModel.register(name, email, password, requireContext())
         }
     }
 
@@ -92,18 +90,6 @@ class RegisterFragment : Fragment(), Navigator {
     }
 
     private fun setupObserver() {
-        viewModel.ldPasswordClick.observe(viewLifecycleOwner) {
-            if (it) {
-                b.ivPassword.setImageResource(drawable.ic_show_password)
-                b.etPassword.transformationMethod = null
-
-            } else {
-                b.ivPassword.setImageResource(drawable.ic_hide)
-                b.etPassword.transformationMethod = PasswordTransformationMethod()
-            }
-            b.etPassword.setSelection(b.etPassword.text.toString().length)
-        }
-
         viewModel.ldRegister.observe(viewLifecycleOwner, EventObserver(listOf(b.bRegister)) {
             val data = Bundle().apply {
                 putString("name", name)

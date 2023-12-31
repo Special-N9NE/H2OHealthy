@@ -4,5 +4,9 @@ object Messages {
 
     const val NO_INTERNET = "No address associated with hostname"
 
-    const val errorNetwork = "connection error"
+
+    val errorNetwork = if (Utils.isLocalPersian())
+        "خطا در برقراری ارتباط"
+    else
+        "Error in Connection"
 }

@@ -10,6 +10,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.n9ne.auth.repo.AuthRepo
 import org.n9ne.common.BaseViewModel
+import org.n9ne.common.R
 import org.n9ne.common.model.ActivityType
 import org.n9ne.common.model.CompleteProfileResult
 import org.n9ne.common.source.local.AppDatabase
@@ -18,19 +19,20 @@ import org.n9ne.common.source.objects.Auth
 import org.n9ne.common.util.DateUtils
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.RepoCallback
+import org.n9ne.common.util.Utils
+import org.n9ne.common.util.Utils.toEnglishNumbers
 
 
 class CompleteProfileViewModel : BaseViewModel<AuthRepo>() {
     val ldShowDate = MutableLiveData<Event<Unit>>()
 
-    val genders = arrayListOf("Male", "Female")
-    val activityLevels = arrayListOf(
-        ActivityType.NEVER.text,
-        ActivityType.LOW.text,
-        ActivityType.SOMETIMES.text,
-        ActivityType.HIGH.text,
-        ActivityType.ATHLETE.text
-    )
+    fun getActivityLevels(): ArrayList<String> {
+        val list = arrayListOf<String>()
+        ActivityType.entries.forEach {
+            list.add(ActivityType.getLocalizedText(it, Utils.getLocal()))
+        }
+        return list
+    }
 
     val ldUserToken = MutableLiveData<Event<String>>()
 
@@ -45,20 +47,32 @@ class CompleteProfileViewModel : BaseViewModel<AuthRepo>() {
         height: String,
         context: Context
     ) {
-        val date = DateUtils.getDate()
-        val genderId = if (gender == "Male") 1 else 0
-        var activityId = "0"
-        activityLevels.forEachIndexed { index, s ->
-            if (s == activity)
-                activityId = index.toString()
+        val date = DateUtils.getDate().toEnglishNumbers()
+
+        val maleText = if (Utils.isLocalPersian()) "مرد" else "Male"
+        val genderId = if (gender == maleText) 1 else 0
+
+        var activityId = 0
+        ActivityType.entries.forEachIndexed { index, it ->
+            val text = ActivityType.getLocalizedText(it, Utils.getLocal())
+            if (text == activity) {
+                activityId = index + 1
+            }
         }
 
         val data = Auth.CompleteProfile(
-            email, name.trim(), password, date, activityId, birthdate,
-            weight, height, genderId.toString()
+            email,
+            name.trim(),
+            password,
+            date,
+            activityId.toString(),
+            birthdate,
+            weight,
+            height,
+            genderId.toString()
         )
 
-        if (!isUserValid(data))
+        if (!isUserValid(data, context))
             return
 
         runBlocking {
@@ -76,24 +90,27 @@ class CompleteProfileViewModel : BaseViewModel<AuthRepo>() {
         }
     }
 
-    private fun isUserValid(data: Auth.CompleteProfile): Boolean {
+    private fun isUserValid(data: Auth.CompleteProfile, context: Context): Boolean {
         if (data.weight.trim().isEmpty()) {
-            ldError.postValue(Event("Enter Weight"))
+            ldError.postValue(Event(context.getString(R.string.enterWeight)))
             return false
         }
         if (data.height.trim().isEmpty()) {
-            ldError.postValue(Event("Enter Height"))
+            ldError.postValue(Event(context.getString(R.string.enterHeight)))
             return false
         }
         if (!data.weight.trim().isDigitsOnly()) {
-            ldError.postValue(Event("Enter correct number for weight"))
+            ldError.postValue(Event(context.getString(R.string.errorWeight)))
             return false
         }
         if (!data.height.trim().isDigitsOnly()) {
-            ldError.postValue(Event("Enter correct number for height"))
+            ldError.postValue(Event(context.getString(R.string.errorHeight)))
             return false
         }
-
+        if (data.birthdate.trim().isEmpty()) {
+            ldError.postValue(Event(context.getString(R.string.emptyDate)))
+            return false
+        }
         return true
     }
 

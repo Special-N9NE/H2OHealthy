@@ -9,9 +9,11 @@ import android.widget.FrameLayout
 import androidx.core.text.isDigitsOnly
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
+import org.n9ne.common.R
 import org.n9ne.common.databinding.DialogAddCupBinding
 import org.n9ne.common.databinding.DialogCupBinding
 import org.n9ne.common.model.Cup
+import org.n9ne.common.util.Utils
 import org.n9ne.common.util.interfaces.CupClickListener
 import kotlin.math.roundToInt
 
@@ -54,15 +56,16 @@ fun Activity.addCupDialog(
         binding.etName.setText(it.title)
         binding.etAmount.setText(it.capacity.toString())
         binding.cvColor.strokeColor = Color.parseColor(it.color)
-        binding.etColor.setText("Color is selected")
+        binding.etColor.setText(getString(R.string.colorSelected))
     }
 
     binding.ivClose.setOnClickListener {
         dialog.dismiss()
     }
     binding.etColor.setOnClickListener {
+        val title = if (Utils.isLocalPersian()) "انتخاب رنگ" else "Pick Color"
         MaterialColorPickerDialog.Builder(this)
-            .setTitle("Pick Color")
+            .setTitle(title)
             .setColorShape(ColorShape.SQAURE)
             .setDefaultColor(color)
             .setColorListener { _, colorHex ->

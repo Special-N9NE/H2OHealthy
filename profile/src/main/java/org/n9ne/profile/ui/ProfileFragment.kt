@@ -25,7 +25,9 @@ import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
+import org.n9ne.common.util.Saver.isAppEnglish
 import org.n9ne.common.util.Saver.saveToken
+import org.n9ne.common.util.Saver.setLanguage
 import org.n9ne.common.util.interfaces.AddLeagueListener
 import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.common.util.interfaces.RefreshListener
@@ -65,7 +67,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
         setClicks()
 
         makeLocalRequest {
-            viewModel.getUser(requireActivity().getToken())
+            viewModel.getUser(getToken())
         }
     }
 
@@ -107,6 +109,10 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
                         SettingItem.PASSWORD -> Log.e("WWW", "")
                         SettingItem.STATS -> shouldNavigate(R.id.profile_to_stats)
                         SettingItem.GLASS -> shouldNavigate(R.id.profile_to_cups)
+                        SettingItem.LANGUAGE -> {
+                            setLanguage(!isAppEnglish())
+                            activity.reloadLanguage()
+                        }
                     }
                 }
 
@@ -156,7 +162,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
             activity.stopLoading()
         }
         viewModel.ldLogout.observe(viewLifecycleOwner, EventObserver {
-            requireActivity().saveToken(null)
+            saveToken(null)
             val intent = Intent(
                 Intent.ACTION_VIEW,
                 Uri.parse("h2ohealthy://auth")
@@ -185,7 +191,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
 
         })
         viewModel.ldToken.observe(viewLifecycleOwner, EventObserver {
-            requireActivity().saveToken(null)
+            saveToken(null)
             val intent = Intent(
                 Intent.ACTION_VIEW,
                 Uri.parse("h2ohealthy://auth")
@@ -231,7 +237,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
                     activity.startLoading()
                     setEnableDialog(joinLeagueDialog!!, false)
                     makeApiRequest {
-                        viewModel.joinLeague(input, requireActivity().getToken())
+                        viewModel.joinLeague(input, getToken())
                     }
                 }
             })
@@ -240,7 +246,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
         val createClick = object : AddLeagueListener {
             override fun addLeague(input: String) {
                 makeApiRequest {
-                    viewModel.createLeague(input, requireActivity().getToken(), requireContext())
+                    viewModel.createLeague(input, getToken(), requireContext())
                 }
                 createLeagueDialog!!.dismiss()
             }
@@ -252,7 +258,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
 
     override fun onRefresh() {
         makeApiRequest {
-            viewModel.getUser(requireActivity().getToken())
+            viewModel.getUser(getToken())
         }
     }
 }

@@ -76,8 +76,8 @@ class LoginFragment : Fragment(), Navigator {
 
     private fun setupObserver() {
         viewModel.ldUserToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
-            requireActivity().saveEmail(email)
-            requireActivity().saveToken(it)
+            saveEmail(email)
+            saveToken(it)
             activity.stopLoading()
         })
         viewModel.ldName.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {

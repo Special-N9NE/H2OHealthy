@@ -19,6 +19,7 @@ class AuthActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         b = ActivityAuthBinding.inflate(layoutInflater)
+        setLocal()
         setContentView(b.root)
 
         init()

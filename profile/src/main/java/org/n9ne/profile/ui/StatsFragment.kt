@@ -48,12 +48,11 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
         (requireActivity() as BaseActivity).hideNavigation()
         init()
 
-        setClicks()
         setupObserver()
 
         activity.startLoading()
         makeLocalRequest {
-            viewModel.getActivities(requireActivity().getToken())
+            viewModel.getActivities(getToken())
         }
     }
 
@@ -119,10 +118,6 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
         })
     }
 
-    private fun setClicks() {
-        //TODO
-    }
-
     private fun setBars(list: List<Double>) {
         val chartData = list.map {
             it * 100
@@ -152,7 +147,7 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
 
     override fun onRefresh() {
         makeRequest {
-            viewModel.getActivities(requireActivity().getToken())
+            viewModel.getActivities(getToken())
         }
     }
 }

@@ -12,7 +12,9 @@ import org.n9ne.auth.databinding.FragmentSplashBinding
 import org.n9ne.auth.ui.viewModel.SplashViewModel
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.R.color
+import org.n9ne.common.util.Saver.isAppEnglish
 import org.n9ne.common.util.Saver.isFirstTime
+import org.n9ne.common.util.Saver.setLanguage
 import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.common.util.setGradient
 
@@ -21,6 +23,7 @@ class SplashFragment : Fragment(), Navigator {
 
     private lateinit var b: FragmentSplashBinding
     private lateinit var viewModel: SplashViewModel
+    private lateinit var activity: BaseActivity
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,14 +44,20 @@ class SplashFragment : Fragment(), Navigator {
 
     private fun setClicks() {
         b.bStart.setOnClickListener {
-            if (!requireActivity().isFirstTime()) {
+            if (!isFirstTime()) {
                 this.shouldNavigate(R.id.splash_to_login)
             } else
                 this.shouldNavigate(R.id.splash_to_register)
         }
+        b.ivLanguage.setOnClickListener {
+            setLanguage(!isAppEnglish())
+            activity.reloadLanguage()
+        }
     }
 
     private fun init() {
+        activity = requireActivity() as BaseActivity
+
         viewModel = ViewModelProvider(this)[SplashViewModel::class.java]
         viewModel.navigator = this
         b.viewModel = viewModel

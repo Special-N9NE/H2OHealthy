@@ -19,6 +19,7 @@ int id guideline 0x0
 int id guideline2 0x0
 int id iv 0x0
 int id ivGoogle 0x0
+int id ivLanguage 0x0
 int id linearLayout2 0x0
 int id llLogin 0x0
 int id llRegister 0x0

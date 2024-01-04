@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="viewModel"
             type="org.n9ne.auth.ui.viewModel.SplashViewModel" />
@@ -12,14 +11,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layoutDirection="ltr"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layoutDirection="ltr">
 
         <TextView
             android:id="@+id/tvTitle1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/bold"
+            android:fontFamily="@font/bold_en"
             android:text="@string/h2o"
             android:textSize="36sp"
             app:layout_constraintBottom_toTopOf="@+id/bStart"
@@ -31,7 +30,7 @@
             android:id="@+id/tvTitle2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/bold"
+            android:fontFamily="@font/bold_en"
             android:text="@string/healthy"
             android:textSize="36sp"
             app:layout_constraintBaseline_toBottomOf="@id/tvTitle1"
@@ -68,6 +67,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
+
+        <ImageView
+            android:id="@+id/ivLanguage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="32dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_language"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

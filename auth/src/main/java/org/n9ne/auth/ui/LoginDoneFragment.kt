@@ -30,7 +30,7 @@ class LoginDoneFragment : Fragment() {
         b.tvName.text = name
 
         b.bGo.setOnClickListener {
-            requireActivity().setFirstTime(false)
+            setFirstTime(false)
             val intent = Intent(
                 Intent.ACTION_VIEW,
                 Uri.parse("h2ohealthy://home")

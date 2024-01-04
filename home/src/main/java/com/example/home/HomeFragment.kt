@@ -54,7 +54,7 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
 
         activity.showNavigation()
 
-        if (requireActivity().getToken() == null) {
+        if (getToken() == null) {
             val intent = Intent(
                 Intent.ACTION_VIEW,
                 Uri.parse("h2ohealthy://auth")
@@ -65,7 +65,7 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
 
             activity.startLoading()
             makeRequest {
-                viewModel.getTarget(requireActivity().getToken())
+                viewModel.getTarget(getToken())
             }
         }
     }
@@ -93,7 +93,7 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
 
                         activity.startLoading()
                         makeApiRequest {
-                            viewModel.updateWater(item, requireActivity().getToken())
+                            viewModel.updateWater(item, getToken())
                         }
                     }
                 }
@@ -102,7 +102,7 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
 
                         activity.startLoading()
                         makeApiRequest {
-                            viewModel.removeWater(item, requireActivity().getToken())
+                            viewModel.removeWater(item, getToken())
                         }
                     }
                 }
@@ -130,7 +130,7 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
             b.tvTarget.text = it.toString() + "L"
 
             makeRequest {
-                viewModel.getProgress(requireActivity().getToken())
+                viewModel.getProgress(getToken())
             }
         }
         viewModel.ldDayProgress.observe(viewLifecycleOwner) {
@@ -153,7 +153,7 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
 
     override fun onRefresh() {
         makeApiRequest {
-            viewModel.getTarget(requireActivity().getToken())
+            viewModel.getTarget(getToken())
         }
     }
 }

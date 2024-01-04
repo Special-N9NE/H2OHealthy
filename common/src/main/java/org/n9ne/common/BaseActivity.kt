@@ -1,10 +1,15 @@
 package org.n9ne.common
 
+import android.content.res.Configuration
+import android.content.res.Resources
+import android.util.DisplayMetrics
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.simform.refresh.SSPullToRefreshLayout
 import org.n9ne.common.model.Cup
+import org.n9ne.common.util.Utils
 import org.n9ne.common.util.customViews.BottomNavigationViewWithIndicator
+import java.util.Locale
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -12,6 +17,21 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private lateinit var ssPullRefresh: SSPullToRefreshLayout
     private var nav: BottomNavigationViewWithIndicator? = null
+
+    fun reloadLanguage() {
+        this.recreate()
+    }
+
+    protected fun setLocal() {
+        val myLocale = Utils.getLocal()
+        val res: Resources = resources
+        val dm: DisplayMetrics = res.displayMetrics
+        val conf: Configuration = res.configuration
+        conf.setLocale(myLocale)
+        Locale.setDefault(myLocale)
+        conf.setLayoutDirection(myLocale)
+        res.updateConfiguration(conf, dm)
+    }
 
     fun initLoading(view: SSPullToRefreshLayout) {
         ssPullRefresh = view

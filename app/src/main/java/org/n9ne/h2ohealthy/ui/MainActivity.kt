@@ -47,6 +47,9 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         b = ActivityMainBinding.inflate(layoutInflater)
+
+        setLocal()
+
         setContentView(b.root)
 
         init()

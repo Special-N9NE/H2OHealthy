@@ -1,11 +1,11 @@
 package org.n9ne.common.util
 
 import android.content.Context
-import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import org.n9ne.common.model.Progress
 import org.n9ne.common.util.Mapper.toMilliLiter
+import org.n9ne.common.util.Saver.isAppEnglish
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -14,7 +14,11 @@ import kotlin.math.roundToInt
 object Utils {
 
     fun getLocal(): Locale {
-        return Resources.getSystem().configuration.locales[0]
+        val isEn = isAppEnglish()
+        return if (isEn)
+            Locale.ENGLISH
+        else
+            Locale("fa", "IR")
     }
 
     fun isLocalPersian(): Boolean {

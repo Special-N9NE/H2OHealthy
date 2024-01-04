@@ -64,7 +64,7 @@ class AvatarFragment : BaseFragment<ProfileRepo>() {
             override fun onClick(image: String) {
                 activity.startLoading()
                 makeApiRequest {
-                    viewModel.saveProfile(requireActivity().getToken(), image)
+                    viewModel.saveProfile(getToken(), image)
                 }
             }
         })

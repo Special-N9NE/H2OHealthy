@@ -33,12 +33,14 @@ class ProfileViewModel : BaseViewModel<ProfileRepo>() {
         return if (Utils.isLocalPersian())
             listOf(
                 Setting("آمار", drawable.ic_progress, SettingItem.STATS),
-                Setting("لیوان ها", drawable.ic_password, SettingItem.GLASS),
+                Setting("لیوان ها", drawable.ic_cup_menu, SettingItem.GLASS),
+                Setting("تعویض زبان", drawable.ic_language, SettingItem.LANGUAGE),
             )
         else
             listOf(
                 Setting("Stats", drawable.ic_progress, SettingItem.STATS),
-                Setting("Glasses", drawable.ic_password, SettingItem.GLASS),
+                Setting("Cups", drawable.ic_cup_menu, SettingItem.GLASS),
+                Setting("Change Language", drawable.ic_language, SettingItem.LANGUAGE),
             )
     }
 
@@ -86,7 +88,7 @@ class ProfileViewModel : BaseViewModel<ProfileRepo>() {
         }
     }
 
-    fun createLeague(name: String, token: String? , context : Context) {
+    fun createLeague(name: String, token: String?, context: Context) {
 
         if (name.trim().isBlank()) {
             ldError.postValue(Event(context.getString(org.n9ne.common.R.string.emptyName)))

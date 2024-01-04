@@ -57,14 +57,14 @@ class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
 
         activity.startLoading()
         makeApiRequest {
-            viewModel.getMembers(requireActivity().getToken())
+            viewModel.getMembers(getToken())
         }
     }
 
     private fun setClicks() {
         b.cvSettings.setOnClickListener {
             league?.let {
-                val isAdmin = it.adminEmail!!.trim() == requireActivity().getEmail()!!.trim()
+                val isAdmin = it.adminEmail!!.trim() == getEmail()!!.trim()
                 openSettingDialog(isAdmin)
             }
         }
@@ -123,7 +123,7 @@ class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
         val leaveClick = View.OnClickListener {
             activity.startLoading()
             makeApiRequest {
-                viewModel.leave(requireActivity().getToken())
+                viewModel.leave(getToken())
             }
         }
 
@@ -161,7 +161,7 @@ class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
 
     override fun onRefresh() {
         makeApiRequest {
-            viewModel.getMembers(requireActivity().getToken())
+            viewModel.getMembers(getToken())
         }
     }
 }

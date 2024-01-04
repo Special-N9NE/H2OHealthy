@@ -56,7 +56,7 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
         setClicks()
 
         makeLocalRequest {
-            viewModel.getUser(requireActivity().getToken())
+            viewModel.getUser(getToken())
         }
     }
 
@@ -85,7 +85,7 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
                     gender
                 )
                 makeApiRequest {
-                    viewModel.saveData(user, requireActivity().getToken(), requireContext())
+                    viewModel.saveData(user, getToken(), requireContext())
                 }
             }
         }

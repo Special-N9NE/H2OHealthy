@@ -46,7 +46,7 @@ class CupsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
 
         activity.startLoading()
         makeRequest {
-            viewModel.getCups(requireActivity().getToken())
+            viewModel.getCups(getToken())
         }
         setupObserver()
     }
@@ -97,7 +97,7 @@ class CupsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
 
                     activity.startLoading()
                     makeApiRequest {
-                        viewModel.addCup(item, requireActivity().getToken())
+                        viewModel.addCup(item, getToken())
                     }
                 }
             }).show()
@@ -125,7 +125,7 @@ class CupsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
 
     override fun onRefresh() {
         makeApiRequest {
-            viewModel.getCups(requireActivity().getToken())
+            viewModel.getCups(getToken())
         }
     }
 }

@@ -4,6 +4,7 @@ package org.n9ne.auth.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,9 @@ public abstract class FragmentSplashBinding extends ViewDataBinding {
   public final AppCompatButton bStart;
 
   @NonNull
+  public final ImageView ivLanguage;
+
+  @NonNull
   public final TextView tvTitle1;
 
   @NonNull
@@ -30,9 +34,10 @@ public abstract class FragmentSplashBinding extends ViewDataBinding {
   protected SplashViewModel mViewModel;
 
   protected FragmentSplashBinding(Object _bindingComponent, View _root, int _localFieldCount,
-      AppCompatButton bStart, TextView tvTitle1, TextView tvTitle2) {
+      AppCompatButton bStart, ImageView ivLanguage, TextView tvTitle1, TextView tvTitle2) {
     super(_bindingComponent, _root, _localFieldCount);
     this.bStart = bStart;
+    this.ivLanguage = ivLanguage;
     this.tvTitle1 = tvTitle1;
     this.tvTitle2 = tvTitle2;
   }

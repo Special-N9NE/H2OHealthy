@@ -1,8 +1,12 @@
 package org.n9ne.common.util
 
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.widget.FrameLayout
 import org.n9ne.common.model.Progress
 import org.n9ne.common.util.Mapper.toMilliLiter
 import org.n9ne.common.util.Saver.isAppEnglish
@@ -12,6 +16,17 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 object Utils {
+
+    fun Dialog.setDialog() {
+        var width = FrameLayout.LayoutParams.MATCH_PARENT
+        if (context.isDeviceTablet())
+            width = context.dpToPx(500)
+        window?.setLayout(
+            width, FrameLayout.LayoutParams.WRAP_CONTENT
+        )
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        setCanceledOnTouchOutside(false)
+    }
 
     fun getLocal(): Locale {
         val isEn = isAppEnglish()

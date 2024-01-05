@@ -2,14 +2,12 @@ package org.n9ne.common.dialog
 
 import android.app.Activity
 import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.View
-import android.widget.FrameLayout
 import org.n9ne.common.R.string
 import org.n9ne.common.databinding.DialogCreateLeagueBinding
 import org.n9ne.common.databinding.DialogJoinLeagueBinding
 import org.n9ne.common.databinding.DialogLeagueSettingBinding
+import org.n9ne.common.util.Utils.setDialog
 import org.n9ne.common.util.interfaces.AddLeagueListener
 
 
@@ -21,11 +19,9 @@ fun Activity.createLeagueDialog(
     val dialog = Dialog(this)
     val binding = DialogCreateLeagueBinding.inflate(layoutInflater)
     dialog.setContentView(binding.root)
-    dialog.window?.setLayout(
-        FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT
-    )
-    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    dialog.setCanceledOnTouchOutside(false)
+
+    dialog.setDialog()
+
     binding.ivClose.setOnClickListener {
         dialog.dismiss()
     }
@@ -54,13 +50,10 @@ fun Activity.joinLeagueDialog(
 ): Dialog {
     val dialog = Dialog(this)
     val binding = DialogJoinLeagueBinding.inflate(layoutInflater)
-    dialog.setCanceledOnTouchOutside(true)
     dialog.setContentView(binding.root)
-    dialog.window?.setLayout(
-        FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT
-    )
-    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    dialog.setCanceledOnTouchOutside(false)
+
+    dialog.setDialog()
+
     binding.ivBack.setOnClickListener {
         dialog.dismiss()
     }
@@ -79,13 +72,10 @@ fun Activity.leagueSettingDialog(
 ): Dialog {
     val dialog = Dialog(this)
     val binding = DialogLeagueSettingBinding.inflate(layoutInflater)
-    dialog.setCanceledOnTouchOutside(true)
     dialog.setContentView(binding.root)
-    dialog.window?.setLayout(
-        FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT
-    )
-    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    dialog.setCanceledOnTouchOutside(false)
+
+    dialog.setDialog()
+
     binding.ivClose.setOnClickListener {
         dialog.dismiss()
     }

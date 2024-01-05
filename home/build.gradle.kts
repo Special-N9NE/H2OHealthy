@@ -38,6 +38,8 @@ android {
 
 dependencies {
 
+    implementation(project(":common:linearprogressbar"))
+
     val roomVersion = "2.5.2"
     api("androidx.room:room-ktx:$roomVersion")
     api("androidx.room:room-runtime:$roomVersion")
@@ -54,7 +56,7 @@ dependencies {
     api("androidx.appcompat:appcompat:1.6.1")
     api("com.google.android.material:material:1.10.0")
     api("androidx.constraintlayout:constraintlayout:2.1.4")
-    api(files("C:\\Users\\Nature\\Downloads\\LinearProgressBar.aar"))
+
     testApi("junit:junit:4.13.2")
     androidTestApi("androidx.test.ext:junit:1.1.5")
     androidTestApi("androidx.test.espresso:espresso-core:3.5.1")

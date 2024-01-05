@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.widget.Guideline;
 import androidx.databinding.Bindable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
@@ -20,6 +21,38 @@ import org.n9ne.auth.ui.viewModel.SplashViewModel;
 public abstract class FragmentSplashBinding extends ViewDataBinding {
   @NonNull
   public final AppCompatButton bStart;
+
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout-sw600dp/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   */
+  @Nullable
+  public final Guideline guideline3;
+
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout-sw600dp/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   */
+  @Nullable
+  public final Guideline guideline4;
 
   @NonNull
   public final ImageView ivLanguage;
@@ -34,9 +67,12 @@ public abstract class FragmentSplashBinding extends ViewDataBinding {
   protected SplashViewModel mViewModel;
 
   protected FragmentSplashBinding(Object _bindingComponent, View _root, int _localFieldCount,
-      AppCompatButton bStart, ImageView ivLanguage, TextView tvTitle1, TextView tvTitle2) {
+      AppCompatButton bStart, Guideline guideline3, Guideline guideline4, ImageView ivLanguage,
+      TextView tvTitle1, TextView tvTitle2) {
     super(_bindingComponent, _root, _localFieldCount);
     this.bStart = bStart;
+    this.guideline3 = guideline3;
+    this.guideline4 = guideline4;
     this.ivLanguage = ivLanguage;
     this.tvTitle1 = tvTitle1;
     this.tvTitle2 = tvTitle2;

@@ -37,6 +37,38 @@ public abstract class FragmentCompleteProfileBinding extends ViewDataBinding {
   @NonNull
   public final Guideline guideline;
 
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout-sw600dp/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   */
+  @Nullable
+  public final Guideline guideline3;
+
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout-sw600dp/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   */
+  @Nullable
+  public final Guideline guideline4;
+
   @NonNull
   public final ImageView iv;
 
@@ -69,16 +101,18 @@ public abstract class FragmentCompleteProfileBinding extends ViewDataBinding {
 
   protected FragmentCompleteProfileBinding(Object _bindingComponent, View _root,
       int _localFieldCount, AppCompatButton bNext, AppCompatEditText etBirthday,
-      AppCompatEditText etHeight, AppCompatEditText etWeight, Guideline guideline, ImageView iv,
-      AutoCompleteTextView spActivity, AutoCompleteTextView spGender, TextInputLayout tilActivity,
-      TextInputLayout tilGender, TextView tvCm, TextView tvDescription, TextView tvKg,
-      TextView tvTitle) {
+      AppCompatEditText etHeight, AppCompatEditText etWeight, Guideline guideline,
+      Guideline guideline3, Guideline guideline4, ImageView iv, AutoCompleteTextView spActivity,
+      AutoCompleteTextView spGender, TextInputLayout tilActivity, TextInputLayout tilGender,
+      TextView tvCm, TextView tvDescription, TextView tvKg, TextView tvTitle) {
     super(_bindingComponent, _root, _localFieldCount);
     this.bNext = bNext;
     this.etBirthday = etBirthday;
     this.etHeight = etHeight;
     this.etWeight = etWeight;
     this.guideline = guideline;
+    this.guideline3 = guideline3;
+    this.guideline4 = guideline4;
     this.iv = iv;
     this.spActivity = spActivity;
     this.spGender = spGender;

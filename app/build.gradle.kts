@@ -15,8 +15,8 @@ android {
         applicationId = "org.n9ne.h2ohealthy"
         minSdk = 26
         targetSdk = 34
-        versionCode = 3
-        versionName = "1.3"
+        versionCode = 5
+        versionName = "2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -85,7 +85,6 @@ dependencies {
     api("com.google.android.material:material:1.10.0")
     api("androidx.constraintlayout:constraintlayout:2.1.4")
     api("com.google.android.gms:play-services-base:18.2.0")
-    api(files("C:\\Users\\Nature\\Downloads\\LinearProgressBar.aar"))
     testApi("junit:junit:4.13.2")
     androidTestApi("androidx.test.ext:junit:1.1.5")
     androidTestApi("androidx.test.espresso:espresso-core:3.5.1")

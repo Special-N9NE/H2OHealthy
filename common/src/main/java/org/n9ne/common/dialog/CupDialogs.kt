@@ -3,9 +3,7 @@ package org.n9ne.common.dialog
 import android.app.Activity
 import android.app.Dialog
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
-import android.widget.FrameLayout
 import androidx.core.text.isDigitsOnly
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
@@ -14,6 +12,7 @@ import org.n9ne.common.databinding.DialogAddCupBinding
 import org.n9ne.common.databinding.DialogCupBinding
 import org.n9ne.common.model.Cup
 import org.n9ne.common.util.Utils
+import org.n9ne.common.util.Utils.setDialog
 import org.n9ne.common.util.interfaces.CupClickListener
 import kotlin.math.roundToInt
 
@@ -22,13 +21,10 @@ fun Activity.cupDialog(
 ): Dialog {
     val dialog = Dialog(this)
     val binding = DialogCupBinding.inflate(layoutInflater)
-    dialog.setCanceledOnTouchOutside(true)
     dialog.setContentView(binding.root)
-    dialog.window?.setLayout(
-        FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT
-    )
-    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    dialog.setCanceledOnTouchOutside(false)
+
+    dialog.setDialog()
+
     binding.ivBack.setOnClickListener {
         dialog.dismiss()
     }
@@ -41,16 +37,11 @@ fun Activity.addCupDialog(
 ): Dialog {
     val dialog = Dialog(this)
     val binding = DialogAddCupBinding.inflate(layoutInflater)
-    dialog.setCanceledOnTouchOutside(true)
     dialog.setContentView(binding.root)
-    dialog.window?.setLayout(
-        FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT
-    )
-    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    dialog.setCanceledOnTouchOutside(false)
+
+    dialog.setDialog()
 
     var color = "#92A3FD"
-
     cup?.let {
         color = it.color
         binding.etName.setText(it.title)

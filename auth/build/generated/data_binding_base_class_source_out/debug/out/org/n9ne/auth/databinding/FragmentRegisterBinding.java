@@ -47,6 +47,38 @@ public abstract class FragmentRegisterBinding extends ViewDataBinding {
   @NonNull
   public final Guideline gTop;
 
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout-sw600dp/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   */
+  @Nullable
+  public final Guideline guideline3;
+
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout-sw600dp/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   */
+  @Nullable
+  public final Guideline guideline4;
+
   @NonNull
   public final ImageView ivGoogle;
 
@@ -65,8 +97,8 @@ public abstract class FragmentRegisterBinding extends ViewDataBinding {
   protected FragmentRegisterBinding(Object _bindingComponent, View _root, int _localFieldCount,
       AppCompatButton bRegister, CheckBox cbPolicy, AppCompatEditText etEmail,
       AppCompatEditText etName, AppCompatEditText etPassword, Guideline gBottom, Group gGoogle,
-      Guideline gTop, ImageView ivGoogle, LinearLayout linearLayout2, LinearLayout llLogin,
-      TextView textView) {
+      Guideline gTop, Guideline guideline3, Guideline guideline4, ImageView ivGoogle,
+      LinearLayout linearLayout2, LinearLayout llLogin, TextView textView) {
     super(_bindingComponent, _root, _localFieldCount);
     this.bRegister = bRegister;
     this.cbPolicy = cbPolicy;
@@ -76,6 +108,8 @@ public abstract class FragmentRegisterBinding extends ViewDataBinding {
     this.gBottom = gBottom;
     this.gGoogle = gGoogle;
     this.gTop = gTop;
+    this.guideline3 = guideline3;
+    this.guideline4 = guideline4;
     this.ivGoogle = ivGoogle;
     this.linearLayout2 = linearLayout2;
     this.llLogin = llLogin;

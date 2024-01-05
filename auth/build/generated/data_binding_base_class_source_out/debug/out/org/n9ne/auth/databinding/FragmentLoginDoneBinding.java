@@ -24,8 +24,53 @@ public abstract class FragmentLoginDoneBinding extends ViewDataBinding {
   @NonNull
   public final Guideline guideline;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-sw600dp/</li>
+   * </ul>
+   */
+  @Nullable
   public final Guideline guideline2;
+
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout-sw600dp/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   */
+  @Nullable
+  public final Guideline guideline3;
+
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout-sw600dp/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   */
+  @Nullable
+  public final Guideline guideline4;
 
   @NonNull
   public final ImageView iv;
@@ -40,12 +85,15 @@ public abstract class FragmentLoginDoneBinding extends ViewDataBinding {
   public final TextView tvName;
 
   protected FragmentLoginDoneBinding(Object _bindingComponent, View _root, int _localFieldCount,
-      AppCompatButton bGo, Guideline guideline, Guideline guideline2, ImageView iv,
-      LinearLayout llTitle, TextView tvDescription, TextView tvName) {
+      AppCompatButton bGo, Guideline guideline, Guideline guideline2, Guideline guideline3,
+      Guideline guideline4, ImageView iv, LinearLayout llTitle, TextView tvDescription,
+      TextView tvName) {
     super(_bindingComponent, _root, _localFieldCount);
     this.bGo = bGo;
     this.guideline = guideline;
     this.guideline2 = guideline2;
+    this.guideline3 = guideline3;
+    this.guideline4 = guideline4;
     this.iv = iv;
     this.llTitle = llTitle;
     this.tvDescription = tvDescription;

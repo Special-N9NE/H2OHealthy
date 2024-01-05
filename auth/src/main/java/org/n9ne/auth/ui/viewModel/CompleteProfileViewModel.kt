@@ -6,8 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.n9ne.auth.repo.AuthRepo
 import org.n9ne.common.BaseViewModel
 import org.n9ne.common.R
@@ -75,7 +73,7 @@ class CompleteProfileViewModel : BaseViewModel<AuthRepo>() {
         if (!isUserValid(data, context))
             return
 
-        runBlocking {
+        viewModelScope.launch(Dispatchers.IO) {
             repo?.completeProfile(data, object : RepoCallback<CompleteProfileResult> {
                 override fun onSuccessful(response: CompleteProfileResult) {
 
@@ -115,20 +113,19 @@ class CompleteProfileViewModel : BaseViewModel<AuthRepo>() {
     }
 
     private fun initDatabase(context: Context, data: Auth.CompleteProfile, id: String) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                AppDatabase.getDatabase(context).removeDatabase()
+        viewModelScope.launch(Dispatchers.IO) {
+            AppDatabase.getDatabase(context).removeDatabase()
 
-                val user = UserEntity(
-                    id.toLong(), data.idActivity.toLong(), data.idLeague.toLong(),
-                    data.email, data.password,
-                    data.date, data.name,
-                    data.birthdate, data.weight,
-                    data.height, data.gender.toInt(),
-                    data.score, data.target, data.profile
-                )
-                AppDatabase.getDatabase(context).roomDao().insertUser(user)
-            }
+            val user = UserEntity(
+                id.toLong(), data.idActivity.toLong(), data.idLeague.toLong(),
+                data.email, data.password,
+                data.date, data.name,
+                data.birthdate, data.weight,
+                data.height, data.gender.toInt(),
+                data.score, data.target, data.profile
+            )
+            AppDatabase.getDatabase(context).roomDao().insertUser(user)
+
         }
     }
 

@@ -17,6 +17,8 @@ int id gGoogle 0x0
 int id gTop 0x0
 int id guideline 0x0
 int id guideline2 0x0
+int id guideline3 0x0
+int id guideline4 0x0
 int id iv 0x0
 int id ivGoogle 0x0
 int id ivLanguage 0x0

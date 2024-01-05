@@ -3,9 +3,25 @@ package org.n9ne.common.util
 import android.content.Context
 import android.graphics.LinearGradient
 import android.graphics.Shader
+import android.util.TypedValue
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
+
+fun Context.isDeviceTablet(): Boolean {
+    val resources = resources
+    val configuration = resources.configuration
+    val screenWidthDp = configuration.screenWidthDp
+
+    return screenWidthDp > 600
+}
+
+
+fun Context.dpToPx(dp: Int): Int = TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_DIP,
+    dp.toFloat(),
+    resources.displayMetrics
+).toInt()
 
 fun ImageView.setUserAvatar(image: String) {
     if (image.isNotEmpty()) {

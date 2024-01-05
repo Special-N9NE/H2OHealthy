@@ -2,17 +2,15 @@ package org.n9ne.common.dialog
 
 import android.app.Activity
 import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
 import androidx.core.content.res.ResourcesCompat
 import org.n9ne.common.R
 import org.n9ne.common.R.color
 import org.n9ne.common.databinding.DialogActivityOptionsBinding
 import org.n9ne.common.databinding.DialogAddBinding
 import org.n9ne.common.model.Cup
+import org.n9ne.common.util.Utils.setDialog
 import org.n9ne.common.util.interfaces.AddWaterListener
 import org.n9ne.common.util.interfaces.RemoveActivityListener
 
@@ -24,13 +22,10 @@ fun Activity.addWaterDialog(
 ): Dialog {
     val dialog = Dialog(this)
     val binding = DialogAddBinding.inflate(layoutInflater)
-    dialog.setCanceledOnTouchOutside(true)
     dialog.setContentView(binding.root)
-    dialog.window?.setLayout(
-        FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT
-    )
-    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    dialog.setCanceledOnTouchOutside(false)
+
+    dialog.setDialog()
+
     binding.ivClose.setOnClickListener {
         dialog.dismiss()
     }
@@ -70,13 +65,9 @@ fun Activity.activityOptionDialog(
 ): Dialog {
     val dialog = Dialog(this)
     val binding = DialogActivityOptionsBinding.inflate(layoutInflater)
-    dialog.setCanceledOnTouchOutside(true)
     dialog.setContentView(binding.root)
-    dialog.window?.setLayout(
-        FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT
-    )
-    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    dialog.setCanceledOnTouchOutside(false)
+
+    dialog.setDialog()
 
     binding.etAmount.setText(item.amount)
     binding.ivClose.setOnClickListener {

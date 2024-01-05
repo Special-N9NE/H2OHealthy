@@ -3,7 +3,7 @@ package com.example.home.adpter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.home.databinding.ItemActiviyBinding
+import com.example.home.databinding.ItemActivityBinding
 import org.n9ne.common.util.interfaces.MenuClickListener
 
 class ActivityAdapter(
@@ -11,7 +11,7 @@ class ActivityAdapter(
     private val listener: MenuClickListener
 ) : RecyclerView.Adapter<ActivityAdapter.ViewHolder>() {
 
-    inner class ViewHolder(private val b: ItemActiviyBinding) :
+    inner class ViewHolder(private val b: ItemActivityBinding) :
         RecyclerView.ViewHolder(b.root) {
         fun setData(item: org.n9ne.common.model.Activity) {
             b.tvAmount.text = item.amount
@@ -30,8 +30,8 @@ class ActivityAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding: ItemActiviyBinding =
-            ItemActiviyBinding.inflate(inflater, parent, false)
+        val binding: ItemActivityBinding =
+            ItemActivityBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
 

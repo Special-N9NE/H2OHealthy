@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/auth" />
             <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/common/linearprogressbar" />
             <option value="$PROJECT_DIR$/home" />
             <option value="$PROJECT_DIR$/profile" />
           </set>

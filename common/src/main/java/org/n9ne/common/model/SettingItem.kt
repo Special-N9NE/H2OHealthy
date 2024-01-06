@@ -4,5 +4,6 @@ enum class SettingItem {
     PASSWORD,
     STATS,
     GLASS,
-    LANGUAGE
+    LANGUAGE,
+    REMINDER
 }

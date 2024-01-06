@@ -7,6 +7,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.simform.refresh.SSPullToRefreshLayout
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.util.interfaces.RefreshListener
+import org.n9ne.common.util.requestNotificationPermission
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.ActivityAuthBinding
 
@@ -40,6 +41,8 @@ class AuthActivity : BaseActivity() {
                 stopLoading()
             }
         }
+
+        requestNotificationPermission()
     }
 
     private fun init() {

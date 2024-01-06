@@ -16,11 +16,13 @@ import org.n9ne.common.model.Cup
 import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Mapper.toLiter
+import org.n9ne.common.util.Saver
 import org.n9ne.common.util.Saver.getToken
 import org.n9ne.common.util.Utils.isOnline
 import org.n9ne.common.util.interfaces.AddWaterListener
 import org.n9ne.common.util.interfaces.CupClickListener
 import org.n9ne.common.util.interfaces.RefreshListener
+import org.n9ne.common.util.reminderNotification
 import org.n9ne.h2ohealthy.App
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.data.MainRepo
@@ -96,7 +98,9 @@ class MainActivity : BaseActivity() {
             }
             return@setOnNavigationItemSelectedListener true
         }
+        reminderNotification(Saver.getReminder() != 0)
     }
+
 
     private fun init() {
         apiRepo = MainRepoApiImpl((application as App).client)

@@ -18,12 +18,14 @@ import org.n9ne.common.R.color
 import org.n9ne.common.R.string
 import org.n9ne.common.dialog.createLeagueDialog
 import org.n9ne.common.dialog.joinLeagueDialog
+import org.n9ne.common.dialog.reminderDialog
 import org.n9ne.common.model.Setting
 import org.n9ne.common.model.SettingItem
 import org.n9ne.common.model.User
 import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
+import org.n9ne.common.util.Saver
 import org.n9ne.common.util.Saver.getToken
 import org.n9ne.common.util.Saver.isAppEnglish
 import org.n9ne.common.util.Saver.saveToken
@@ -31,7 +33,10 @@ import org.n9ne.common.util.Saver.setLanguage
 import org.n9ne.common.util.interfaces.AddLeagueListener
 import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.common.util.interfaces.RefreshListener
+import org.n9ne.common.util.interfaces.ReminderSaveListener
 import org.n9ne.common.util.interfaces.SettingClickListener
+import org.n9ne.common.util.reminderNotification
+import org.n9ne.common.util.scheduleNotification
 import org.n9ne.common.util.setGradient
 import org.n9ne.common.util.setUserAvatar
 import org.n9ne.profile.R
@@ -113,6 +118,18 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
                             setLanguage(!isAppEnglish())
                             activity.reloadLanguage()
                         }
+
+                        SettingItem.REMINDER -> requireActivity().reminderDialog(object :
+                            ReminderSaveListener {
+                            override fun onSave(hours: Int) {
+                                Saver.saveReminder(hours)
+                                Toast.makeText(requireContext(), string.saved, Toast.LENGTH_LONG)
+                                    .show()
+
+                                requireContext().reminderNotification(hours != 0)
+                                requireContext().scheduleNotification(hours)
+                            }
+                        }).show()
                     }
                 }
 

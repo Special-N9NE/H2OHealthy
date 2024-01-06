@@ -88,4 +88,10 @@
     <string name="errorLeagueName">اسم فقط میتواند شامل حروف، اعداد و خط تیره باشد</string>
     <string name="emailClient">انتخاب سرویس دهنده ایمیل</string>
     <string name="errorEmailClient">برنامه ای برای ایمیل نصب نیست</string>
+    <string name="notificationTitle">وقت آب خوردنه!</string>
+    <string name="notificationText">زود باش برو آب بخور 😉</string>
+    <string name="permissionText">این اپلیکیشن نیاز به این مجوز برای یادآوری است</string>
+    <string name="cancel">لفو</string>
+    <string name="ok">تایید</string>
+    <string name="saved">ذخیره شد</string>
 </resources>

@@ -17,6 +17,7 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 object Utils {
+
     fun encrypt(input: String): String {
         val md = MessageDigest.getInstance("SHA-256")
         val messageDigest = md.digest(input.toByteArray())

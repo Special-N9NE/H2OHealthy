@@ -9,6 +9,7 @@ object Saver {
     private var LANGUAGE = "LANGUAGE"
     private var TOKEN = "TOKEN"
     private var EMAIL = "EMAIL"
+    private var REMINDER = "REMINDER"
 
     private var sharedPreferences: SharedPreferences? = null
     fun setup(context: Context) {
@@ -64,4 +65,13 @@ object Saver {
         return sharedPreferences!!.getString(EMAIL, null)
     }
 
+    fun saveReminder(hours: Int) {
+        val editor = sharedPreferences!!.edit()
+        editor.putInt(REMINDER, hours)
+        editor.apply()
+    }
+
+    fun getReminder(): Int {
+        return sharedPreferences!!.getInt(REMINDER, 0)
+    }
 }

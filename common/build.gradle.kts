@@ -38,6 +38,9 @@ android {
 }
 
 dependencies {
+    implementation("com.github.kojofosu:Quantitizer:1.6.8")
+
+    implementation("com.guolindev.permissionx:permissionx:1.7.1")
 
     implementation("com.github.samanzamani:PersianDate:1.7.1")
 

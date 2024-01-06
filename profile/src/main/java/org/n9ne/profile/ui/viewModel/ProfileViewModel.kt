@@ -35,12 +35,14 @@ class ProfileViewModel : BaseViewModel<ProfileRepo>() {
                 Setting("آمار", drawable.ic_progress, SettingItem.STATS),
                 Setting("لیوان ها", drawable.ic_cup_menu, SettingItem.GLASS),
                 Setting("تعویض زبان", drawable.ic_language, SettingItem.LANGUAGE),
+                Setting("یادآور", drawable.ic_language, SettingItem.REMINDER),
             )
         else
             listOf(
                 Setting("Stats", drawable.ic_progress, SettingItem.STATS),
                 Setting("Cups", drawable.ic_cup_menu, SettingItem.GLASS),
                 Setting("Change Language", drawable.ic_language, SettingItem.LANGUAGE),
+                Setting("Reminder", drawable.ic_language, SettingItem.REMINDER),
             )
     }
 

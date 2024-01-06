@@ -87,15 +87,17 @@
     <string name="emptyPassword">Password is empty</string>
     <string name="errorEmail">Email is not valid</string>
     <string name="errorPassword">password is short</string>
-
     <string name="emptyName">Name is empty</string>
     <string name="errorName">name is short</string>
-
     <string name="emptyDate">Enter Birthdate</string>
-
     <string name="errorLeagueName">name can only be letters, digits and dashes</string>
-
-
     <string name="emailClient">Choose an Email client :</string>
     <string name="errorEmailClient">There are no email clients installed.</string>
+
+    <string name="notificationTitle">It\'s Drinking Time!</string>
+    <string name="notificationText">Hurry up and drink some water 😉</string>
+    <string name="permissionText">This App needs notification permission to remind you to drink water</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="saved">Saved</string>
 </resources>

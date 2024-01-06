@@ -12,6 +12,7 @@ import org.n9ne.common.BaseViewModel
 import org.n9ne.common.R.string
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.RepoCallback
+import org.n9ne.common.util.Utils
 
 class RegisterViewModel : BaseViewModel<AuthRepo>() {
     private var passwordIsVisible = false
@@ -32,13 +33,16 @@ class RegisterViewModel : BaseViewModel<AuthRepo>() {
         //TODO register with google
     }
 
+
     fun register(name: String, email: String, password: String, context: Context) {
 
         if (!isDataValid(name, email, password, context))
             return
 
+        val encryptPass = Utils.encrypt(password)
+
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.register(name.trim(), email, password, object : RepoCallback<Unit> {
+            repo?.register(name.trim(), email, encryptPass, object : RepoCallback<Unit> {
                 override fun onSuccessful(response: Unit) {
                     ldRegister.postValue(Event(Unit))
                 }

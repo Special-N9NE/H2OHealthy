@@ -10,12 +10,18 @@ import android.widget.FrameLayout
 import org.n9ne.common.model.Progress
 import org.n9ne.common.util.Mapper.toMilliLiter
 import org.n9ne.common.util.Saver.isAppEnglish
+import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import kotlin.math.roundToInt
 
 object Utils {
+    fun encrypt(input: String): String {
+        val md = MessageDigest.getInstance("SHA-256")
+        val messageDigest = md.digest(input.toByteArray())
+        return messageDigest.fold("") { str, it -> str + "%02x".format(it) }
+    }
 
     fun Dialog.setDialog() {
         var width = FrameLayout.LayoutParams.MATCH_PARENT

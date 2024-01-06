@@ -10,7 +10,7 @@ data class User(
     val joinDate: String,
     val target: String,
     var age: String,
-    val birthDate: String,
+    var birthDate: String,
     val weight: String,
     val height: String,
     var gender: String,

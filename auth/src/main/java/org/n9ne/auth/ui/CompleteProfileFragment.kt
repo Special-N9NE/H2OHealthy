@@ -181,7 +181,6 @@ class CompleteProfileFragment : Fragment(), Navigator {
             .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
             .setMaxMonth(PersianDatePickerDialog.THIS_MONTH)
             .setMaxDay(PersianDatePickerDialog.THIS_DAY)
-            .setInitDate(1380, 7, 26)
             .setActionTextColor(resources.getColor(color.linearBlueEnd, requireContext().theme))
 //            .setTypeFace(
 //                Typeface.createFromAsset(

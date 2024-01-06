@@ -72,16 +72,16 @@ object DateUtils {
         return formatter.format(time).toEnglishNumbers().toInt()
     }
 
-    fun String.persianToGeorgian(): String {
+    fun String.georgianToPersian(): String {
         val dates = this.split("/")
         val pDate = PersianDate()
-        val result = pDate.jalali_to_gregorian(dates[0].toInt(), dates[1].toInt(), dates[2].toInt())
+        val result = pDate.gregorian_to_jalali(dates[0].toInt(), dates[1].toInt(), dates[2].toInt())
 
         val builder = StringBuilder()
         result.forEach {
             builder.append("$it/")
         }
-        return result.dropLast(1).toString()
+        return builder.dropLast(1).toString()
     }
 
     fun getTime(): String {

@@ -71,7 +71,6 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
                 val email = b.etEmail.text.toString()
                 val activityLevel = b.spActivity.text.toString()
                 val gender = b.spGender.text.toString()
-                val birthdate = b.etBirthday.text.toString()
                 val weight = b.etWeight.text.toString()
                 val height = b.etHeight.text.toString()
 
@@ -79,7 +78,7 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
                     activityLevel,
                     email,
                     name,
-                    birthdate,
+                    date,
                     weight,
                     height,
                     gender
@@ -149,7 +148,6 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
             .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
             .setMaxMonth(PersianDatePickerDialog.THIS_MONTH)
             .setMaxDay(PersianDatePickerDialog.THIS_DAY)
-            .setInitDate(1380, 7, 26)
             .setActionTextColor(resources.getColor(color.linearBlueEnd, requireContext().theme))
 //            .setTypeFace(
 //                Typeface.createFromAsset(
@@ -192,6 +190,7 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
             b.spActivity.setTextColor(resources.getColor(color.blackText, requireContext().theme))
             b.spGender.setTextColor(resources.getColor(color.blackText, requireContext().theme))
             setupSpinners()
+
 
             b.ivProfile.setUserAvatar(it.profile)
 

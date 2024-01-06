@@ -13,6 +13,7 @@ import org.n9ne.common.R
 import org.n9ne.common.model.ActivityType
 import org.n9ne.common.model.UpdateUser
 import org.n9ne.common.model.User
+import org.n9ne.common.util.DateUtils.georgianToPersian
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.Mapper.toUserEntity
 import org.n9ne.common.util.RepoCallback
@@ -45,16 +46,20 @@ class EditProfileViewModel : BaseViewModel<ProfileRepo>() {
                 repo?.getUser(token, object : RepoCallback<User> {
                     override fun onSuccessful(response: User) {
 
-                        val gender =
-                            if (Utils.isLocalPersian()) {
-                                if (response.gender == "Male")
-                                    "مرد"
-                                else
-                                    "زن"
-                            } else
-                                response.gender
+                        var gender = response.gender
+                        var bithday = response.birthDate
+
+                        if (Utils.isLocalPersian()) {
+                            if (response.gender == "Male")
+                                gender = "مرد"
+                            else
+                                gender = "زن"
+
+                            bithday = bithday.georgianToPersian()
+                        }
 
                         response.gender = gender
+                        response.birthDate = bithday
 
                         ldUser.postValue(Event(response))
                     }

@@ -1,15 +1,13 @@
 package org.n9ne.common
 
-import android.content.res.Configuration
-import android.content.res.Resources
-import android.util.DisplayMetrics
+import android.content.Context
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.simform.refresh.SSPullToRefreshLayout
+import com.yariksoffice.lingver.Lingver
 import org.n9ne.common.model.Cup
 import org.n9ne.common.util.Utils
 import org.n9ne.common.util.customViews.BottomNavigationViewWithIndicator
-import java.util.Locale
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -28,15 +26,16 @@ abstract class BaseActivity : AppCompatActivity() {
 
     }
 
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(
+            LocaleService.updateBaseContextLocale(newBase)
+        )
+    }
+
     protected fun setLocal() {
+
         val myLocale = Utils.getLocal()
-        val res: Resources = resources
-        val dm: DisplayMetrics = res.displayMetrics
-        val conf: Configuration = res.configuration
-        conf.setLocale(myLocale)
-        Locale.setDefault(myLocale)
-        conf.setLayoutDirection(myLocale)
-        res.updateConfiguration(conf, dm)
+        Lingver.getInstance().setLocale(this, myLocale.language)
     }
 
     fun initLoading(view: SSPullToRefreshLayout) {

@@ -18,6 +18,8 @@ android {
         versionCode = 6
         versionName = "2.2"
 
+        resourceConfigurations.addAll(mutableListOf("en" , "fa"))
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -44,6 +46,8 @@ android {
 }
 
 dependencies {
+
+    api("com.github.YarikSOffice:lingver:1.3.0")
 
     api(platform("com.google.firebase:firebase-bom:32.7.0"))
     api("com.google.firebase:firebase-analytics")

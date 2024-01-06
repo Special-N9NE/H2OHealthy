@@ -13,6 +13,7 @@ import org.n9ne.common.model.League
 import org.n9ne.common.model.Setting
 import org.n9ne.common.model.SettingItem
 import org.n9ne.common.model.User
+import org.n9ne.common.util.DateUtils
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.Mapper.toLeagueEntity
 import org.n9ne.common.util.Mapper.toUserEntity
@@ -50,7 +51,7 @@ class ProfileViewModel : BaseViewModel<ProfileRepo>() {
         viewModelScope.launch(Dispatchers.IO) {
             repo?.getUser(token, object : RepoCallback<User> {
                 override fun onSuccessful(response: User) {
-                    val age = org.n9ne.common.util.DateUtils.calculateAge(response.birthDate)
+                    val age = DateUtils.calculateAge(response.birthDate)
                     response.age = age.toString()
 
                     syncUser(response)
@@ -100,7 +101,7 @@ class ProfileViewModel : BaseViewModel<ProfileRepo>() {
             ldError.postValue(Event(context.getString(org.n9ne.common.R.string.errorName)))
             return
         }
-        if (!name.trim().matches("([A-Za-z0-9]+\\-*)".toRegex())) {
+        if (!name.trim().matches("([A-Za-z0-9]+-*)".toRegex())) {
             ldError.postValue(Event(context.getString(org.n9ne.common.R.string.errorLeagueName)))
             return
         }

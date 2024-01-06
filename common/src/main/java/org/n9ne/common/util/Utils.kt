@@ -44,7 +44,7 @@ object Utils {
     }
 
     fun isLocalPersian(): Boolean {
-        return (getLocal().country == "IR")
+        return (getLocal().language == "fa")
     }
 
     fun Context.isOnline(): Boolean {

@@ -38,6 +38,8 @@ android {
 }
 
 dependencies {
+    implementation("com.github.YarikSOffice:lingver:1.3.0")
+
     implementation("com.github.kojofosu:Quantitizer:1.6.8")
 
     implementation("com.guolindev.permissionx:permissionx:1.7.1")

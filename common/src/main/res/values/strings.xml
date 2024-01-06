@@ -100,4 +100,8 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="saved">Saved</string>
+    <string name="add_reminder">Add Reminder</string>
+    <string name="enable_reminder">Enable Reminder</string>
+    <string name="notification_interval_in_hours">Notification interval in hours:</string>
+    <string name="save">Save</string>
 </resources>

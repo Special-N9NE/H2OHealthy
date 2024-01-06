@@ -94,4 +94,8 @@
     <string name="cancel">لفو</string>
     <string name="ok">تایید</string>
     <string name="saved">ذخیره شد</string>
+    <string name="add_reminder">افزودن یادآور</string>
+    <string name="enable_reminder">فعال کردن یادآور</string>
+    <string name="notification_interval_in_hours">تعداد ساعت بین هر هشدار</string>
+    <string name="save">ذخیره</string>
 </resources>

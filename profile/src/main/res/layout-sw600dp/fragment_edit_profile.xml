@@ -131,7 +131,6 @@
                 android:drawableStart="@drawable/ic_birthday"
                 android:focusable="false"
                 android:hint="@string/date_of_birth"
-                android:text="@{user.birthDate}"
                 app:layout_constraintEnd_toEndOf="@+id/etEmail"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/gLeft"

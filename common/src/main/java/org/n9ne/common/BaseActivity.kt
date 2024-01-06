@@ -19,7 +19,13 @@ abstract class BaseActivity : AppCompatActivity() {
     private var nav: BottomNavigationViewWithIndicator? = null
 
     fun reloadLanguage() {
-        this.recreate()
+        setLocal()
+
+        finish()
+        overridePendingTransition(0, 0)
+        startActivity(intent)
+        overridePendingTransition(0, 0)
+
     }
 
     protected fun setLocal() {

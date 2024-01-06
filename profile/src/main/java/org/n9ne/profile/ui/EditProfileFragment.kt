@@ -19,6 +19,7 @@ import org.n9ne.common.model.ActivityType
 import org.n9ne.common.model.UpdateUser
 import org.n9ne.common.source.local.AppDatabase
 import org.n9ne.common.source.network.Client
+import org.n9ne.common.util.DateUtils.georgianToPersian
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
 import org.n9ne.common.util.Utils
@@ -142,7 +143,6 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
         PersianDatePickerDialog(requireContext())
             .setPositiveButtonString("تایید")
             .setNegativeButton("لغو")
-            .setTodayButton("امروز")
             .setTodayButtonVisible(true)
             .setMinYear(1300)
             .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
@@ -191,10 +191,16 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
             b.spGender.setTextColor(resources.getColor(color.blackText, requireContext().theme))
             setupSpinners()
 
+            date = it.birthDate
+
+            b.etBirthday.setText(
+                if (Utils.isLocalPersian())
+                    it.birthDate.georgianToPersian()
+                else
+                    it.birthDate
+            )
 
             b.ivProfile.setUserAvatar(it.profile)
-
-            date = it.birthDate
         })
         viewModel.ldSubmit.observe(viewLifecycleOwner, EventObserver(listOf(b.bSubmit)) {
             activity.stopLoading()

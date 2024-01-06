@@ -103,8 +103,8 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
             activity.stopLoading()
 
 
-            b.tvEmpty?.visibility = View.GONE
-            b.clStats?.visibility = View.VISIBLE
+            b.tvEmpty.visibility = View.GONE
+            b.clStats.visibility = View.VISIBLE
 
             setBars(it)
         })
@@ -120,8 +120,8 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
         })
         viewModel.ldEmpty.observe(viewLifecycleOwner, EventObserver {
             activity.stopLoading()
-            b.tvEmpty?.visibility = View.VISIBLE
-            b.clStats?.visibility = View.INVISIBLE
+            b.tvEmpty.visibility = View.VISIBLE
+            b.clStats.visibility = View.INVISIBLE
         })
         viewModel.ldLineMonth.observe(viewLifecycleOwner, EventObserver {
             setLineChart(it, b.lineMonth, chartMonth)

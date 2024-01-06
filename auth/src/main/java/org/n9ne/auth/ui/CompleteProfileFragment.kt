@@ -175,7 +175,6 @@ class CompleteProfileFragment : Fragment(), Navigator {
         PersianDatePickerDialog(requireContext())
             .setPositiveButtonString("تایید")
             .setNegativeButton("لغو")
-            .setTodayButton("امروز")
             .setTodayButtonVisible(true)
             .setMinYear(1300)
             .setMaxYear(PersianDatePickerDialog.THIS_YEAR)

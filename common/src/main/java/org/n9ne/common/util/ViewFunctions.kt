@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.LinearGradient
 import android.graphics.Shader
+import android.os.Build
 import android.util.TypedValue
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,6 +19,9 @@ import com.permissionx.guolindev.PermissionX
 import org.n9ne.common.R
 
 fun FragmentActivity.requestNotificationPermission() {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+        return
+    }
     val permissions = listOf(Manifest.permission.POST_NOTIFICATIONS)
 
     val text = getString(R.string.permissionText)

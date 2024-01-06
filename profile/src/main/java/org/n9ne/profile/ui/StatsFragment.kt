@@ -101,6 +101,11 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
         })
         viewModel.ldBarData.observe(viewLifecycleOwner, EventObserver {
             activity.stopLoading()
+
+
+            b.tvEmpty?.visibility = View.GONE
+            b.clStats?.visibility = View.VISIBLE
+
             setBars(it)
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
@@ -112,6 +117,11 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
         })
         viewModel.ldLineOverall.observe(viewLifecycleOwner, EventObserver {
             setLineChart(it, b.lineOverall, chartOverall)
+        })
+        viewModel.ldEmpty.observe(viewLifecycleOwner, EventObserver {
+            activity.stopLoading()
+            b.tvEmpty?.visibility = View.VISIBLE
+            b.clStats?.visibility = View.INVISIBLE
         })
         viewModel.ldLineMonth.observe(viewLifecycleOwner, EventObserver {
             setLineChart(it, b.lineMonth, chartMonth)

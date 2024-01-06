@@ -20,6 +20,7 @@ class StatsViewModel : BaseViewModel<ProfileRepo>() {
 
     val ldStartDate = MutableLiveData<Event<String>>()
     val ldScore = MutableLiveData<Event<Int>>()
+    val ldEmpty = MutableLiveData<Event<Unit>>()
     val ldAverage = MutableLiveData<Event<Double>>()
     val ldLineOverall = MutableLiveData<Event<List<Double>>>()
     val ldLineMonth = MutableLiveData<Event<List<Double>>>()
@@ -32,6 +33,12 @@ class StatsViewModel : BaseViewModel<ProfileRepo>() {
 
             repo?.getAllActivity(token, object : RepoCallback<List<Activity>> {
                 override fun onSuccessful(response: List<Activity>) {
+
+                    if (response.isEmpty()) {
+                        ldEmpty.postValue(Event(Unit))
+                        return
+                    }
+
                     syncActivities(response)
 
                     val barValues = mutableListOf<Double>()

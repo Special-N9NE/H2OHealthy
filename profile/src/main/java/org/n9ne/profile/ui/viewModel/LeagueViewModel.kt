@@ -3,6 +3,7 @@ package org.n9ne.profile.ui.viewModel
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -14,8 +15,10 @@ import org.n9ne.common.model.Member
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.RepoCallback
 import org.n9ne.profile.repo.ProfileRepo
+import javax.inject.Inject
 
-class LeagueViewModel : BaseViewModel<ProfileRepo>() {
+@HiltViewModel
+class LeagueViewModel @Inject constructor() : BaseViewModel<ProfileRepo>() {
 
     val ldLeave = MutableLiveData<Event<Unit>>()
     val ldLeague = MutableLiveData<Event<League>>()

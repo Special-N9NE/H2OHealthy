@@ -5,6 +5,7 @@ import android.util.Patterns
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -18,8 +19,10 @@ import org.n9ne.common.util.Mapper.toUserEntity
 import org.n9ne.common.util.RepoCallback
 import org.n9ne.common.util.Utils
 import org.n9ne.profile.repo.ProfileRepo
+import javax.inject.Inject
 
-class EditProfileViewModel : BaseViewModel<ProfileRepo>() {
+@HiltViewModel
+class EditProfileViewModel @Inject constructor() : BaseViewModel<ProfileRepo>() {
 
     val ldSubmit = MutableLiveData<Event<Unit>>()
     val ldUser = MutableLiveData<Event<User>>()

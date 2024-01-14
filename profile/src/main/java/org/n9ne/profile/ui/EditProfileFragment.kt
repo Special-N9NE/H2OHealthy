@@ -7,18 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.api.PersianPickerDate
 import ir.hamsaa.persiandatepicker.api.PersianPickerListener
-import org.n9ne.common.BaseActivity
 import org.n9ne.common.BaseFragment
 import org.n9ne.common.R.color
 import org.n9ne.common.model.ActivityType
 import org.n9ne.common.model.UpdateUser
-import org.n9ne.common.source.local.AppDatabase
-import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.DateUtils.georgianToPersian
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
@@ -28,17 +26,15 @@ import org.n9ne.common.util.setUserAvatar
 import org.n9ne.profile.R
 import org.n9ne.profile.databinding.FragmentEditProfileBinding
 import org.n9ne.profile.repo.ProfileRepo
-import org.n9ne.profile.repo.ProfileRepoApiImpl
-import org.n9ne.profile.repo.ProfileRepoLocalImpl
 import org.n9ne.profile.ui.viewModel.EditProfileViewModel
 
-
+@AndroidEntryPoint
 class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
 
     private lateinit var b: FragmentEditProfileBinding
-    private lateinit var viewModel: EditProfileViewModel
+    private val viewModel: EditProfileViewModel by viewModels()
     private lateinit var date: String
-    private lateinit var activity: BaseActivity
+    
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -51,7 +47,7 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
         super.onViewCreated(view, savedInstanceState)
 
         init()
-        activity.hideNavigation()
+        baseActivity.hideNavigation()
 
         setupObserver()
         setClicks()
@@ -65,7 +61,7 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
         b.bSubmit.setOnClickListener {
             b.bSubmit.isEnabled = false
 
-            activity.startLoading()
+            baseActivity.startLoading()
             makeApiRequest {
 
                 val name = b.etName.text.toString()
@@ -101,17 +97,11 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
     }
 
     private fun init() {
-        activity = requireActivity() as BaseActivity
-        val client = Client.getInstance()
 
-        localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
-        apiRepo = ProfileRepoApiImpl(client)
-
-        viewModel = ViewModelProvider(this)[EditProfileViewModel::class.java]
-        viewModel.db = AppDatabase.getDatabase(requireContext())
+        viewModel.db = db
         b.viewModel = viewModel
 
-        initRepos(apiRepo as ProfileRepo, localRepo as ProfileRepo, viewModel)
+        initRepos(apiRepo, localRepo, viewModel)
 
         setupSpinners()
     }
@@ -203,11 +193,11 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
             b.ivProfile.setUserAvatar(it.profile)
         })
         viewModel.ldSubmit.observe(viewLifecycleOwner, EventObserver(listOf(b.bSubmit)) {
-            activity.stopLoading()
+            baseActivity.stopLoading()
             findNavController().navigateUp()
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bSubmit)) {
-            activity.stopLoading()
+            baseActivity.stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
 

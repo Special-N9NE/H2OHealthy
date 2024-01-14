@@ -3,6 +3,7 @@ package com.example.home.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.home.repo.HomeRepo
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -15,9 +16,11 @@ import org.n9ne.common.util.Mapper.toMilliLiter
 import org.n9ne.common.util.Mapper.toWater
 import org.n9ne.common.util.RepoCallback
 import org.n9ne.common.util.Utils
+import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class HomeViewModel : BaseViewModel<HomeRepo>() {
+@HiltViewModel
+class HomeViewModel @Inject constructor() : BaseViewModel<HomeRepo>() {
     var target: Int? = null
 
     val ldTarget = MutableLiveData<Int>()

@@ -9,6 +9,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.home.adpter.CupsAdapter
 import com.simform.refresh.SSPullToRefreshLayout
+import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.dialog.addWaterDialog
 import org.n9ne.common.dialog.cupDialog
@@ -30,7 +31,7 @@ import org.n9ne.h2ohealthy.data.MainRepoApiImpl
 import org.n9ne.h2ohealthy.data.MainRepoLocalImpl
 import org.n9ne.h2ohealthy.databinding.ActivityMainBinding
 
-
+@AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     private lateinit var localRepo: MainRepo

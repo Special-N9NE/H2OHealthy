@@ -2,6 +2,8 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
 }
 
 android {
@@ -37,7 +39,14 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
 dependencies {
+
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+
     implementation("com.github.YarikSOffice:lingver:1.3.0")
 
     implementation("com.github.kojofosu:Quantitizer:1.6.8")

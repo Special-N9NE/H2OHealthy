@@ -8,20 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.example.home.adpter.ActivityAdapter
 import com.example.home.databinding.FragmentHomeBinding
 import com.example.home.repo.HomeRepo
-import com.example.home.repo.HomeRepoApiImpl
-import com.example.home.repo.HomeRepoLocalImpl
 import com.example.home.viewModel.HomeViewModel
-import org.n9ne.common.BaseActivity
+import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.common.BaseFragment
 import org.n9ne.common.dialog.activityOptionDialog
 import org.n9ne.common.model.Activity
 import org.n9ne.common.model.Progress
-import org.n9ne.common.source.local.AppDatabase
-import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Mapper.toLiter
 import org.n9ne.common.util.Saver.getToken
@@ -31,12 +27,13 @@ import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.common.util.interfaces.RemoveActivityListener
 import org.nine.linearprogressbar.LinearVerticalProgressBar
 
-
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
     private lateinit var b: FragmentHomeBinding
-    private lateinit var viewModel: HomeViewModel
+
+    private val viewModel: HomeViewModel by viewModels()
+
     private var activityList = arrayListOf<Activity>()
-    private lateinit var activity: BaseActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +49,7 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
         init()
         setObservers()
 
-        activity.showNavigation()
+        baseActivity.showNavigation()
 
         if (getToken() == null) {
             val intent = Intent(
@@ -63,7 +60,7 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
             requireActivity().finish()
         } else {
 
-            activity.startLoading()
+            baseActivity.startLoading()
             makeRequest {
                 viewModel.getTarget(getToken())
             }
@@ -71,17 +68,12 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
     }
 
     private fun init() {
-        activity = requireActivity() as BaseActivity
-        val client = Client.getInstance()
 
-        apiRepo = HomeRepoApiImpl(client)
-        localRepo = HomeRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
-        viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
-        viewModel.db = AppDatabase.getDatabase(requireContext())
+        viewModel.db = db
 
         b.viewModel = viewModel
 
-        initRepos(apiRepo as HomeRepo, localRepo as HomeRepo, viewModel)
+        initRepos(apiRepo, localRepo, viewModel)
     }
 
     private fun setActivityAdapter(list: List<Activity>) {
@@ -91,7 +83,7 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
                     override fun onAdd(amount: String) {
                         item.amount = amount.toDouble().toLiter().toString()
 
-                        activity.startLoading()
+                        baseActivity.startLoading()
                         makeApiRequest {
                             viewModel.updateWater(item, getToken())
                         }
@@ -100,7 +92,7 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
                 val removeListener = object : RemoveActivityListener {
                     override fun onRemove() {
 
-                        activity.startLoading()
+                        baseActivity.startLoading()
                         makeApiRequest {
                             viewModel.removeWater(item, getToken())
                         }
@@ -143,10 +135,10 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
             activityList = it.toCollection(ArrayList())
             setActivityAdapter(it)
 
-            activity.stopLoading()
+            baseActivity.stopLoading()
         }
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
-            activity.stopLoading()
+            baseActivity.stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
     }

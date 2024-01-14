@@ -7,8 +7,11 @@ import org.n9ne.common.source.network.Client
 import org.n9ne.common.source.objects.UpdateActivity
 import org.n9ne.common.util.Mapper.toActivities
 import org.n9ne.common.util.RepoCallback
+import javax.inject.Inject
 
-class HomeRepoApiImpl(private val client: Client) : BaseRepoImpl(), HomeRepo {
+
+    class HomeRepoApiImpl @Inject constructor(private val client: Client) :
+        BaseRepoImpl(), HomeRepo {
 
     override suspend fun getTarget(token: String?, callback: RepoCallback<Int>) {
         val call = client.getApiService().getTarget(token!!)

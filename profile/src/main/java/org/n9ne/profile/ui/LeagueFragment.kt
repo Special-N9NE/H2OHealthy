@@ -7,16 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.BaseFragment
 import org.n9ne.common.R.string
 import org.n9ne.common.dialog.createLeagueDialog
 import org.n9ne.common.dialog.leagueSettingDialog
 import org.n9ne.common.model.League
-import org.n9ne.common.source.local.AppDatabase
-import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getEmail
 import org.n9ne.common.util.Saver.getToken
@@ -25,17 +24,14 @@ import org.n9ne.common.util.interfaces.AddLeagueListener
 import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.profile.databinding.FragmentLeagueBinding
 import org.n9ne.profile.repo.ProfileRepo
-import org.n9ne.profile.repo.ProfileRepoApiImpl
-import org.n9ne.profile.repo.ProfileRepoLocalImpl
 import org.n9ne.profile.ui.adpter.MemberAdapter
 import org.n9ne.profile.ui.viewModel.LeagueViewModel
 
+@AndroidEntryPoint
 class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
 
     private lateinit var b: FragmentLeagueBinding
-    private lateinit var viewModel: LeagueViewModel
-
-    private lateinit var activity: BaseActivity
+    private val viewModel: LeagueViewModel by viewModels()
 
     private var league: League? = null
     private lateinit var dialogRename: Dialog
@@ -55,7 +51,7 @@ class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
         setClicks()
         setupObserver()
 
-        activity.startLoading()
+        baseActivity.startLoading()
         makeApiRequest {
             viewModel.getMembers(getToken())
         }
@@ -71,17 +67,11 @@ class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
     }
 
     private fun init() {
-        activity = requireActivity() as BaseActivity
-        val client = Client.getInstance()
 
-        apiRepo = ProfileRepoApiImpl(client)
-        localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
-
-        viewModel = ViewModelProvider(this)[LeagueViewModel::class.java]
-        viewModel.db = AppDatabase.getDatabase(requireContext())
+        viewModel.db = db
         b.viewModel = viewModel
 
-        initRepos(apiRepo as ProfileRepo, localRepo as ProfileRepo, viewModel)
+        initRepos(apiRepo, localRepo, viewModel)
 
     }
 
@@ -92,7 +82,7 @@ class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
                 dialogRename =
                     requireActivity().createLeagueDialog(true, null, object : AddLeagueListener {
                         override fun addLeague(input: String) {
-                            activity.startLoading()
+                            baseActivity.startLoading()
                             makeApiRequest {
                                 viewModel.renameLeague(input, league!!.code, requireContext())
                             }
@@ -121,7 +111,7 @@ class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
             requireActivity().startActivity(shareIntent)
         }
         val leaveClick = View.OnClickListener {
-            activity.startLoading()
+            baseActivity.startLoading()
             makeApiRequest {
                 viewModel.leave(getToken())
             }
@@ -147,14 +137,14 @@ class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
         viewModel.ldLeague.observe(viewLifecycleOwner, EventObserver {
             league = it
             b.league = it
-            activity.stopLoading()
+            baseActivity.stopLoading()
         })
         viewModel.ldLeave.observe(viewLifecycleOwner, EventObserver {
             findNavController().navigateUp()
-            activity.stopLoading()
+            baseActivity.stopLoading()
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
-            activity.stopLoading()
+            baseActivity.stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
     }

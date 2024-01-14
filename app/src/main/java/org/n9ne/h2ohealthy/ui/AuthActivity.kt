@@ -5,13 +5,14 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.simform.refresh.SSPullToRefreshLayout
+import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.common.util.requestNotificationPermission
 import org.n9ne.h2ohealthy.R
 import org.n9ne.h2ohealthy.databinding.ActivityAuthBinding
 
-
+@AndroidEntryPoint
 class AuthActivity : BaseActivity() {
 
     private lateinit var b: ActivityAuthBinding

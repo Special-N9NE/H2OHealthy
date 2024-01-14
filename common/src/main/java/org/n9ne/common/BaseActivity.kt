@@ -5,9 +5,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.simform.refresh.SSPullToRefreshLayout
 import com.yariksoffice.lingver.Lingver
+import dagger.Provides
 import org.n9ne.common.model.Cup
 import org.n9ne.common.util.Utils
 import org.n9ne.common.util.customViews.BottomNavigationViewWithIndicator
+import javax.inject.Inject
 
 abstract class BaseActivity : AppCompatActivity() {
 

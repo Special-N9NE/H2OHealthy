@@ -2,6 +2,7 @@ package org.n9ne.profile.ui.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -13,10 +14,11 @@ import org.n9ne.common.util.Mapper.toWater
 import org.n9ne.common.util.RepoCallback
 import org.n9ne.profile.repo.ProfileRepo
 import java.time.LocalDate
+import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class StatsViewModel : BaseViewModel<ProfileRepo>() {
-
+@HiltViewModel
+class StatsViewModel @Inject constructor() : BaseViewModel<ProfileRepo>() {
 
     val ldStartDate = MutableLiveData<Event<String>>()
     val ldScore = MutableLiveData<Event<Int>>()

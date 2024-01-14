@@ -5,27 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import org.n9ne.common.BaseActivity
+import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.common.BaseFragment
-import org.n9ne.common.source.local.AppDatabase
-import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
 import org.n9ne.common.util.interfaces.AvatarClickListener
 import org.n9ne.profile.databinding.FragmentAvatarsBinding
 import org.n9ne.profile.repo.ProfileRepo
-import org.n9ne.profile.repo.ProfileRepoApiImpl
-import org.n9ne.profile.repo.ProfileRepoLocalImpl
 import org.n9ne.profile.ui.adpter.AvatarAdapter
 import org.n9ne.profile.ui.viewModel.AvatarsViewModel
 
-
+@AndroidEntryPoint
 class AvatarFragment : BaseFragment<ProfileRepo>() {
     private lateinit var b: FragmentAvatarsBinding
-    private lateinit var viewModel: AvatarsViewModel
-    private lateinit var activity: BaseActivity
+    private val viewModel: AvatarsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -38,7 +33,7 @@ class AvatarFragment : BaseFragment<ProfileRepo>() {
         super.onViewCreated(view, savedInstanceState)
 
         init()
-        activity.hideNavigation()
+        baseActivity.hideNavigation()
 
         setupObserver()
 
@@ -46,23 +41,17 @@ class AvatarFragment : BaseFragment<ProfileRepo>() {
     }
 
     private fun init() {
-        activity = requireActivity() as BaseActivity
-
-        val client = Client.getInstance()
-        apiRepo = ProfileRepoApiImpl(client)
-        localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
-        viewModel = ViewModelProvider(this)[AvatarsViewModel::class.java]
-        viewModel.db = AppDatabase.getDatabase(requireContext())
+        viewModel.db = db
 
         b.viewModel = viewModel
 
-        initRepos(apiRepo as ProfileRepo, localRepo as ProfileRepo, viewModel)
+        initRepos(apiRepo, localRepo, viewModel)
     }
 
     private fun setAdapter() {
         b.rv.adapter = AvatarAdapter(viewModel.avatars, object : AvatarClickListener {
             override fun onClick(image: String) {
-                activity.startLoading()
+                baseActivity.startLoading()
                 makeApiRequest {
                     viewModel.saveProfile(getToken(), image)
                 }
@@ -72,11 +61,11 @@ class AvatarFragment : BaseFragment<ProfileRepo>() {
 
     private fun setupObserver() {
         viewModel.ldSuccess.observe(viewLifecycleOwner, EventObserver {
-            activity.stopLoading()
+            baseActivity.stopLoading()
             findNavController().navigateUp()
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
-            activity.stopLoading()
+            baseActivity.stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
     }

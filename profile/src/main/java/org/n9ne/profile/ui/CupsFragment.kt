@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.BaseFragment
 import org.n9ne.common.dialog.addCupDialog
 import org.n9ne.common.model.Cup
-import org.n9ne.common.source.local.AppDatabase
-import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
 import org.n9ne.common.util.interfaces.CupClickListener
@@ -19,17 +18,16 @@ import org.n9ne.common.util.interfaces.CupEditListener
 import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.profile.databinding.FragmentCupsBinding
 import org.n9ne.profile.repo.ProfileRepo
-import org.n9ne.profile.repo.ProfileRepoApiImpl
-import org.n9ne.profile.repo.ProfileRepoLocalImpl
 import org.n9ne.profile.ui.adpter.AddCupAdapter
 import org.n9ne.profile.ui.viewModel.CupsViewModel
 
 
+@AndroidEntryPoint
 class CupsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
     private var cups = listOf<Cup>()
     private lateinit var b: FragmentCupsBinding
-    private lateinit var viewModel: CupsViewModel
-    private lateinit var activity: BaseActivity
+    private val viewModel: CupsViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -42,9 +40,9 @@ class CupsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
         super.onViewCreated(view, savedInstanceState)
 
         init()
-        activity.hideNavigation()
+        baseActivity.hideNavigation()
 
-        activity.startLoading()
+        baseActivity.startLoading()
         makeRequest {
             viewModel.getCups(getToken())
         }
@@ -52,17 +50,11 @@ class CupsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
     }
 
     private fun init() {
-        activity = requireActivity() as BaseActivity
-
-        val client = Client.getInstance()
-        apiRepo = ProfileRepoApiImpl(client)
-        localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
-        viewModel = ViewModelProvider(this)[CupsViewModel::class.java]
-        viewModel.db = AppDatabase.getDatabase(requireContext())
+        viewModel.db = db
 
         b.viewModel = viewModel
 
-        initRepos(apiRepo as ProfileRepo, localRepo as ProfileRepo, viewModel)
+        initRepos(apiRepo, localRepo, viewModel)
 
     }
 
@@ -73,7 +65,7 @@ class CupsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
                     requireActivity().addCupDialog(cup, object : CupClickListener {
                         override fun onClick(item: Cup) {
 
-                            activity.startLoading()
+                            baseActivity.startLoading()
                             makeApiRequest {
                                 viewModel.updateCup(item)
                             }
@@ -81,7 +73,7 @@ class CupsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
                     }).show()
                 } else {
 
-                    activity.startLoading()
+                    baseActivity.startLoading()
                     makeApiRequest {
                         viewModel.removeCup(cup)
                     }
@@ -95,7 +87,7 @@ class CupsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
             requireActivity().addCupDialog(null, object : CupClickListener {
                 override fun onClick(item: Cup) {
 
-                    activity.startLoading()
+                    baseActivity.startLoading()
                     makeApiRequest {
                         viewModel.addCup(item, getToken())
                     }
@@ -107,18 +99,18 @@ class CupsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
             cups = it
             b.bAdd.isEnabled = true
             setAdapter()
-            activity.stopLoading()
+            baseActivity.stopLoading()
         }
         viewModel.ldAddCup.observe(viewLifecycleOwner, EventObserver {
-            activity.stopLoading()
+            baseActivity.stopLoading()
             Toast.makeText(requireContext(), "Added", Toast.LENGTH_SHORT).show()
         })
         viewModel.ldRemoveCup.observe(viewLifecycleOwner, EventObserver {
-            activity.stopLoading()
+            baseActivity.stopLoading()
             Toast.makeText(requireContext(), "Removed", Toast.LENGTH_SHORT).show()
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
-            activity.stopLoading()
+            baseActivity.stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
     }

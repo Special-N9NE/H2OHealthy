@@ -2,6 +2,7 @@ package org.n9ne.profile.ui.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -12,8 +13,10 @@ import org.n9ne.common.util.Mapper.toGlass
 import org.n9ne.common.util.RepoCallback
 import org.n9ne.common.util.Utils
 import org.n9ne.profile.repo.ProfileRepo
+import javax.inject.Inject
 
-class CupsViewModel : BaseViewModel<ProfileRepo>() {
+@HiltViewModel
+class CupsViewModel @Inject constructor() : BaseViewModel<ProfileRepo>() {
 
     val ldCups = MutableLiveData<List<Cup>>()
 

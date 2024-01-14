@@ -5,6 +5,8 @@ plugins {
     id("kotlin-android")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
 }
 
 android {
@@ -45,7 +47,12 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
 dependencies {
+    api("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
 
     api("com.github.YarikSOffice:lingver:1.3.0")
 

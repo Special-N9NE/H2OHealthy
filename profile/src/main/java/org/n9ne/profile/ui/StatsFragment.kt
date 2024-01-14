@@ -6,34 +6,32 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
+import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.BaseFragment
-import org.n9ne.common.source.local.AppDatabase
-import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
 import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.profile.databinding.FragmentStatsBinding
 import org.n9ne.profile.repo.ProfileRepo
-import org.n9ne.profile.repo.ProfileRepoApiImpl
-import org.n9ne.profile.repo.ProfileRepoLocalImpl
 import org.n9ne.profile.ui.viewModel.StatsViewModel
 import kotlin.math.roundToInt
 
 
+@AndroidEntryPoint
 class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
 
     private lateinit var b: FragmentStatsBinding
-    private lateinit var viewModel: StatsViewModel
+    private val viewModel: StatsViewModel by viewModels()
 
     private lateinit var chartOverall: AAChartModel
     private lateinit var chartMonth: AAChartModel
-    private lateinit var activity: BaseActivity
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -50,24 +48,17 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
 
         setupObserver()
 
-        activity.startLoading()
+        baseActivity.startLoading()
         makeLocalRequest {
             viewModel.getActivities(getToken())
         }
     }
 
     private fun init() {
-        activity = requireActivity() as BaseActivity
-        val client = Client.getInstance()
-
-        apiRepo = ProfileRepoApiImpl(client)
-        localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
-
-        viewModel = ViewModelProvider(this)[StatsViewModel::class.java]
-        viewModel.db = AppDatabase.getDatabase(requireContext())
+        viewModel.db = db
         b.viewModel = viewModel
 
-        initRepos(apiRepo as ProfileRepo, localRepo as ProfileRepo, viewModel)
+        initRepos(apiRepo, localRepo, viewModel)
 
 
         val colorInt =
@@ -100,7 +91,7 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
             b.tvScore.text = "$it"
         })
         viewModel.ldBarData.observe(viewLifecycleOwner, EventObserver {
-            activity.stopLoading()
+            baseActivity.stopLoading()
 
 
             b.tvEmpty.visibility = View.GONE
@@ -109,7 +100,7 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
             setBars(it)
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
-            activity.stopLoading()
+            baseActivity.stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
         viewModel.ldStartDate.observe(viewLifecycleOwner, EventObserver {
@@ -119,7 +110,7 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
             setLineChart(it, b.lineOverall, chartOverall)
         })
         viewModel.ldEmpty.observe(viewLifecycleOwner, EventObserver {
-            activity.stopLoading()
+            baseActivity.stopLoading()
             b.tvEmpty.visibility = View.VISIBLE
             b.clStats.visibility = View.INVISIBLE
         })

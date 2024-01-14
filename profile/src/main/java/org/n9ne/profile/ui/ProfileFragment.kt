@@ -11,7 +11,8 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.BaseFragment
 import org.n9ne.common.R.color
@@ -22,8 +23,6 @@ import org.n9ne.common.dialog.reminderDialog
 import org.n9ne.common.model.Setting
 import org.n9ne.common.model.SettingItem
 import org.n9ne.common.model.User
-import org.n9ne.common.source.local.AppDatabase
-import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver
 import org.n9ne.common.util.Saver.getToken
@@ -42,18 +41,17 @@ import org.n9ne.common.util.setUserAvatar
 import org.n9ne.profile.R
 import org.n9ne.profile.databinding.FragmentProfileBinding
 import org.n9ne.profile.repo.ProfileRepo
-import org.n9ne.profile.repo.ProfileRepoApiImpl
-import org.n9ne.profile.repo.ProfileRepoLocalImpl
 import org.n9ne.profile.ui.adpter.SettingAdapter
 import org.n9ne.profile.ui.viewModel.ProfileViewModel
 
+@AndroidEntryPoint
 class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener {
 
     private lateinit var b: FragmentProfileBinding
-    private lateinit var viewModel: ProfileViewModel
+    private val viewModel: ProfileViewModel by viewModels()
     private var createLeagueDialog: Dialog? = null
     private var joinLeagueDialog: Dialog? = null
-    private lateinit var activity: BaseActivity
+    
     private var hasLeague: Boolean = false
 
     override fun onCreateView(
@@ -92,19 +90,12 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
     }
 
     private fun init() {
-        activity = requireActivity() as BaseActivity
-        val client = Client.getInstance()
 
-        apiRepo = ProfileRepoApiImpl(client)
-        localRepo = ProfileRepoLocalImpl(AppDatabase.getDatabase(requireContext()).roomDao())
-
-        viewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
-
-        viewModel.db = AppDatabase.getDatabase(requireContext())
+        viewModel.db = db
         viewModel.navigator = this
         b.viewModel = viewModel
 
-        initRepos(apiRepo as ProfileRepo, localRepo as ProfileRepo, viewModel)
+        initRepos(apiRepo, localRepo, viewModel)
 
         b.rvSettings.adapter =
             SettingAdapter(viewModel.getSettings(), object : SettingClickListener {
@@ -116,7 +107,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
                         SettingItem.GLASS -> shouldNavigate(R.id.profile_to_cups)
                         SettingItem.LANGUAGE -> {
                             setLanguage(!isAppEnglish())
-                            activity.reloadLanguage()
+                            baseActivity.reloadLanguage()
                         }
 
                         SettingItem.REMINDER -> requireActivity().reminderDialog(object :
@@ -156,7 +147,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
             }
         }
         b.clLogout.setOnClickListener {
-            activity.startLoading()
+            baseActivity.startLoading()
             viewModel.logout()
         }
     }
@@ -176,7 +167,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
     private fun setupObserver() {
         viewModel.ldUser.observe(viewLifecycleOwner) {
             setUser(it)
-            activity.stopLoading()
+            baseActivity.stopLoading()
         }
         viewModel.ldLogout.observe(viewLifecycleOwner, EventObserver {
             saveToken(null)
@@ -229,7 +220,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
             createLeagueDialog?.dismiss()
             joinLeagueDialog?.dismiss()
 
-            activity.stopLoading()
+            baseActivity.stopLoading()
 
             shouldNavigate(R.id.profile_to_league)
         })
@@ -243,7 +234,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
             }
 
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-            activity.stopLoading()
+            baseActivity.stopLoading()
         })
     }
 
@@ -251,7 +242,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
         val joinClick = OnClickListener {
             joinLeagueDialog = requireActivity().joinLeagueDialog(object : AddLeagueListener {
                 override fun addLeague(input: String) {
-                    activity.startLoading()
+                    baseActivity.startLoading()
                     setEnableDialog(joinLeagueDialog!!, false)
                     makeApiRequest {
                         viewModel.joinLeague(input, getToken())

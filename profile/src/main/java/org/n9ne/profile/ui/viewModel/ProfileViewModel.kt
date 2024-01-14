@@ -3,6 +3,7 @@ package org.n9ne.profile.ui.viewModel
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,8 +22,10 @@ import org.n9ne.common.util.RepoCallback
 import org.n9ne.common.util.Utils
 import org.n9ne.profile.R
 import org.n9ne.profile.repo.ProfileRepo
+import javax.inject.Inject
 
-class ProfileViewModel : BaseViewModel<ProfileRepo>() {
+@HiltViewModel
+class ProfileViewModel @Inject constructor() : BaseViewModel<ProfileRepo>() {
 
     val ldJoinLeague = MutableLiveData<Event<Unit>>()
 

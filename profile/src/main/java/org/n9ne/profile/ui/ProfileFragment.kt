@@ -30,7 +30,6 @@ import org.n9ne.common.util.Saver.isAppEnglish
 import org.n9ne.common.util.Saver.saveToken
 import org.n9ne.common.util.Saver.setLanguage
 import org.n9ne.common.util.interfaces.AddLeagueListener
-import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.common.util.interfaces.ReminderSaveListener
 import org.n9ne.common.util.interfaces.SettingClickListener
@@ -45,13 +44,13 @@ import org.n9ne.profile.ui.adpter.SettingAdapter
 import org.n9ne.profile.ui.viewModel.ProfileViewModel
 
 @AndroidEntryPoint
-class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener {
+class ProfileFragment : BaseFragment<ProfileRepo>(), RefreshListener {
 
     private lateinit var b: FragmentProfileBinding
     private val viewModel: ProfileViewModel by viewModels()
     private var createLeagueDialog: Dialog? = null
     private var joinLeagueDialog: Dialog? = null
-    
+
     private var hasLeague: Boolean = false
 
     override fun onCreateView(
@@ -90,12 +89,9 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), Navigator, RefreshListener 
     }
 
     private fun init() {
-
-        viewModel.db = db
-        viewModel.navigator = this
         b.viewModel = viewModel
 
-        initRepos(apiRepo, localRepo, viewModel)
+        initRepos(viewModel)
 
         b.rvSettings.adapter =
             SettingAdapter(viewModel.getSettings(), object : SettingClickListener {

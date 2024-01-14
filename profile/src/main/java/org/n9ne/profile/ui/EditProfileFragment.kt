@@ -21,7 +21,6 @@ import org.n9ne.common.util.DateUtils.georgianToPersian
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
 import org.n9ne.common.util.Utils
-import org.n9ne.common.util.interfaces.Navigator
 import org.n9ne.common.util.setUserAvatar
 import org.n9ne.profile.R
 import org.n9ne.profile.databinding.FragmentEditProfileBinding
@@ -29,7 +28,7 @@ import org.n9ne.profile.repo.ProfileRepo
 import org.n9ne.profile.ui.viewModel.EditProfileViewModel
 
 @AndroidEntryPoint
-class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
+class EditProfileFragment : BaseFragment<ProfileRepo>() {
 
     private lateinit var b: FragmentEditProfileBinding
     private val viewModel: EditProfileViewModel by viewModels()
@@ -97,11 +96,9 @@ class EditProfileFragment : BaseFragment<ProfileRepo>(), Navigator {
     }
 
     private fun init() {
-
-        viewModel.db = db
         b.viewModel = viewModel
 
-        initRepos(apiRepo, localRepo, viewModel)
+        initRepos(viewModel)
 
         setupSpinners()
     }

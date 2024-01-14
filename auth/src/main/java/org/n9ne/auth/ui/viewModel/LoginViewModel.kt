@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -18,10 +19,12 @@ import org.n9ne.common.util.Event
 import org.n9ne.common.util.Mapper.toUserEntity
 import org.n9ne.common.util.RepoCallback
 import org.n9ne.common.util.Utils
+import javax.inject.Inject
 
-class LoginViewModel : BaseViewModel<AuthRepo>() {
+@HiltViewModel
+class LoginViewModel @Inject constructor() : BaseViewModel<AuthRepo>() {
     private var passwordIsVisible = false
-    val ldPasswordClick = MutableLiveData<Boolean>()
+    private val ldPasswordClick = MutableLiveData<Boolean>()
 
     val ldName = MutableLiveData<Event<String>>()
     val ldUserToken = MutableLiveData<Event<String>>()

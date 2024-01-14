@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.n9ne.auth.repo.AuthRepo
@@ -19,9 +20,11 @@ import org.n9ne.common.util.Event
 import org.n9ne.common.util.RepoCallback
 import org.n9ne.common.util.Utils
 import org.n9ne.common.util.Utils.toEnglishNumbers
+import javax.inject.Inject
 
 
-class CompleteProfileViewModel : BaseViewModel<AuthRepo>() {
+@HiltViewModel
+class CompleteProfileViewModel @Inject constructor() : BaseViewModel<AuthRepo>() {
     val ldShowDate = MutableLiveData<Event<Unit>>()
 
     fun getActivityLevels(): ArrayList<String> {

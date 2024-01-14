@@ -8,29 +8,26 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.CompoundButtonCompat
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.auth.R
 import org.n9ne.auth.databinding.FragmentRegisterBinding
-import org.n9ne.auth.repo.AuthRepoImpl
+import org.n9ne.auth.repo.AuthRepo
 import org.n9ne.auth.ui.viewModel.RegisterViewModel
-import org.n9ne.common.BaseActivity
+import org.n9ne.common.BaseFragment
 import org.n9ne.common.R.color
-import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
-import org.n9ne.common.util.interfaces.Navigator
 
-class RegisterFragment : Fragment(), Navigator {
+@AndroidEntryPoint
+class RegisterFragment : BaseFragment<AuthRepo>() {
 
     private lateinit var b: FragmentRegisterBinding
-    private lateinit var viewModel: RegisterViewModel
+    private val viewModel: RegisterViewModel by viewModels()
 
     private lateinit var name: String
     private lateinit var email: String
     private lateinit var password: String
-
-    private lateinit var activity: BaseActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,14 +50,9 @@ class RegisterFragment : Fragment(), Navigator {
 
 
     private fun init() {
-        activity = requireActivity() as BaseActivity
-        val client = Client.getInstance()
-        val repo = AuthRepoImpl(client)
-        viewModel = ViewModelProvider(this)[RegisterViewModel::class.java]
-        viewModel.repo = repo
-        viewModel.navigator = this
-
         b.viewModel = viewModel
+
+        initRepos(viewModel)
     }
 
     private fun setClicks() {
@@ -71,8 +63,10 @@ class RegisterFragment : Fragment(), Navigator {
             email = b.etEmail.text.toString()
             password = b.etPassword.text.toString()
 
-            activity.startLoading()
-            viewModel.register(name, email, password, requireContext())
+            baseActivity.startLoading()
+            makeApiRequest {
+                viewModel.register(name, email, password, requireContext())
+            }
         }
     }
 
@@ -98,10 +92,10 @@ class RegisterFragment : Fragment(), Navigator {
             }
             this.shouldNavigate(R.id.register_to_completeProfile, data)
 
-            activity.stopLoading()
+            baseActivity.stopLoading()
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bRegister)) {
-            activity.stopLoading()
+            baseActivity.stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
 

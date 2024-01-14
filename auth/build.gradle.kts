@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
 }
 
 android {
@@ -35,8 +37,14 @@ android {
         dataBinding = true
     }
 }
-
+kapt {
+    correctErrorTypes = true
+}
 dependencies {
+
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+
     api("com.google.android.gms:play-services-auth:20.7.0")
 
     api("com.github.aliab:Persian-Date-Picker-Dialog:1.8.0")

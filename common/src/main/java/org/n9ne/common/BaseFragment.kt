@@ -24,13 +24,14 @@ abstract class BaseFragment<Repo : Any> : Fragment(), Navigator {
     @Inject
     protected lateinit var localRepo: Repo
 
+
     private lateinit var viewModel: BaseViewModel<Repo>
 
 
-    fun initRepos(api: Repo, local: Repo, viewModel: BaseViewModel<Repo>) {
-        apiRepo = api
-        localRepo = local
+    fun initRepos(viewModel: BaseViewModel<Repo>) {
         this.viewModel = viewModel
+        viewModel.db = db
+        viewModel.navigator = this
     }
 
     fun makeRequest(request: () -> Unit) {

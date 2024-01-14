@@ -67,12 +67,9 @@ class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
     }
 
     private fun init() {
-
-        viewModel.db = db
         b.viewModel = viewModel
 
-        initRepos(apiRepo, localRepo, viewModel)
-
+        initRepos(viewModel)
     }
 
     private fun openSettingDialog(isAdmin: Boolean) {

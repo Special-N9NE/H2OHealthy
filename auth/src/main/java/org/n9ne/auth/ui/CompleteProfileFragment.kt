@@ -8,40 +8,38 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.api.PersianPickerDate
 import ir.hamsaa.persiandatepicker.api.PersianPickerListener
 import org.n9ne.auth.R
 import org.n9ne.auth.databinding.FragmentCompleteProfileBinding
-import org.n9ne.auth.repo.AuthRepoImpl
+import org.n9ne.auth.repo.AuthRepo
 import org.n9ne.auth.ui.viewModel.CompleteProfileViewModel
-import org.n9ne.common.BaseActivity
+import org.n9ne.common.BaseFragment
 import org.n9ne.common.R.color
 import org.n9ne.common.R.layout
-import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.saveEmail
 import org.n9ne.common.util.Saver.saveToken
 import org.n9ne.common.util.Utils
-import org.n9ne.common.util.interfaces.Navigator
 
 
-class CompleteProfileFragment : Fragment(), Navigator {
+@AndroidEntryPoint
+class CompleteProfileFragment : BaseFragment<AuthRepo>() {
 
     private lateinit var b: FragmentCompleteProfileBinding
-    private lateinit var viewModel: CompleteProfileViewModel
+    private val viewModel: CompleteProfileViewModel by viewModels()
     private lateinit var name: String
     private lateinit var email: String
     private lateinit var password: String
 
     private var date: String = ""
-    private lateinit var activity: BaseActivity
 
     private var genders = listOf<String>()
-    var genderSelected = false
+    private var genderSelected = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,20 +64,13 @@ class CompleteProfileFragment : Fragment(), Navigator {
     }
 
     private fun init() {
-        activity = requireActivity() as BaseActivity
-        val client = Client.getInstance()
-        val repo = AuthRepoImpl(client)
-
-        viewModel = ViewModelProvider(this)[CompleteProfileViewModel::class.java]
-        viewModel.navigator = this
-
-        viewModel.repo = repo
         b.viewModel = viewModel
-
         genders = listOf(
             getString(org.n9ne.common.R.string.male),
             getString(org.n9ne.common.R.string.female),
         )
+
+        initRepos(viewModel)
     }
 
     private fun setClicks() {
@@ -96,12 +87,20 @@ class CompleteProfileFragment : Fragment(), Navigator {
 
                 b.bNext.isEnabled = false
 
-                activity.startLoading()
-                viewModel.completeProfile(
-                    name, email, password, b.spActivity.text.toString(), b.spGender.text.toString(),
-                    date, b.etWeight.text.toString(), b.etHeight.text.toString(),
-                    requireContext()
-                )
+                baseActivity.startLoading()
+                makeApiRequest {
+                    viewModel.completeProfile(
+                        name,
+                        email,
+                        password,
+                        b.spActivity.text.toString(),
+                        b.spGender.text.toString(),
+                        date,
+                        b.etWeight.text.toString(),
+                        b.etHeight.text.toString(),
+                        requireContext()
+                    )
+                }
             }
         }
     }
@@ -134,10 +133,10 @@ class CompleteProfileFragment : Fragment(), Navigator {
             }
             this.shouldNavigate(R.id.completeProfile_to_loginDone, data)
 
-            activity.stopLoading()
+            baseActivity.stopLoading()
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bNext)) {
-            activity.stopLoading()
+            baseActivity.stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
         viewModel.ldShowDate.observe(viewLifecycleOwner, EventObserver {

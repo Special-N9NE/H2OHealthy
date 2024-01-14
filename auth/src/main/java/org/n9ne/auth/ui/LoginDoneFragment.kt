@@ -6,12 +6,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.auth.databinding.FragmentLoginDoneBinding
+import org.n9ne.auth.repo.AuthRepo
+import org.n9ne.common.BaseFragment
 import org.n9ne.common.util.Saver.setFirstTime
 
 
-class LoginDoneFragment : Fragment() {
+@AndroidEntryPoint
+class LoginDoneFragment : BaseFragment<AuthRepo>() {
 
     private lateinit var b: FragmentLoginDoneBinding
     override fun onCreateView(

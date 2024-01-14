@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.n9ne.auth.R
@@ -13,10 +14,12 @@ import org.n9ne.common.R.string
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.RepoCallback
 import org.n9ne.common.util.Utils
+import javax.inject.Inject
 
-class RegisterViewModel : BaseViewModel<AuthRepo>() {
+@HiltViewModel
+class RegisterViewModel @Inject constructor() : BaseViewModel<AuthRepo>() {
     private var passwordIsVisible = false
-    val ldPasswordClick = MutableLiveData<Boolean>()
+    private val ldPasswordClick = MutableLiveData<Boolean>()
 
     val ldRegister = MutableLiveData<Event<Unit>>()
 

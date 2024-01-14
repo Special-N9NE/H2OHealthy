@@ -55,10 +55,9 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
     }
 
     private fun init() {
-        viewModel.db = db
         b.viewModel = viewModel
 
-        initRepos(apiRepo, localRepo, viewModel)
+        initRepos(viewModel)
 
 
         val colorInt =

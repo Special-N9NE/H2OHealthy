@@ -68,12 +68,9 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
     }
 
     private fun init() {
-
-        viewModel.db = db
-
         b.viewModel = viewModel
 
-        initRepos(apiRepo, localRepo, viewModel)
+        initRepos(viewModel)
     }
 
     private fun setActivityAdapter(list: List<Activity>) {

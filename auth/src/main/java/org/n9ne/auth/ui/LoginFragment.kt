@@ -5,27 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.auth.R
 import org.n9ne.auth.databinding.FragmentLoginBinding
-import org.n9ne.auth.repo.AuthRepoImpl
+import org.n9ne.auth.repo.AuthRepo
 import org.n9ne.auth.ui.viewModel.LoginViewModel
-import org.n9ne.common.BaseActivity
-import org.n9ne.common.source.network.Client
+import org.n9ne.common.BaseFragment
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.saveEmail
 import org.n9ne.common.util.Saver.saveToken
 import org.n9ne.common.util.Utils
-import org.n9ne.common.util.interfaces.Navigator
 
 
-class LoginFragment : Fragment(), Navigator {
+@AndroidEntryPoint
+class LoginFragment : BaseFragment<AuthRepo>() {
 
     private lateinit var b: FragmentLoginBinding
-    private lateinit var viewModel: LoginViewModel
-    private lateinit var activity: BaseActivity
+    private val viewModel: LoginViewModel by viewModels()
 
     private lateinit var email: String
 
@@ -44,20 +42,14 @@ class LoginFragment : Fragment(), Navigator {
         setupObserver()
         setClicks()
         b.etPassword.textDirection =
-        if (Utils.isLocalPersian()) View.TEXT_DIRECTION_RTL else View.TEXT_DIRECTION_LTR
+            if (Utils.isLocalPersian()) View.TEXT_DIRECTION_RTL else View.TEXT_DIRECTION_LTR
 
     }
 
     private fun init() {
-        activity = requireActivity() as BaseActivity
-        val client = Client.getInstance()
-        val repo = AuthRepoImpl(client)
-        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
-        viewModel.navigator = this
-        viewModel.repo = repo
         b.viewModel = viewModel
 
-
+        initRepos(viewModel)
     }
 
     private fun setClicks() {
@@ -65,12 +57,14 @@ class LoginFragment : Fragment(), Navigator {
             b.bLogin.isEnabled = true
 
             email = b.etEmail.text.toString().trim()
-            activity.startLoading()
-            viewModel.login(
-                email,
-                b.etPassword.text.toString(),
-                requireContext()
-            )
+            baseActivity.startLoading()
+            makeApiRequest {
+                viewModel.login(
+                    email,
+                    b.etPassword.text.toString(),
+                    requireContext()
+                )
+            }
         }
     }
 
@@ -78,7 +72,7 @@ class LoginFragment : Fragment(), Navigator {
         viewModel.ldUserToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
             saveEmail(email)
             saveToken(it)
-            activity.stopLoading()
+            baseActivity.stopLoading()
         })
         viewModel.ldName.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
             val data = Bundle().apply {
@@ -88,7 +82,7 @@ class LoginFragment : Fragment(), Navigator {
         })
         viewModel.ldError.observe(viewLifecycleOwner,
             EventObserver(listOf(b.bLogin)) {
-                activity.stopLoading()
+                baseActivity.stopLoading()
                 Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
             })
     }

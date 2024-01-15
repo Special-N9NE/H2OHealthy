@@ -44,7 +44,7 @@ class AvatarFragment : BaseFragment<ProfileRepo,FragmentAvatarsBinding>() {
     private fun setAdapter() {
         b.rv.adapter = AvatarAdapter(viewModel.avatars, object : AvatarClickListener {
             override fun onClick(image: String) {
-                startLoading()
+
                 makeApiRequest {
                     viewModel.saveProfile(getToken(), image)
                 }

@@ -60,29 +60,26 @@ class EditProfileFragment : BaseFragment<ProfileRepo, FragmentEditProfileBinding
         b.bSubmit.setOnClickListener {
             b.bSubmit.isEnabled = false
 
-            startLoading()
+            val name = b.etName.text.toString()
+            val email = b.etEmail.text.toString()
+            val activityLevel = b.spActivity.text.toString()
+            val gender = b.spGender.text.toString()
+            val weight = b.etWeight.text.toString()
+            val height = b.etHeight.text.toString()
+
+            val user = UpdateUser(
+                activityLevel,
+                email,
+                name,
+                date,
+                weight,
+                height,
+                gender
+            )
             makeApiRequest {
-
-                val name = b.etName.text.toString()
-                val email = b.etEmail.text.toString()
-                val activityLevel = b.spActivity.text.toString()
-                val gender = b.spGender.text.toString()
-                val weight = b.etWeight.text.toString()
-                val height = b.etHeight.text.toString()
-
-                val user = UpdateUser(
-                    activityLevel,
-                    email,
-                    name,
-                    date,
-                    weight,
-                    height,
-                    gender
-                )
-                makeApiRequest {
-                    viewModel.saveData(user, getToken(), requireContext())
-                }
+                viewModel.saveData(user, getToken(), requireContext())
             }
+
         }
         b.etBirthday.setOnClickListener {
             if (Utils.isLocalPersian())

@@ -79,7 +79,6 @@ class CompleteProfileFragment : BaseFragment<AuthRepo, FragmentCompleteProfileBi
 
                 b.bNext.isEnabled = false
 
-                startLoading()
                 makeApiRequest {
                     viewModel.completeProfile(
                         name,

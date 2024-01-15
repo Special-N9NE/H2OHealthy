@@ -49,7 +49,7 @@ class LoginFragment : BaseFragment<AuthRepo, FragmentLoginBinding>() {
             b.bLogin.isEnabled = true
 
             email = b.etEmail.text.toString().trim()
-            startLoading()
+
             makeApiRequest {
                 viewModel.login(
                     email,

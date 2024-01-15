@@ -71,6 +71,7 @@ abstract class BaseFragment<Repo : Any, B : ViewDataBinding> : Fragment(), Navig
     }
 
     fun makeRequest(request: () -> Unit) {
+        startLoading()
         val repo = if (requireActivity().isOnline()) {
             apiRepo
         } else {
@@ -86,6 +87,7 @@ abstract class BaseFragment<Repo : Any, B : ViewDataBinding> : Fragment(), Navig
     }
 
     fun makeApiRequest(request: () -> Unit) {
+        startLoading()
         viewModel.repo = apiRepo
         request.invoke()
     }

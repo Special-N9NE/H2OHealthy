@@ -52,7 +52,6 @@ class RegisterFragment : BaseFragment<AuthRepo, FragmentRegisterBinding>() {
             email = b.etEmail.text.toString()
             password = b.etPassword.text.toString()
 
-            startLoading()
             makeApiRequest {
                 viewModel.register(name, email, password, requireContext())
             }

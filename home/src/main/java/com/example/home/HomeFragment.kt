@@ -51,7 +51,6 @@ class HomeFragment : BaseFragment<HomeRepo, FragmentHomeBinding>(), RefreshListe
             requireActivity().finish()
         } else {
 
-            startLoading()
             makeRequest {
                 viewModel.getTarget(getToken())
             }
@@ -98,7 +97,6 @@ class HomeFragment : BaseFragment<HomeRepo, FragmentHomeBinding>(), RefreshListe
                     override fun onAdd(amount: String) {
                         item.amount = amount.toDouble().toLiter().toString()
 
-                        startLoading()
                         makeApiRequest {
                             viewModel.updateWater(item, getToken())
                         }
@@ -107,7 +105,6 @@ class HomeFragment : BaseFragment<HomeRepo, FragmentHomeBinding>(), RefreshListe
                 val removeListener = object : RemoveActivityListener {
                     override fun onRemove() {
 
-                        startLoading()
                         makeApiRequest {
                             viewModel.removeWater(item, getToken())
                         }

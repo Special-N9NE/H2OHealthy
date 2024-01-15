@@ -42,7 +42,6 @@ class LeagueFragment : BaseFragment<ProfileRepo,FragmentLeagueBinding>(), Refres
 
         createFragment()
 
-        startLoading()
         makeApiRequest {
             viewModel.getMembers(getToken())
         }
@@ -86,7 +85,7 @@ class LeagueFragment : BaseFragment<ProfileRepo,FragmentLeagueBinding>(), Refres
                 dialogRename =
                     requireActivity().createLeagueDialog(true, null, object : AddLeagueListener {
                         override fun addLeague(input: String) {
-                            startLoading()
+
                             makeApiRequest {
                                 viewModel.renameLeague(input, league!!.code, requireContext())
                             }
@@ -115,7 +114,7 @@ class LeagueFragment : BaseFragment<ProfileRepo,FragmentLeagueBinding>(), Refres
             requireActivity().startActivity(shareIntent)
         }
         val leaveClick = View.OnClickListener {
-            startLoading()
+
             makeApiRequest {
                 viewModel.leave(getToken())
             }

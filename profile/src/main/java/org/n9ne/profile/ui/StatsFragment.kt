@@ -119,15 +119,15 @@ class StatsFragment : BaseFragment<ProfileRepo, FragmentStatsBinding>(), Refresh
     private fun setLineChart(it: List<Double>, view: AAChartView, chart: AAChartModel) {
         val arr: Array<Any> = it.toTypedArray()
         chart.yAxisMax(it.max()).yAxisMin(it.min()).series(
-                arrayOf(
-                    AASeriesElement().data(arr)
-                )
+            arrayOf(
+                AASeriesElement().data(arr)
             )
+        )
         view.aa_drawChartWithChartModel(chart)
     }
 
     override fun onRefresh() {
-        makeRequest {
+        makeApiRequest {
             viewModel.getActivities(getToken())
         }
     }

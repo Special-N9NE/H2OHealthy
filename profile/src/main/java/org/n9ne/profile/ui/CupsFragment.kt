@@ -37,7 +37,6 @@ class CupsFragment : BaseFragment<ProfileRepo,FragmentCupsBinding>(), RefreshLis
 
         createFragment()
 
-        startLoading()
         makeRequest {
             viewModel.getCups(getToken())
         }
@@ -58,7 +57,6 @@ class CupsFragment : BaseFragment<ProfileRepo,FragmentCupsBinding>(), RefreshLis
                     requireActivity().addCupDialog(cup, object : CupClickListener {
                         override fun onClick(item: Cup) {
 
-                            startLoading()
                             makeApiRequest {
                                 viewModel.updateCup(item)
                             }
@@ -66,7 +64,6 @@ class CupsFragment : BaseFragment<ProfileRepo,FragmentCupsBinding>(), RefreshLis
                     }).show()
                 } else {
 
-                    startLoading()
                     makeApiRequest {
                         viewModel.removeCup(cup)
                     }
@@ -80,7 +77,6 @@ class CupsFragment : BaseFragment<ProfileRepo,FragmentCupsBinding>(), RefreshLis
             requireActivity().addCupDialog(null, object : CupClickListener {
                 override fun onClick(item: Cup) {
 
-                    startLoading()
                     makeApiRequest {
                         viewModel.addCup(item, getToken())
                     }

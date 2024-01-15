@@ -231,7 +231,7 @@ class ProfileFragment : BaseFragment<ProfileRepo, FragmentProfileBinding>(), Ref
         val joinClick = OnClickListener {
             joinLeagueDialog = requireActivity().joinLeagueDialog(object : AddLeagueListener {
                 override fun addLeague(input: String) {
-                    startLoading()
+
                     setEnableDialog(joinLeagueDialog!!, false)
                     makeApiRequest {
                         viewModel.joinLeague(input, getToken())

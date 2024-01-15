@@ -1,9 +1,7 @@
 package org.n9ne.profile.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -18,38 +16,35 @@ import org.n9ne.profile.ui.adpter.AvatarAdapter
 import org.n9ne.profile.ui.viewModel.AvatarsViewModel
 
 @AndroidEntryPoint
-class AvatarFragment : BaseFragment<ProfileRepo>() {
-    private lateinit var b: FragmentAvatarsBinding
+class AvatarFragment : BaseFragment<ProfileRepo,FragmentAvatarsBinding>() {
+
     private val viewModel: AvatarsViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        b = FragmentAvatarsBinding.inflate(inflater)
-        return b.root
-    }
+    override fun getViewBinding(): FragmentAvatarsBinding =
+        FragmentAvatarsBinding.inflate(layoutInflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init()
-        baseActivity.hideNavigation()
+        hideNavigation()
 
-        setupObserver()
+        createFragment()
 
         setAdapter()
     }
 
-    private fun init() {
+    override fun init() {
         b.viewModel = viewModel
 
         initRepos(viewModel)
     }
 
+    override fun setClicks() {}
+
     private fun setAdapter() {
         b.rv.adapter = AvatarAdapter(viewModel.avatars, object : AvatarClickListener {
             override fun onClick(image: String) {
-                baseActivity.startLoading()
+                startLoading()
                 makeApiRequest {
                     viewModel.saveProfile(getToken(), image)
                 }
@@ -57,13 +52,13 @@ class AvatarFragment : BaseFragment<ProfileRepo>() {
         })
     }
 
-    private fun setupObserver() {
+    override fun setObservers() {
         viewModel.ldSuccess.observe(viewLifecycleOwner, EventObserver {
-            baseActivity.stopLoading()
+            stopLoading()
             findNavController().navigateUp()
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
-            baseActivity.stopLoading()
+            stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
     }

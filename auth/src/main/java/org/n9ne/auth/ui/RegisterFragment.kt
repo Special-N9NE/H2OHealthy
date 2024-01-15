@@ -2,9 +2,7 @@ package org.n9ne.auth.ui
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.CompoundButtonCompat
@@ -20,42 +18,33 @@ import org.n9ne.common.R.color
 import org.n9ne.common.util.EventObserver
 
 @AndroidEntryPoint
-class RegisterFragment : BaseFragment<AuthRepo>() {
+class RegisterFragment : BaseFragment<AuthRepo, FragmentRegisterBinding>() {
 
-    private lateinit var b: FragmentRegisterBinding
     private val viewModel: RegisterViewModel by viewModels()
 
     private lateinit var name: String
     private lateinit var email: String
     private lateinit var password: String
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        b = FragmentRegisterBinding.inflate(inflater)
-        return b.root
-    }
+    override fun getViewBinding(): FragmentRegisterBinding =
+        FragmentRegisterBinding.inflate(layoutInflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init()
+        createFragment()
 
         setCheckboxColor()
-        setupObserver()
-
-        setClicks()
     }
 
 
-    private fun init() {
+    override fun init() {
         b.viewModel = viewModel
 
         initRepos(viewModel)
     }
 
-    private fun setClicks() {
+    override fun setClicks() {
         b.bRegister.setOnClickListener {
             b.bRegister.isEnabled = false
 
@@ -63,7 +52,7 @@ class RegisterFragment : BaseFragment<AuthRepo>() {
             email = b.etEmail.text.toString()
             password = b.etPassword.text.toString()
 
-            baseActivity.startLoading()
+            startLoading()
             makeApiRequest {
                 viewModel.register(name, email, password, requireContext())
             }
@@ -83,7 +72,7 @@ class RegisterFragment : BaseFragment<AuthRepo>() {
         CompoundButtonCompat.setButtonTintList(b.cbPolicy, colorStateList)
     }
 
-    private fun setupObserver() {
+    override fun setObservers() {
         viewModel.ldRegister.observe(viewLifecycleOwner, EventObserver(listOf(b.bRegister)) {
             val data = Bundle().apply {
                 putString("name", name)
@@ -92,10 +81,10 @@ class RegisterFragment : BaseFragment<AuthRepo>() {
             }
             this.shouldNavigate(R.id.register_to_completeProfile, data)
 
-            baseActivity.stopLoading()
+            stopLoading()
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bRegister)) {
-            baseActivity.stopLoading()
+            stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
 

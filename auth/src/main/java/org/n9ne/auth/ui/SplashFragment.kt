@@ -1,9 +1,7 @@
 package org.n9ne.auth.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.auth.R
@@ -18,30 +16,26 @@ import org.n9ne.common.util.Saver.setLanguage
 import org.n9ne.common.util.setGradient
 
 @AndroidEntryPoint
-class SplashFragment : BaseFragment<AuthRepo>() {
+class SplashFragment : BaseFragment<AuthRepo, FragmentSplashBinding>() {
 
-    private lateinit var b: FragmentSplashBinding
     private val viewModel: SplashViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        b = FragmentSplashBinding.inflate(inflater)
-        return b.root
-    }
+    override fun getViewBinding(): FragmentSplashBinding =
+        FragmentSplashBinding.inflate(layoutInflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init()
-        setTextColors()
-        setClicks()
+        createFragment()
 
-        baseActivity.stopLoading()
+        setTextColors()
     }
 
-    private fun setClicks() {
+    override fun init() {
+        initRepos(viewModel)
+    }
+
+    override fun setClicks() {
         b.bStart.setOnClickListener {
             if (!isFirstTime()) {
                 this.shouldNavigate(R.id.splash_to_login)
@@ -54,9 +48,8 @@ class SplashFragment : BaseFragment<AuthRepo>() {
         }
     }
 
-    private fun init() {
-        initRepos(viewModel)
-    }
+    override fun setObservers() {}
+
 
     private fun setTextColors() {
         b.tvTitle1.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)

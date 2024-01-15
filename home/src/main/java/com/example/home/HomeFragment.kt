@@ -3,9 +3,7 @@ package com.example.home
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -28,28 +26,21 @@ import org.n9ne.common.util.interfaces.RemoveActivityListener
 import org.nine.linearprogressbar.LinearVerticalProgressBar
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
-    private lateinit var b: FragmentHomeBinding
+class HomeFragment : BaseFragment<HomeRepo, FragmentHomeBinding>(), RefreshListener {
 
     private val viewModel: HomeViewModel by viewModels()
 
     private var activityList = arrayListOf<Activity>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        b = FragmentHomeBinding.inflate(inflater)
-        return b.root
-    }
+    override fun getViewBinding(): FragmentHomeBinding =
+        FragmentHomeBinding.inflate(layoutInflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init()
-        setObservers()
+        createFragment()
 
-        baseActivity.showNavigation()
+        showNavigation()
 
         if (getToken() == null) {
             val intent = Intent(
@@ -60,17 +51,44 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
             requireActivity().finish()
         } else {
 
-            baseActivity.startLoading()
+            startLoading()
             makeRequest {
                 viewModel.getTarget(getToken())
             }
         }
     }
 
-    private fun init() {
+    override fun init() {
         b.viewModel = viewModel
 
         initRepos(viewModel)
+    }
+
+    override fun setClicks() {}
+    override fun setObservers() {
+        viewModel.ldTarget.observe(viewLifecycleOwner) {
+            b.tvTarget.text = it.toString() + "L"
+
+            makeRequest {
+                viewModel.getProgress(getToken())
+            }
+        }
+        viewModel.ldDayProgress.observe(viewLifecycleOwner) {
+            b.pbTarget.setProgress(it)
+        }
+        viewModel.ldWeekProgress.observe(viewLifecycleOwner) {
+            setProgress(it)
+        }
+        viewModel.ldActivities.observe(viewLifecycleOwner) {
+            activityList = it.toCollection(ArrayList())
+            setActivityAdapter(it)
+
+            stopLoading()
+        }
+        viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
+            stopLoading()
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+        })
     }
 
     private fun setActivityAdapter(list: List<Activity>) {
@@ -80,7 +98,7 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
                     override fun onAdd(amount: String) {
                         item.amount = amount.toDouble().toLiter().toString()
 
-                        baseActivity.startLoading()
+                        startLoading()
                         makeApiRequest {
                             viewModel.updateWater(item, getToken())
                         }
@@ -89,7 +107,7 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
                 val removeListener = object : RemoveActivityListener {
                     override fun onRemove() {
 
-                        baseActivity.startLoading()
+                        startLoading()
                         makeApiRequest {
                             viewModel.removeWater(item, getToken())
                         }
@@ -114,31 +132,6 @@ class HomeFragment : BaseFragment<HomeRepo>(), RefreshListener {
         }
     }
 
-    private fun setObservers() {
-        viewModel.ldTarget.observe(viewLifecycleOwner) {
-            b.tvTarget.text = it.toString() + "L"
-
-            makeRequest {
-                viewModel.getProgress(getToken())
-            }
-        }
-        viewModel.ldDayProgress.observe(viewLifecycleOwner) {
-            b.pbTarget.setProgress(it)
-        }
-        viewModel.ldWeekProgress.observe(viewLifecycleOwner) {
-            setProgress(it)
-        }
-        viewModel.ldActivities.observe(viewLifecycleOwner) {
-            activityList = it.toCollection(ArrayList())
-            setActivityAdapter(it)
-
-            baseActivity.stopLoading()
-        }
-        viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
-            baseActivity.stopLoading()
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-        })
-    }
 
     override fun onRefresh() {
         makeApiRequest {

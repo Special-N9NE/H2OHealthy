@@ -1,9 +1,7 @@
 package org.n9ne.profile.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -12,7 +10,6 @@ import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import dagger.hilt.android.AndroidEntryPoint
-import org.n9ne.common.BaseActivity
 import org.n9ne.common.BaseFragment
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
@@ -24,37 +21,32 @@ import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
-class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
+class StatsFragment : BaseFragment<ProfileRepo, FragmentStatsBinding>(), RefreshListener {
 
-    private lateinit var b: FragmentStatsBinding
     private val viewModel: StatsViewModel by viewModels()
 
     private lateinit var chartOverall: AAChartModel
     private lateinit var chartMonth: AAChartModel
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        b = FragmentStatsBinding.inflate(inflater)
-        return b.root
-    }
+    override fun getViewBinding(): FragmentStatsBinding =
+        FragmentStatsBinding.inflate(layoutInflater)
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as BaseActivity).hideNavigation()
-        init()
+        hideNavigation()
 
-        setupObserver()
+        createFragment()
 
-        baseActivity.startLoading()
+        startLoading()
         makeLocalRequest {
             viewModel.getActivities(getToken())
         }
     }
 
-    private fun init() {
+    override fun init() {
         b.viewModel = viewModel
 
         initRepos(viewModel)
@@ -63,25 +55,18 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
         val colorInt =
             ContextCompat.getColor(requireContext(), org.n9ne.common.R.color.linearBlueEnd)
         val color = String.format("#%06X", 0xFFFFFF and colorInt)
-        val chartModel = AAChartModel()
-            .colorsTheme(listOf(color).toTypedArray())
-            .chartType(AAChartType.Areaspline)
-            .markerRadius(0)
-            .tooltipEnabled(false)
-            .gradientColorEnable(true)
-            .legendEnabled(false)
-            .touchEventEnabled(false)
-            .yAxisGridLineWidth(0)
-            .yAxisTitle("")
-            .xAxisVisible(false)
-            .dataLabelsEnabled(false)
+        val chartModel = AAChartModel().colorsTheme(listOf(color).toTypedArray())
+            .chartType(AAChartType.Areaspline).markerRadius(0).tooltipEnabled(false)
+            .gradientColorEnable(true).legendEnabled(false).touchEventEnabled(false)
+            .yAxisGridLineWidth(0).yAxisTitle("").xAxisVisible(false).dataLabelsEnabled(false)
         chartOverall = chartModel
         chartMonth = chartModel
 
     }
 
+    override fun setClicks() {}
 
-    private fun setupObserver() {
+    override fun setObservers() {
 
         viewModel.ldAverage.observe(viewLifecycleOwner, EventObserver {
             b.tvAverage.text = "$it L"
@@ -90,7 +75,7 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
             b.tvScore.text = "$it"
         })
         viewModel.ldBarData.observe(viewLifecycleOwner, EventObserver {
-            baseActivity.stopLoading()
+            stopLoading()
 
 
             b.tvEmpty.visibility = View.GONE
@@ -99,7 +84,7 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
             setBars(it)
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
-            baseActivity.stopLoading()
+            stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
         viewModel.ldStartDate.observe(viewLifecycleOwner, EventObserver {
@@ -109,7 +94,7 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
             setLineChart(it, b.lineOverall, chartOverall)
         })
         viewModel.ldEmpty.observe(viewLifecycleOwner, EventObserver {
-            baseActivity.stopLoading()
+            stopLoading()
             b.tvEmpty.visibility = View.VISIBLE
             b.clStats.visibility = View.INVISIBLE
         })
@@ -133,13 +118,9 @@ class StatsFragment : BaseFragment<ProfileRepo>(), RefreshListener {
 
     private fun setLineChart(it: List<Double>, view: AAChartView, chart: AAChartModel) {
         val arr: Array<Any> = it.toTypedArray()
-        chart
-            .yAxisMax(it.max())
-            .yAxisMin(it.min())
-            .series(
+        chart.yAxisMax(it.max()).yAxisMin(it.min()).series(
                 arrayOf(
-                    AASeriesElement()
-                        .data(arr)
+                    AASeriesElement().data(arr)
                 )
             )
         view.aa_drawChartWithChartModel(chart)

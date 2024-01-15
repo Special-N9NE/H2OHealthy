@@ -3,14 +3,11 @@ package org.n9ne.profile.ui
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import org.n9ne.common.BaseActivity
 import org.n9ne.common.BaseFragment
 import org.n9ne.common.R.string
 import org.n9ne.common.dialog.createLeagueDialog
@@ -28,36 +25,34 @@ import org.n9ne.profile.ui.adpter.MemberAdapter
 import org.n9ne.profile.ui.viewModel.LeagueViewModel
 
 @AndroidEntryPoint
-class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
+class LeagueFragment : BaseFragment<ProfileRepo,FragmentLeagueBinding>(), RefreshListener {
 
-    private lateinit var b: FragmentLeagueBinding
     private val viewModel: LeagueViewModel by viewModels()
 
     private var league: League? = null
     private lateinit var dialogRename: Dialog
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        b = FragmentLeagueBinding.inflate(inflater)
-        return b.root
-    }
+    override fun getViewBinding(): FragmentLeagueBinding =
+        FragmentLeagueBinding.inflate(layoutInflater)
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as BaseActivity).showNavigation()
-        init()
+        showNavigation()
 
-        setClicks()
-        setupObserver()
+        createFragment()
 
-        baseActivity.startLoading()
+        startLoading()
         makeApiRequest {
             viewModel.getMembers(getToken())
         }
     }
+    override fun init() {
+        b.viewModel = viewModel
 
-    private fun setClicks() {
+        initRepos(viewModel)
+    }
+    override fun setClicks() {
         b.cvSettings.setOnClickListener {
             league?.let {
                 val isAdmin = it.adminEmail!!.trim() == getEmail()!!.trim()
@@ -65,11 +60,23 @@ class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
             }
         }
     }
-
-    private fun init() {
-        b.viewModel = viewModel
-
-        initRepos(viewModel)
+    override fun setObservers() {
+        viewModel.ldMembers.observe(viewLifecycleOwner, EventObserver {
+            b.rvMember.adapter = MemberAdapter(it)
+        })
+        viewModel.ldLeague.observe(viewLifecycleOwner, EventObserver {
+            league = it
+            b.league = it
+            stopLoading()
+        })
+        viewModel.ldLeave.observe(viewLifecycleOwner, EventObserver {
+            findNavController().navigateUp()
+            stopLoading()
+        })
+        viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
+            stopLoading()
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+        })
     }
 
     private fun openSettingDialog(isAdmin: Boolean) {
@@ -79,7 +86,7 @@ class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
                 dialogRename =
                     requireActivity().createLeagueDialog(true, null, object : AddLeagueListener {
                         override fun addLeague(input: String) {
-                            baseActivity.startLoading()
+                            startLoading()
                             makeApiRequest {
                                 viewModel.renameLeague(input, league!!.code, requireContext())
                             }
@@ -108,7 +115,7 @@ class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
             requireActivity().startActivity(shareIntent)
         }
         val leaveClick = View.OnClickListener {
-            baseActivity.startLoading()
+            startLoading()
             makeApiRequest {
                 viewModel.leave(getToken())
             }
@@ -127,24 +134,7 @@ class LeagueFragment : BaseFragment<ProfileRepo>(), RefreshListener {
         }
     }
 
-    private fun setupObserver() {
-        viewModel.ldMembers.observe(viewLifecycleOwner, EventObserver {
-            b.rvMember.adapter = MemberAdapter(it)
-        })
-        viewModel.ldLeague.observe(viewLifecycleOwner, EventObserver {
-            league = it
-            b.league = it
-            baseActivity.stopLoading()
-        })
-        viewModel.ldLeave.observe(viewLifecycleOwner, EventObserver {
-            findNavController().navigateUp()
-            baseActivity.stopLoading()
-        })
-        viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
-            baseActivity.stopLoading()
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-        })
-    }
+
 
     override fun onRefresh() {
         makeApiRequest {

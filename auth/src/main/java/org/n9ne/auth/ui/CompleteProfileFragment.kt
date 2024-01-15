@@ -2,9 +2,7 @@ package org.n9ne.auth.ui
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
@@ -28,9 +26,8 @@ import org.n9ne.common.util.Utils
 
 
 @AndroidEntryPoint
-class CompleteProfileFragment : BaseFragment<AuthRepo>() {
+class CompleteProfileFragment : BaseFragment<AuthRepo, FragmentCompleteProfileBinding>() {
 
-    private lateinit var b: FragmentCompleteProfileBinding
     private val viewModel: CompleteProfileViewModel by viewModels()
     private lateinit var name: String
     private lateinit var email: String
@@ -40,13 +37,9 @@ class CompleteProfileFragment : BaseFragment<AuthRepo>() {
 
     private var genders = listOf<String>()
     private var genderSelected = false
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        b = FragmentCompleteProfileBinding.inflate(inflater)
-        return b.root
-    }
+
+    override fun getViewBinding(): FragmentCompleteProfileBinding =
+        FragmentCompleteProfileBinding.inflate(layoutInflater)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,14 +49,13 @@ class CompleteProfileFragment : BaseFragment<AuthRepo>() {
         email = requireArguments().getString("email")!!
         password = requireArguments().getString("password")!!
 
-        init()
-        setupSpinners()
-        setObservers()
+        createFragment()
 
-        setClicks()
+        setupSpinners()
+
     }
 
-    private fun init() {
+    override fun init() {
         b.viewModel = viewModel
         genders = listOf(
             getString(org.n9ne.common.R.string.male),
@@ -73,7 +65,7 @@ class CompleteProfileFragment : BaseFragment<AuthRepo>() {
         initRepos(viewModel)
     }
 
-    private fun setClicks() {
+    override fun setClicks() {
         b.bNext.setOnClickListener {
 
             if (!genderSelected) {
@@ -87,7 +79,7 @@ class CompleteProfileFragment : BaseFragment<AuthRepo>() {
 
                 b.bNext.isEnabled = false
 
-                baseActivity.startLoading()
+                startLoading()
                 makeApiRequest {
                     viewModel.completeProfile(
                         name,
@@ -123,7 +115,7 @@ class CompleteProfileFragment : BaseFragment<AuthRepo>() {
         }
     }
 
-    private fun setObservers() {
+    override fun setObservers() {
         viewModel.ldUserToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bNext)) {
             saveEmail(email)
             saveToken(it)
@@ -133,10 +125,10 @@ class CompleteProfileFragment : BaseFragment<AuthRepo>() {
             }
             this.shouldNavigate(R.id.completeProfile_to_loginDone, data)
 
-            baseActivity.stopLoading()
+            stopLoading()
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bNext)) {
-            baseActivity.stopLoading()
+            stopLoading()
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
         viewModel.ldShowDate.observe(viewLifecycleOwner, EventObserver {

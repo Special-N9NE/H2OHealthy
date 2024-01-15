@@ -6,14 +6,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import org.n9ne.common.BaseActivity
 import org.n9ne.common.BaseFragment
 import org.n9ne.common.R.color
 import org.n9ne.common.R.string
@@ -44,51 +42,31 @@ import org.n9ne.profile.ui.adpter.SettingAdapter
 import org.n9ne.profile.ui.viewModel.ProfileViewModel
 
 @AndroidEntryPoint
-class ProfileFragment : BaseFragment<ProfileRepo>(), RefreshListener {
+class ProfileFragment : BaseFragment<ProfileRepo, FragmentProfileBinding>(), RefreshListener {
 
-    private lateinit var b: FragmentProfileBinding
     private val viewModel: ProfileViewModel by viewModels()
     private var createLeagueDialog: Dialog? = null
     private var joinLeagueDialog: Dialog? = null
 
     private var hasLeague: Boolean = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        b = FragmentProfileBinding.inflate(inflater)
-        return b.root
-    }
+    override fun getViewBinding(): FragmentProfileBinding =
+        FragmentProfileBinding.inflate(layoutInflater)
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as BaseActivity).showNavigation()
-        init()
-        setupObserver()
-        setClicks()
+        showNavigation()
+
+        createFragment()
 
         makeLocalRequest {
             viewModel.getUser(getToken())
         }
     }
 
-    fun setEnableDialog(dialog: Dialog, enable: Boolean) {
-        val viewGroup = dialog.window?.decorView?.findViewById<ViewGroup>(android.R.id.content)
-        viewGroup?.let { disableEnableControls(enable, it) }
-    }
-
-    private fun disableEnableControls(enable: Boolean, viewGroup: ViewGroup) {
-        for (i in 0 until viewGroup.childCount) {
-            val child = viewGroup.getChildAt(i)
-            child.isEnabled = enable
-            if (child is ViewGroup) {
-                disableEnableControls(enable, child)
-            }
-        }
-    }
-
-    private fun init() {
+    override fun init() {
         b.viewModel = viewModel
 
         initRepos(viewModel)
@@ -125,16 +103,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), RefreshListener {
         setGradients()
     }
 
-    private fun setGradients() {
-        b.tvAge.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
-        b.tvWeight.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
-        b.tvHeight.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
-        b.tvLeague.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
-
-        b.tvScore.setGradient(requireContext(), color.linearPurpleStart, color.linearPurpleEnd)
-    }
-
-    private fun setClicks() {
+    override fun setClicks() {
         b.cvLeague.setOnClickListener {
             if (hasLeague) {
                 shouldNavigate(R.id.profile_to_league)
@@ -143,27 +112,15 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), RefreshListener {
             }
         }
         b.clLogout.setOnClickListener {
-            baseActivity.startLoading()
+            startLoading()
             viewModel.logout()
         }
     }
 
-    private fun setUser(user: User) {
-        hasLeague = user.idLeague != 0L
-        b.tvName.text = user.name
-        b.tvScore.text = user.score.toString()
-        b.tvWeight.text = "${user.weight}${getString(string.kg)}"
-        b.tvHeight.text = "${user.height}${getString(string.cm)}"
-
-        b.tvAge.text = user.age
-
-        b.ivProfile.setUserAvatar(user.profile)
-    }
-
-    private fun setupObserver() {
+    override fun setObservers() {
         viewModel.ldUser.observe(viewLifecycleOwner) {
             setUser(it)
-            baseActivity.stopLoading()
+            stopLoading()
         }
         viewModel.ldLogout.observe(viewLifecycleOwner, EventObserver {
             saveToken(null)
@@ -216,7 +173,7 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), RefreshListener {
             createLeagueDialog?.dismiss()
             joinLeagueDialog?.dismiss()
 
-            baseActivity.stopLoading()
+            stopLoading()
 
             shouldNavigate(R.id.profile_to_league)
         })
@@ -230,15 +187,51 @@ class ProfileFragment : BaseFragment<ProfileRepo>(), RefreshListener {
             }
 
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-            baseActivity.stopLoading()
+            stopLoading()
         })
+    }
+
+    fun setEnableDialog(dialog: Dialog, enable: Boolean) {
+        val viewGroup = dialog.window?.decorView?.findViewById<ViewGroup>(android.R.id.content)
+        viewGroup?.let { disableEnableControls(enable, it) }
+    }
+
+    private fun disableEnableControls(enable: Boolean, viewGroup: ViewGroup) {
+        for (i in 0 until viewGroup.childCount) {
+            val child = viewGroup.getChildAt(i)
+            child.isEnabled = enable
+            if (child is ViewGroup) {
+                disableEnableControls(enable, child)
+            }
+        }
+    }
+
+    private fun setGradients() {
+        b.tvAge.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
+        b.tvWeight.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
+        b.tvHeight.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
+        b.tvLeague.setGradient(requireContext(), color.linearBlueStart, color.linearBlueEnd)
+
+        b.tvScore.setGradient(requireContext(), color.linearPurpleStart, color.linearPurpleEnd)
+    }
+
+    private fun setUser(user: User) {
+        hasLeague = user.idLeague != 0L
+        b.tvName.text = user.name
+        b.tvScore.text = user.score.toString()
+        b.tvWeight.text = "${user.weight}${getString(string.kg)}"
+        b.tvHeight.text = "${user.height}${getString(string.cm)}"
+
+        b.tvAge.text = user.age
+
+        b.ivProfile.setUserAvatar(user.profile)
     }
 
     private fun initDialogs() {
         val joinClick = OnClickListener {
             joinLeagueDialog = requireActivity().joinLeagueDialog(object : AddLeagueListener {
                 override fun addLeague(input: String) {
-                    baseActivity.startLoading()
+                    startLoading()
                     setEnableDialog(joinLeagueDialog!!, false)
                     makeApiRequest {
                         viewModel.joinLeague(input, getToken())

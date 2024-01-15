@@ -1,6 +1,10 @@
 package org.n9ne.common
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.n9ne.common.di.LocalRepo
@@ -9,7 +13,10 @@ import org.n9ne.common.util.Utils.isOnline
 import org.n9ne.common.util.interfaces.Navigator
 import javax.inject.Inject
 
-abstract class BaseFragment<Repo : Any> : Fragment(), Navigator {
+abstract class BaseFragment<Repo : Any, B : ViewDataBinding> : Fragment(), Navigator {
+
+
+    protected lateinit var b: B
 
     @Inject
     protected lateinit var apiRepo: Repo
@@ -26,6 +33,35 @@ abstract class BaseFragment<Repo : Any> : Fragment(), Navigator {
 
 
     private lateinit var viewModel: BaseViewModel<Repo>
+
+    abstract fun getViewBinding(): B
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        b = getViewBinding()
+        return b.root
+    }
+
+    abstract fun init()
+    abstract fun setClicks()
+    abstract fun setObservers()
+    protected fun createFragment() {
+        stopLoading()
+
+        init()
+        setClicks()
+        setObservers()
+    }
+
+    fun startLoading() = baseActivity.startLoading()
+
+    fun stopLoading() = baseActivity.stopLoading()
+
+    fun showNavigation() = baseActivity.showNavigation()
+
+    fun hideNavigation() = baseActivity.hideNavigation()
 
 
     fun initRepos(viewModel: BaseViewModel<Repo>) {

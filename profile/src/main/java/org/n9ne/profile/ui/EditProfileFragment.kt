@@ -2,9 +2,7 @@ package org.n9ne.profile.ui
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -28,39 +26,41 @@ import org.n9ne.profile.repo.ProfileRepo
 import org.n9ne.profile.ui.viewModel.EditProfileViewModel
 
 @AndroidEntryPoint
-class EditProfileFragment : BaseFragment<ProfileRepo>() {
+class EditProfileFragment : BaseFragment<ProfileRepo, FragmentEditProfileBinding>() {
 
-    private lateinit var b: FragmentEditProfileBinding
     private val viewModel: EditProfileViewModel by viewModels()
     private lateinit var date: String
-    
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        b = FragmentEditProfileBinding.inflate(inflater)
-        return b.root
-    }
+
+    override fun getViewBinding(): FragmentEditProfileBinding =
+        FragmentEditProfileBinding.inflate(layoutInflater)
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init()
-        baseActivity.hideNavigation()
+        hideNavigation()
 
-        setupObserver()
-        setClicks()
+        createFragment()
 
         makeLocalRequest {
             viewModel.getUser(getToken())
         }
     }
 
-    private fun setClicks() {
+    override fun init() {
+        b.viewModel = viewModel
+
+        initRepos(viewModel)
+
+        setupSpinners()
+    }
+
+    override fun setClicks() {
         b.bSubmit.setOnClickListener {
             b.bSubmit.isEnabled = false
 
-            baseActivity.startLoading()
+            startLoading()
             makeApiRequest {
 
                 val name = b.etName.text.toString()
@@ -95,12 +95,35 @@ class EditProfileFragment : BaseFragment<ProfileRepo>() {
         }
     }
 
-    private fun init() {
-        b.viewModel = viewModel
+    override fun setObservers() {
+        viewModel.ldUser.observe(viewLifecycleOwner, EventObserver {
+            b.user = it
+            b.spActivity.setText(ActivityType.getLocalizedText(it.activityType, Utils.getLocal()))
+            b.spGender.setText(it.gender)
+            b.spActivity.setTextColor(resources.getColor(color.blackText, requireContext().theme))
+            b.spGender.setTextColor(resources.getColor(color.blackText, requireContext().theme))
+            setupSpinners()
 
-        initRepos(viewModel)
+            date = it.birthDate
 
-        setupSpinners()
+            b.etBirthday.setText(
+                if (Utils.isLocalPersian())
+                    it.birthDate.georgianToPersian()
+                else
+                    it.birthDate
+            )
+
+            b.ivProfile.setUserAvatar(it.profile)
+        })
+        viewModel.ldSubmit.observe(viewLifecycleOwner, EventObserver(listOf(b.bSubmit)) {
+            stopLoading()
+            findNavController().navigateUp()
+        })
+        viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bSubmit)) {
+            stopLoading()
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+        })
+
     }
 
     private fun showDateDialog() {
@@ -169,34 +192,4 @@ class EditProfileFragment : BaseFragment<ProfileRepo>() {
         b.spGender.setAdapter(adapterGender)
     }
 
-    private fun setupObserver() {
-        viewModel.ldUser.observe(viewLifecycleOwner, EventObserver {
-            b.user = it
-            b.spActivity.setText(ActivityType.getLocalizedText(it.activityType, Utils.getLocal()))
-            b.spGender.setText(it.gender)
-            b.spActivity.setTextColor(resources.getColor(color.blackText, requireContext().theme))
-            b.spGender.setTextColor(resources.getColor(color.blackText, requireContext().theme))
-            setupSpinners()
-
-            date = it.birthDate
-
-            b.etBirthday.setText(
-                if (Utils.isLocalPersian())
-                    it.birthDate.georgianToPersian()
-                else
-                    it.birthDate
-            )
-
-            b.ivProfile.setUserAvatar(it.profile)
-        })
-        viewModel.ldSubmit.observe(viewLifecycleOwner, EventObserver(listOf(b.bSubmit)) {
-            baseActivity.stopLoading()
-            findNavController().navigateUp()
-        })
-        viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bSubmit)) {
-            baseActivity.stopLoading()
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-        })
-
-    }
 }

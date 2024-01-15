@@ -3,9 +3,7 @@ package org.n9ne.auth.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.auth.databinding.FragmentLoginDoneBinding
 import org.n9ne.auth.repo.AuthRepo
@@ -14,16 +12,10 @@ import org.n9ne.common.util.Saver.setFirstTime
 
 
 @AndroidEntryPoint
-class LoginDoneFragment : BaseFragment<AuthRepo>() {
+class LoginDoneFragment : BaseFragment<AuthRepo, FragmentLoginDoneBinding>() {
 
-    private lateinit var b: FragmentLoginDoneBinding
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        b = FragmentLoginDoneBinding.inflate(inflater)
-        return b.root
-    }
+    override fun getViewBinding(): FragmentLoginDoneBinding =
+        FragmentLoginDoneBinding.inflate(layoutInflater)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,6 +23,8 @@ class LoginDoneFragment : BaseFragment<AuthRepo>() {
 
         val name = requireArguments().getString("name")
         b.tvName.text = name
+
+        createFragment()
 
         b.bGo.setOnClickListener {
             setFirstTime(false)
@@ -42,4 +36,9 @@ class LoginDoneFragment : BaseFragment<AuthRepo>() {
             requireActivity().finish()
         }
     }
+    override fun init() {}
+
+    override fun setClicks() {}
+
+    override fun setObservers() {}
 }

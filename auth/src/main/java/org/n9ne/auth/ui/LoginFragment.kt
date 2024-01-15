@@ -1,9 +1,7 @@
 package org.n9ne.auth.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -20,44 +18,38 @@ import org.n9ne.common.util.Utils
 
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<AuthRepo>() {
+class LoginFragment : BaseFragment<AuthRepo, FragmentLoginBinding>() {
 
-    private lateinit var b: FragmentLoginBinding
     private val viewModel: LoginViewModel by viewModels()
 
     private lateinit var email: String
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        b = FragmentLoginBinding.inflate(inflater)
-        return b.root
-    }
+
+    override fun getViewBinding(): FragmentLoginBinding =
+        FragmentLoginBinding.inflate(layoutInflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init()
-        setupObserver()
-        setClicks()
+        createFragment()
+
         b.etPassword.textDirection =
             if (Utils.isLocalPersian()) View.TEXT_DIRECTION_RTL else View.TEXT_DIRECTION_LTR
 
     }
 
-    private fun init() {
+    override fun init() {
         b.viewModel = viewModel
 
         initRepos(viewModel)
     }
 
-    private fun setClicks() {
+    override fun setClicks() {
         b.bLogin.setOnClickListener {
             b.bLogin.isEnabled = true
 
             email = b.etEmail.text.toString().trim()
-            baseActivity.startLoading()
+            startLoading()
             makeApiRequest {
                 viewModel.login(
                     email,
@@ -68,11 +60,11 @@ class LoginFragment : BaseFragment<AuthRepo>() {
         }
     }
 
-    private fun setupObserver() {
+    override fun setObservers() {
         viewModel.ldUserToken.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
             saveEmail(email)
             saveToken(it)
-            baseActivity.stopLoading()
+            stopLoading()
         })
         viewModel.ldName.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
             val data = Bundle().apply {
@@ -82,7 +74,7 @@ class LoginFragment : BaseFragment<AuthRepo>() {
         })
         viewModel.ldError.observe(viewLifecycleOwner,
             EventObserver(listOf(b.bLogin)) {
-                baseActivity.stopLoading()
+                stopLoading()
                 Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
             })
     }

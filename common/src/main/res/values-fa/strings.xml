@@ -99,4 +99,7 @@
     <string name="notification_interval_in_hours">تعداد ساعت بین هر هشدار</string>
     <string name="save">ذخیره</string>
     <string name="noData">اطلاعاتی موجود نیست</string>
+
+
+    <string name="madeBy">ساخته شده توسط</string>
 </resources>

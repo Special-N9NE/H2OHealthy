@@ -105,4 +105,7 @@
     <string name="notification_interval_in_hours">Notification interval in hours:</string>
     <string name="save">Save</string>
     <string name="noData">There is no data</string>
+
+
+    <string name="madeBy">Made By</string>
 </resources>

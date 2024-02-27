@@ -101,5 +101,7 @@
     <string name="noData">اطلاعاتی موجود نیست</string>
 
 
+    <string name="newPass">رمز عبور جدید</string>
     <string name="madeBy">ساخته شده توسط</string>
+    <string name="resetPass">بازیابی رمزعبور</string>
 </resources>

@@ -106,6 +106,9 @@
     <string name="save">Save</string>
     <string name="noData">There is no data</string>
 
+    <string name="newPass">New Password</string>
+    <string name="resetPass">Reset Password</string>
+
 
     <string name="madeBy">Made By</string>
 </resources>

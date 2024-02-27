@@ -5,6 +5,7 @@ import org.n9ne.common.BaseRepoImpl
 import org.n9ne.common.model.Cup
 import org.n9ne.common.source.network.Client
 import org.n9ne.common.source.objects.InsertActivity
+import org.n9ne.common.source.objects.UpdatePassword
 import org.n9ne.common.util.Mapper.toCups
 import org.n9ne.common.util.RepoCallback
 
@@ -33,6 +34,22 @@ class MainRepoApiImpl(private val client: Client) : BaseRepoImpl(), MainRepo {
                 callback.onSuccessful(it.toCups())
             } else {
                 handleError(it.message!!, callback)
+            }
+        }
+    }
+
+    override suspend fun resetPassword(
+        password: String,
+        email: String,
+        callback: RepoCallback<Unit>
+    ) {
+        val json = Gson().toJson(UpdatePassword(email, password))
+        val call = client.getApiService().updatePassword(json)
+        getResponse(call, callback).collect {
+            if (it.status) {
+                callback.onSuccessful(Unit)
+            } else {
+                handleError(it.message, callback)
             }
         }
     }

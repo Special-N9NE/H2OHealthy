@@ -142,4 +142,16 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Field("updateProfile") data: String
     ): Call<Message>
+
+    @FormUrlEncoded
+    @POST("user.php")
+    fun updatePassword(
+        @Field("updatePassword") data: String
+    ): Call<Message>
+
+    @FormUrlEncoded
+    @POST("user.php")
+    fun sendRecovery(
+        @Field("sendRecovery") data: String
+    ): Call<Message>
 }

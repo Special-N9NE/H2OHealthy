@@ -6,6 +6,7 @@ import org.n9ne.common.model.CompleteProfileResult
 import org.n9ne.common.model.LoginResult
 import org.n9ne.common.source.network.Client
 import org.n9ne.common.source.objects.Auth
+import org.n9ne.common.source.objects.SendRecovery
 import org.n9ne.common.util.Mapper.toUser
 import org.n9ne.common.util.RepoCallback
 
@@ -65,6 +66,23 @@ class AuthRepoImpl(private val client: Client) : BaseRepoImpl(), AuthRepo {
                         it.message
                     )
                 )
+            } else {
+                handleError(it.message, callback)
+            }
+        }
+    }
+
+    override suspend fun sendRecovery(
+        email: String,
+        name: String,
+        text: String,
+        callback: RepoCallback<String>
+    ) {
+        val json = Gson().toJson(SendRecovery(email, name, text))
+        val call = client.getApiService().sendRecovery(json)
+        getResponse(call, callback).collect {
+            if (it.status) {
+                callback.onSuccessful(it.message)
             } else {
                 handleError(it.message, callback)
             }

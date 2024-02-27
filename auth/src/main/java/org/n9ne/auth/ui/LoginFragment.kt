@@ -58,6 +58,15 @@ class LoginFragment : BaseFragment<AuthRepo, FragmentLoginBinding>() {
                 )
             }
         }
+        b.tvForgot.setOnClickListener {
+
+            b.tvForgot.isEnabled = false
+
+            email = b.etEmail.text.toString().trim()
+            makeApiRequest {
+                viewModel.forgetPassword(email)
+            }
+        }
     }
 
     override fun setObservers() {
@@ -66,6 +75,10 @@ class LoginFragment : BaseFragment<AuthRepo, FragmentLoginBinding>() {
             saveToken(it)
             stopLoading()
         })
+        viewModel.ldRecovery.observe(viewLifecycleOwner, EventObserver(listOf(b.tvForgot)) {
+            stopLoading()
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+        })
         viewModel.ldName.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
             val data = Bundle().apply {
                 putString("name", it)
@@ -73,7 +86,7 @@ class LoginFragment : BaseFragment<AuthRepo, FragmentLoginBinding>() {
             this.shouldNavigate(R.id.login_to_loginDone, data)
         })
         viewModel.ldError.observe(viewLifecycleOwner,
-            EventObserver(listOf(b.bLogin)) {
+            EventObserver(listOf(b.bLogin, b.tvForgot)) {
                 stopLoading()
                 Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
             })

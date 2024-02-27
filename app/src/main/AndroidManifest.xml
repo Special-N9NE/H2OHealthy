@@ -57,6 +57,22 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="org.n9ne.h2ohealthy.ui.ForgetActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="nosensor">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="h2oforget"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
         <receiver android:name="org.n9ne.common.util.NotificationReceiver" />
     </application>
 

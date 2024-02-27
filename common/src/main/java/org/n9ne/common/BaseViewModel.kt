@@ -16,5 +16,5 @@ abstract class BaseViewModel<T> : ViewModel() {
 
     val ldError = MutableLiveData<Event<String>>()
     val ldToken = MutableLiveData<Event<Unit>>()
-    val ldLoading = MutableLiveData<Event<Unit>>()
+    val ldLoading = MutableLiveData<Event<Boolean>>()
 }

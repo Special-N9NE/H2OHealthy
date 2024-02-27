@@ -15,102 +15,61 @@
         android:layout_height="match_parent"
         tools:context="org.n9ne.auth.ui.SplashFragment">
 
+
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/regular"
-            android:text="@string/hi"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/bold"
+            android:text="@string/resetPass"
             android:textColor="@color/blackText"
-            android:textSize="16sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/gTop"
             app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bold"
-            android:text="@string/login_title"
-            android:textColor="@color/blackText"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/etEmail"
-            style="@style/EditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:drawableStart="@drawable/ic_email"
-            android:hint="@string/email"
-            android:imeOptions="flagForceAscii"
-            android:inputType="textEmailAddress"
-            android:textDirection="locale"
-            app:layout_constraintBottom_toTopOf="@+id/bLogin"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
-            app:layout_constraintVertical_bias="0.1" />
-
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etPassword"
             style="@style/EditText"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:drawableStart="@drawable/ic_lock"
-            android:hint="@string/password"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:drawableStart="@drawable/ic_password"
+            android:hint="@string/newPass"
             android:imeOptions="flagForceAscii"
+            android:importantForAutofill="no"
             android:textColor="@color/blackText"
             android:textDirection="locale"
-            app:layout_constraintBottom_toTopOf="@+id/bLogin"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintBottom_toTopOf="@+id/bDone"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/etEmail"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:layout_constraintVertical_bias="0.4" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/bLogin"
-            android:layout_width="0dp"
+            android:id="@+id/bDone"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="32dp"
             android:background="@drawable/shape_button_blue"
             android:fontFamily="@font/bold"
             android:padding="16dp"
-            android:text="@string/login"
+            android:text="@string/submit"
             android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
-        <TextView
-            android:id="@+id/tvForgot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-           android:padding="8dp"
-            android:text="@string/forgot_password"
-            android:textColor="@color/gray"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/bLogin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etPassword"
-            app:layout_constraintVertical_bias="0.0" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gTop"
@@ -119,38 +78,6 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="32dp" />
 
-
-        <LinearLayout
-            android:id="@+id/llRegister"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{() ->viewModel.registerClick()}"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/gBottom"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/gTop"
-            app:layout_constraintVertical_bias="0.9">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/regular"
-                android:padding="8dp"
-                android:text="@string/don_t_have_account"
-                android:textColor="@color/blackText"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/regular"
-                android:gravity="center"
-                android:text="@string/register"
-                android:textColor="@color/linearPurpleEnd"
-                android:textSize="14sp" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -199,7 +126,7 @@
             android:background="@drawable/shape_round"
             android:padding="12dp"
             android:src="@drawable/ic_google"
-            app:layout_constraintBottom_toTopOf="@+id/llRegister"
+            app:layout_constraintBottom_toTopOf="@+id/gBottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/gTop"
@@ -212,19 +139,6 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_end="32dp" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.15" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.85" />
         <androidx.constraintlayout.widget.Group
             android:id="@+id/gGoogle"
             android:layout_width="wrap_content"

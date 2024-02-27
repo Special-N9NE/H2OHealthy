@@ -19,4 +19,11 @@ interface AuthRepo {
         data: Auth.CompleteProfile,
         callback: RepoCallback<CompleteProfileResult>
     )
+
+    suspend fun sendRecovery(
+        email: String,
+        name: String,
+        text: String,
+        callback: RepoCallback<String>
+    )
 }

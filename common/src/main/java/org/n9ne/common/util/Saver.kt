@@ -35,9 +35,9 @@ object Saver {
 
     fun isAppEnglish(): Boolean {
         return if (sharedPreferences == null)
-            true
+            false
         else
-            sharedPreferences!!.getBoolean(LANGUAGE, true)
+            sharedPreferences!!.getBoolean(LANGUAGE, false)
     }
 
     fun saveToken(token: String?) {

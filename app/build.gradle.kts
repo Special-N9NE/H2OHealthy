@@ -17,8 +17,8 @@ android {
         applicationId = "org.n9ne.h2ohealthy"
         minSdk = 26
         targetSdk = 34
-        versionCode = 7
-        versionName = "2.31"
+        versionCode = 8
+        versionName = "2.32"
 
         resourceConfigurations.addAll(mutableListOf("en" , "fa"))
 
@@ -51,6 +51,9 @@ kapt {
     correctErrorTypes = true
 }
 dependencies {
+    implementation("io.appmetrica.analytics:analytics:6.2.1")
+
+
     api("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
 

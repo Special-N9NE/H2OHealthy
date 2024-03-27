@@ -111,6 +111,13 @@ class ProfileFragment : BaseFragment<ProfileRepo, FragmentProfileBinding>(), Ref
                 initDialogs()
             }
         }
+        b.clComment.setOnClickListener {
+            val url = "myket://comment?id=" + requireActivity().applicationContext.packageName
+            val intent = Intent()
+            intent.setAction(Intent.ACTION_VIEW)
+            intent.setData(Uri.parse(url))
+            startActivity(intent)
+        }
         b.clLogout.setOnClickListener {
             startLoading()
             viewModel.logout()

@@ -352,10 +352,7 @@
                         android:id="@+id/clContactUs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/space_16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="@dimen/space_16dp"
-                        android:layout_marginBottom="16dp"
+                        android:layout_margin="16dp"
                         android:onClick="@{ () ->viewModel.contactUsClick()}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/_tv2"
@@ -412,6 +409,65 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/clContactUs"
+                        app:layout_constraintVertical_bias="0.0"
+                        tools:layout_editor_absoluteX="16dp">
+
+
+                        <ImageView
+                            android:id="@+id/_ivIcon3"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="8dp"
+                            android:src="@drawable/ic_star"
+                            app:layout_constraintBottom_toBottomOf="@+id/_tvTitle4"
+                            app:layout_constraintDimensionRatio="1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/_tvTitle4" />
+
+                        <TextView
+                            android:id="@+id/_tvTitle4"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="16dp"
+                            android:fontFamily="@font/regular"
+                            android:gravity="center_vertical"
+                            android:paddingStart="8dp"
+                            android:paddingTop="4dp"
+                            android:paddingEnd="8dp"
+                            android:paddingBottom="4dp"
+                            android:text="@string/comment"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/_ivGo3"
+                            app:layout_constraintStart_toEndOf="@+id/_ivIcon3"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/_ivGo3"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="8dp"
+                            android:src="@drawable/ic_arrow_right"
+                            app:layout_constraintBottom_toBottomOf="@+id/_tvTitle4"
+                            app:layout_constraintDimensionRatio="1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/_tvTitle4"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/clLogout"
@@ -422,7 +478,7 @@
                         android:layout_marginEnd="@dimen/space_16dp"
                         android:layout_marginBottom="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/clContactUs">
+                        app:layout_constraintTop_toBottomOf="@+id/clComment">
 
 
                         <ImageView

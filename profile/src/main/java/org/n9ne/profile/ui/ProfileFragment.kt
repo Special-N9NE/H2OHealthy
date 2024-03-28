@@ -112,11 +112,15 @@ class ProfileFragment : BaseFragment<ProfileRepo, FragmentProfileBinding>(), Ref
             }
         }
         b.clComment.setOnClickListener {
-            val url = "myket://comment?id=" + requireActivity().applicationContext.packageName
-            val intent = Intent()
-            intent.setAction(Intent.ACTION_VIEW)
-            intent.setData(Uri.parse(url))
-            startActivity(intent)
+            try {
+                val url = "myket://comment?id=" + requireActivity().applicationContext.packageName
+                val intent = Intent()
+                intent.setAction(Intent.ACTION_VIEW)
+                intent.setData(Uri.parse(url))
+                startActivity(intent)
+            }catch (e  :Exception){
+                Toast.makeText(requireContext() , getString(string.myket) , Toast.LENGTH_LONG).show()
+            }
         }
         b.clLogout.setOnClickListener {
             startLoading()

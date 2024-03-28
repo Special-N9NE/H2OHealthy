@@ -21,7 +21,7 @@ class RegisterViewModel @Inject constructor() : BaseViewModel<AuthRepo>() {
     private var passwordIsVisible = false
     private val ldPasswordClick = MutableLiveData<Boolean>()
 
-    val ldRegister = MutableLiveData<Event<Unit>>()
+    val ldRegister = MutableLiveData<Event<String>>()
 
     fun passwordClick() {
         passwordIsVisible = !passwordIsVisible
@@ -47,7 +47,7 @@ class RegisterViewModel @Inject constructor() : BaseViewModel<AuthRepo>() {
         viewModelScope.launch(Dispatchers.IO) {
             repo?.register(name.trim(), email, encryptPass, object : RepoCallback<Unit> {
                 override fun onSuccessful(response: Unit) {
-                    ldRegister.postValue(Event(Unit))
+                    ldRegister.postValue(Event(encryptPass))
                 }
 
                 override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {

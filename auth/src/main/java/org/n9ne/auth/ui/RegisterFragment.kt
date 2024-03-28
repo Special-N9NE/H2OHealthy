@@ -76,7 +76,7 @@ class RegisterFragment : BaseFragment<AuthRepo, FragmentRegisterBinding>() {
             val data = Bundle().apply {
                 putString("name", name)
                 putString("email", email)
-                putString("password", password)
+                putString("password", it)
             }
             this.shouldNavigate(R.id.register_to_completeProfile, data)
 

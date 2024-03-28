@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.home.adpter.ActivityAdapter
 import com.example.home.databinding.FragmentHomeBinding
@@ -19,6 +18,7 @@ import org.n9ne.common.model.Progress
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Mapper.toLiter
 import org.n9ne.common.util.Saver.getToken
+import org.n9ne.common.util.errorToast
 import org.n9ne.common.util.interfaces.AddWaterListener
 import org.n9ne.common.util.interfaces.MenuClickListener
 import org.n9ne.common.util.interfaces.RefreshListener
@@ -86,7 +86,7 @@ class HomeFragment : BaseFragment<HomeRepo, FragmentHomeBinding>(), RefreshListe
         }
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
             stopLoading()
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            requireContext().errorToast(it)
         })
     }
 

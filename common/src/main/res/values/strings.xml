@@ -26,6 +26,7 @@
     <string name="home">Home</string>
     <string name="profile">Profile</string>
     <string name="add">add</string>
+    <string name="added">Added</string>
     <string name="myket">Myket is not installed</string>
     <string name="today_target">Today Target</string>
     <string name="edit">Edit</string>
@@ -62,6 +63,7 @@
     <string name="share">Share</string>
     <string name="leave_league">Leave League</string>
     <string name="remove">Remove</string>
+    <string name="removed">Removed</string>
     <string name="enter_new_value">Enter new value</string>
     <string name="my_cups">My Cups</string>
     <string name="add_cup">Add Cup</string>

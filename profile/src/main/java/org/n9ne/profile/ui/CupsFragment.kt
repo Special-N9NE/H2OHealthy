@@ -2,18 +2,20 @@ package org.n9ne.profile.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.BaseFragment
+import org.n9ne.common.R.string
 import org.n9ne.common.dialog.addCupDialog
 import org.n9ne.common.model.Cup
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
+import org.n9ne.common.util.errorToast
 import org.n9ne.common.util.interfaces.CupClickListener
 import org.n9ne.common.util.interfaces.CupEditListener
 import org.n9ne.common.util.interfaces.RefreshListener
+import org.n9ne.common.util.successToast
 import org.n9ne.profile.databinding.FragmentCupsBinding
 import org.n9ne.profile.repo.ProfileRepo
 import org.n9ne.profile.ui.adpter.AddCupAdapter
@@ -92,15 +94,15 @@ class CupsFragment : BaseFragment<ProfileRepo,FragmentCupsBinding>(), RefreshLis
         }
         viewModel.ldAddCup.observe(viewLifecycleOwner, EventObserver {
             stopLoading()
-            Toast.makeText(requireContext(), "Added", Toast.LENGTH_SHORT).show()
+            requireContext().successToast(getString(string.added))
         })
         viewModel.ldRemoveCup.observe(viewLifecycleOwner, EventObserver {
             stopLoading()
-            Toast.makeText(requireContext(), "Removed", Toast.LENGTH_SHORT).show()
+            requireContext().successToast(getString(string.removed))
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
             stopLoading()
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            requireContext().errorToast(it)
         })
     }
 

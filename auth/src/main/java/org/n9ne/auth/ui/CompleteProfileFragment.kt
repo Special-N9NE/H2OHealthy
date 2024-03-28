@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -23,6 +22,7 @@ import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.saveEmail
 import org.n9ne.common.util.Saver.saveToken
 import org.n9ne.common.util.Utils
+import org.n9ne.common.util.errorToast
 
 
 @AndroidEntryPoint
@@ -74,7 +74,7 @@ class CompleteProfileFragment : BaseFragment<AuthRepo, FragmentCompleteProfileBi
                 else
                     "Choose gender"
 
-                Toast.makeText(requireContext(), error, Toast.LENGTH_LONG).show()
+                requireContext().errorToast(error)
             } else {
 
                 b.bNext.isEnabled = false
@@ -128,7 +128,7 @@ class CompleteProfileFragment : BaseFragment<AuthRepo, FragmentCompleteProfileBi
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bNext)) {
             stopLoading()
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            requireContext().errorToast(it)
         })
         viewModel.ldShowDate.observe(viewLifecycleOwner, EventObserver {
             if (Utils.isLocalPersian())

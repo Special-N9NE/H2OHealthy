@@ -106,4 +106,6 @@
     <string name="resetPass">بازیابی رمزعبور</string>
     <string name="comment">افزودن نظر</string>
     <string name="myket">مایکت نصب نیست</string>
+    <string name="added">اضافه شد</string>
+    <string name="removed">حذف شد</string>
 </resources>

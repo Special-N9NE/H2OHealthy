@@ -44,6 +44,8 @@ kapt {
 }
 dependencies {
 
+    implementation("com.github.yagmurerdogan:Toastic:1.0.1")
+
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
 

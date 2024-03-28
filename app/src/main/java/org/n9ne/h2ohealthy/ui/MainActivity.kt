@@ -1,7 +1,6 @@
 package org.n9ne.h2ohealthy.ui
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -20,6 +19,7 @@ import org.n9ne.common.util.Mapper.toLiter
 import org.n9ne.common.util.Saver
 import org.n9ne.common.util.Saver.getToken
 import org.n9ne.common.util.Utils.isOnline
+import org.n9ne.common.util.errorToast
 import org.n9ne.common.util.interfaces.AddWaterListener
 import org.n9ne.common.util.interfaces.CupClickListener
 import org.n9ne.common.util.interfaces.RefreshListener
@@ -146,7 +146,7 @@ class MainActivity : BaseActivity() {
             goHome()
         })
         viewModel.ldError.observe(this, EventObserver {
-            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+            errorToast(it)
         })
         viewModel.ldCups.observe(this) {
             cups = it

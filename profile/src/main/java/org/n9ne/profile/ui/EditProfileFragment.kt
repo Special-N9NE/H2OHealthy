@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,6 +18,7 @@ import org.n9ne.common.util.DateUtils.georgianToPersian
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
 import org.n9ne.common.util.Utils
+import org.n9ne.common.util.errorToast
 import org.n9ne.common.util.setUserAvatar
 import org.n9ne.profile.R
 import org.n9ne.profile.databinding.FragmentEditProfileBinding
@@ -118,7 +118,7 @@ class EditProfileFragment : BaseFragment<ProfileRepo, FragmentEditProfileBinding
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bSubmit)) {
             stopLoading()
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            requireContext().errorToast(it)
         })
 
     }

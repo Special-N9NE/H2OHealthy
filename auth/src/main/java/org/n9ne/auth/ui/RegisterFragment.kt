@@ -3,7 +3,6 @@ package org.n9ne.auth.ui
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.CompoundButtonCompat
 import androidx.fragment.app.viewModels
@@ -16,6 +15,7 @@ import org.n9ne.auth.ui.viewModel.RegisterViewModel
 import org.n9ne.common.BaseFragment
 import org.n9ne.common.R.color
 import org.n9ne.common.util.EventObserver
+import org.n9ne.common.util.errorToast
 
 @AndroidEntryPoint
 class RegisterFragment : BaseFragment<AuthRepo, FragmentRegisterBinding>() {
@@ -84,7 +84,7 @@ class RegisterFragment : BaseFragment<AuthRepo, FragmentRegisterBinding>() {
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver(listOf(b.bRegister)) {
             stopLoading()
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            requireContext().errorToast(it)
         })
 
     }

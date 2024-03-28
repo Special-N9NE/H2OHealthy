@@ -2,7 +2,6 @@ package org.n9ne.profile.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
@@ -13,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.common.BaseFragment
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
+import org.n9ne.common.util.errorToast
 import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.profile.databinding.FragmentStatsBinding
 import org.n9ne.profile.repo.ProfileRepo
@@ -85,7 +85,7 @@ class StatsFragment : BaseFragment<ProfileRepo, FragmentStatsBinding>(), Refresh
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
             stopLoading()
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            requireContext().errorToast(it)
         })
         viewModel.ldStartDate.observe(viewLifecycleOwner, EventObserver {
             b.tvDateAll.text = it

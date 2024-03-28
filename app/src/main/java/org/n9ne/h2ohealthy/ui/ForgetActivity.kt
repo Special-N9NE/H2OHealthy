@@ -3,13 +3,14 @@ package org.n9ne.h2ohealthy.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.common.BaseActivity
 import org.n9ne.common.source.network.Client
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Utils
+import org.n9ne.common.util.errorToast
+import org.n9ne.common.util.successToast
 import org.n9ne.h2ohealthy.data.MainRepo
 import org.n9ne.h2ohealthy.data.MainRepoApiImpl
 import org.n9ne.h2ohealthy.databinding.ActivityForgetBinding
@@ -36,7 +37,7 @@ class ForgetActivity : BaseActivity() {
 
             val text = if (Utils.isLocalPersian()) "اطلاعات نامعتبر" else "invalid data"
 
-            Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+            errorToast(text)
 
             val intent = Intent(
                 Intent.ACTION_VIEW,
@@ -67,7 +68,7 @@ class ForgetActivity : BaseActivity() {
 
     private fun observers() {
         viewModel.ldRest.observe(this, EventObserver(listOf(b.bDone)) {
-            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+            successToast(it)
 
             val intent = Intent(
                 Intent.ACTION_VIEW,
@@ -77,7 +78,7 @@ class ForgetActivity : BaseActivity() {
             finish()
         })
         viewModel.ldError.observe(this, EventObserver(listOf(b.bDone)) {
-            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+            errorToast(it)
         })
     }
 }

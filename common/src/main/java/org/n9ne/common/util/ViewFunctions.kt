@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.fragment.app.FragmentActivity
 import com.permissionx.guolindev.PermissionX
+import com.yagmurerdogan.toasticlib.Toastic
 import org.n9ne.common.R
 
 fun FragmentActivity.requestNotificationPermission() {
@@ -120,4 +121,29 @@ fun TextView.setGradient(context: Context, @ColorRes startColor: Int, @ColorRes 
         Shader.TileMode.CLAMP
     )
     this.paint.shader = textShader
+}
+
+fun Context.successToast(message: String) {
+    Toastic.toastic(
+        context = this,
+        message = message,
+        duration = Toastic.LENGTH_LONG,
+        type = Toastic.SUCCESS,
+        isIconAnimated = false,
+        customBackground = R.drawable.toast_success,
+        font = R.font.regular
+    ).show()
+}
+
+fun Context.errorToast(message: String) {
+    Toastic.toastic(
+        context = this,
+        message = message,
+        duration = Toastic.LENGTH_LONG,
+        type = Toastic.ERROR,
+        isIconAnimated = false,
+        customIcon = R.drawable.ic_close,
+        customBackground = R.drawable.toast_error,
+        font = R.font.regular
+    ).show()
 }

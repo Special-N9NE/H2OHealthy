@@ -2,13 +2,13 @@ package org.n9ne.profile.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.common.BaseFragment
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
+import org.n9ne.common.util.errorToast
 import org.n9ne.common.util.interfaces.AvatarClickListener
 import org.n9ne.profile.databinding.FragmentAvatarsBinding
 import org.n9ne.profile.repo.ProfileRepo
@@ -59,7 +59,7 @@ class AvatarFragment : BaseFragment<ProfileRepo,FragmentAvatarsBinding>() {
         })
         viewModel.ldError.observe(viewLifecycleOwner, EventObserver {
             stopLoading()
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            requireContext().errorToast(it)
         })
     }
 }

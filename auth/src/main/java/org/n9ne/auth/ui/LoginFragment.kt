@@ -2,7 +2,6 @@ package org.n9ne.auth.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +14,8 @@ import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.saveEmail
 import org.n9ne.common.util.Saver.saveToken
 import org.n9ne.common.util.Utils
+import org.n9ne.common.util.errorToast
+import org.n9ne.common.util.successToast
 
 
 @AndroidEntryPoint
@@ -77,7 +78,7 @@ class LoginFragment : BaseFragment<AuthRepo, FragmentLoginBinding>() {
         })
         viewModel.ldRecovery.observe(viewLifecycleOwner, EventObserver(listOf(b.tvForgot)) {
             stopLoading()
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            requireContext().successToast(it)
         })
         viewModel.ldName.observe(viewLifecycleOwner, EventObserver(listOf(b.bLogin)) {
             val data = Bundle().apply {
@@ -88,7 +89,7 @@ class LoginFragment : BaseFragment<AuthRepo, FragmentLoginBinding>() {
         viewModel.ldError.observe(viewLifecycleOwner,
             EventObserver(listOf(b.bLogin, b.tvForgot)) {
                 stopLoading()
-                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+                requireContext().errorToast(it)
             })
     }
 

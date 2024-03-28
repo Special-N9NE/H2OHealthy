@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.n9ne.common.BaseFragment
@@ -27,6 +26,7 @@ import org.n9ne.common.util.Saver.getToken
 import org.n9ne.common.util.Saver.isAppEnglish
 import org.n9ne.common.util.Saver.saveToken
 import org.n9ne.common.util.Saver.setLanguage
+import org.n9ne.common.util.errorToast
 import org.n9ne.common.util.interfaces.AddLeagueListener
 import org.n9ne.common.util.interfaces.RefreshListener
 import org.n9ne.common.util.interfaces.ReminderSaveListener
@@ -35,6 +35,7 @@ import org.n9ne.common.util.reminderNotification
 import org.n9ne.common.util.scheduleNotification
 import org.n9ne.common.util.setGradient
 import org.n9ne.common.util.setUserAvatar
+import org.n9ne.common.util.successToast
 import org.n9ne.profile.R
 import org.n9ne.profile.databinding.FragmentProfileBinding
 import org.n9ne.profile.repo.ProfileRepo
@@ -88,8 +89,7 @@ class ProfileFragment : BaseFragment<ProfileRepo, FragmentProfileBinding>(), Ref
                             ReminderSaveListener {
                             override fun onSave(hours: Int) {
                                 Saver.saveReminder(hours)
-                                Toast.makeText(requireContext(), string.saved, Toast.LENGTH_LONG)
-                                    .show()
+                                requireContext().successToast(getString(string.saved))
 
                                 requireContext().reminderNotification(hours != 0)
                                 requireContext().scheduleNotification(hours)
@@ -119,7 +119,7 @@ class ProfileFragment : BaseFragment<ProfileRepo, FragmentProfileBinding>(), Ref
                 intent.setData(Uri.parse(url))
                 startActivity(intent)
             }catch (e  :Exception){
-                Toast.makeText(requireContext() , getString(string.myket) , Toast.LENGTH_LONG).show()
+                requireContext().errorToast(getString(string.myket))
             }
         }
         b.clLogout.setOnClickListener {
@@ -156,9 +156,7 @@ class ProfileFragment : BaseFragment<ProfileRepo, FragmentProfileBinding>(), Ref
                     )
                 )
             } catch (ex: ActivityNotFoundException) {
-                Toast.makeText(
-                    requireContext(), string.errorEmailClient.toString(), Toast.LENGTH_SHORT
-                ).show()
+                requireContext().errorToast(getString(string.errorEmailClient))
             }
 
         })
@@ -197,7 +195,7 @@ class ProfileFragment : BaseFragment<ProfileRepo, FragmentProfileBinding>(), Ref
                 setEnableDialog(d, true)
             }
 
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            requireContext().errorToast(it)
             stopLoading()
         })
     }

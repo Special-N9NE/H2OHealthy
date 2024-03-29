@@ -18,6 +18,7 @@ import org.n9ne.auth.ui.viewModel.CompleteProfileViewModel
 import org.n9ne.common.BaseFragment
 import org.n9ne.common.R.color
 import org.n9ne.common.R.layout
+import org.n9ne.common.util.DateUtils
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.saveEmail
 import org.n9ne.common.util.Saver.saveToken
@@ -162,14 +163,14 @@ class CompleteProfileFragment : BaseFragment<AuthRepo, FragmentCompleteProfileBi
 
     private fun showPersianDateDialog() {
 
+        val max = DateUtils.getPersianYear() - 1
+
         PersianDatePickerDialog(requireContext())
             .setPositiveButtonString("تایید")
             .setNegativeButton("لغو")
             .setTodayButtonVisible(true)
             .setMinYear(1300)
-            .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
-            .setMaxMonth(PersianDatePickerDialog.THIS_MONTH)
-            .setMaxDay(PersianDatePickerDialog.THIS_DAY)
+            .setMaxYear(max)
             .setActionTextColor(resources.getColor(color.linearBlueEnd, requireContext().theme))
 //            .setTypeFace(
 //                Typeface.createFromAsset(

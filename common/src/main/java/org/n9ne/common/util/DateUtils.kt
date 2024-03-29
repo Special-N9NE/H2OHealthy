@@ -84,6 +84,10 @@ object DateUtils {
         return builder.dropLast(1).toString()
     }
 
+    fun getPersianYear() : Int{
+        val pDate = PersianDate()
+        return pDate.shYear
+    }
     fun getTime(): String {
         val time = Calendar.getInstance().time
         val formatter = SimpleDateFormat("HH:mm")

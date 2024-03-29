@@ -14,6 +14,7 @@ import org.n9ne.common.BaseFragment
 import org.n9ne.common.R.color
 import org.n9ne.common.model.ActivityType
 import org.n9ne.common.model.UpdateUser
+import org.n9ne.common.util.DateUtils
 import org.n9ne.common.util.DateUtils.georgianToPersian
 import org.n9ne.common.util.EventObserver
 import org.n9ne.common.util.Saver.getToken
@@ -147,14 +148,14 @@ class EditProfileFragment : BaseFragment<ProfileRepo, FragmentEditProfileBinding
 
     private fun showPersianDateDialog() {
 
+        val max = DateUtils.getPersianYear() - 1
+
         PersianDatePickerDialog(requireContext())
             .setPositiveButtonString("تایید")
             .setNegativeButton("لغو")
             .setTodayButtonVisible(true)
             .setMinYear(1300)
-            .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
-            .setMaxMonth(PersianDatePickerDialog.THIS_MONTH)
-            .setMaxDay(PersianDatePickerDialog.THIS_DAY)
+            .setMaxYear(max)
             .setActionTextColor(resources.getColor(color.linearBlueEnd, requireContext().theme))
 //            .setTypeFace(
 //                Typeface.createFromAsset(

@@ -17,8 +17,8 @@ android {
         applicationId = "org.n9ne.h2ohealthy"
         minSdk = 26
         targetSdk = 34
-        versionCode = 11
-        versionName = "3.01"
+        versionCode = 12
+        versionName = "3.02"
 
         resourceConfigurations.addAll(mutableListOf("en" , "fa"))
 

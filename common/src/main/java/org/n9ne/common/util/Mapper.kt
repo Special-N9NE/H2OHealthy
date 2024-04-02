@@ -71,7 +71,11 @@ object Mapper {
 
     fun UserEntity.toUser(): User {
 
-        val activity = ActivityType.entries[idActivity.toInt()]
+        val activity = if (idActivity.toInt() >= ActivityType.entries.size) {
+            ActivityType.entries.last()
+        } else {
+            ActivityType.entries[idActivity.toInt()]
+        }
         val age = DateUtils.calculateAge(birthdate)
         val genderText = if (gender == 1) "Male" else "Female"
 

@@ -1,5 +1,12 @@
 *.iml
 *.jks
+*.keystore
+.idea/
+**/release/
+**/build/
+*.apk
+*.aab
+secrets.properties
 .gradle
 /local.properties
 /.idea/caches

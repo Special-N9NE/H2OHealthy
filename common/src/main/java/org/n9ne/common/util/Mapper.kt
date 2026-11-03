@@ -119,7 +119,8 @@ object Mapper {
 
     fun GetUser.User.toUser(): User {
 
-        val activity = ActivityType.entries[idActivity - 1]
+        val idActivity = if (this.idActivity == 0) 0 else this.idActivity - 1
+        val activity = ActivityType.entries[idActivity]
         val age = DateUtils.calculateAge(birthdate)
         val genderText = if (gender == 1) "Male" else "Female"
 

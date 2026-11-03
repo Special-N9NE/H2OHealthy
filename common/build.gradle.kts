@@ -1,14 +1,13 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
-    kotlin("kapt")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
     namespace = "org.n9ne.common"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 26
@@ -27,11 +26,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         viewBinding = true
@@ -44,66 +43,64 @@ kapt {
 }
 dependencies {
 
-    implementation("com.github.yagmurerdogan:Toastic:1.0.1")
+    implementation(libs.toastic)
 
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
-    implementation("com.github.YarikSOffice:lingver:1.3.0")
+    implementation(libs.lingver)
 
-    implementation("com.github.kojofosu:Quantitizer:1.6.8")
+    implementation(libs.quantitizer)
 
-    implementation("com.guolindev.permissionx:permissionx:1.7.1")
+    implementation(libs.permissionx)
 
-    implementation("com.github.samanzamani:PersianDate:1.7.1")
+    implementation(libs.persian.date)
 
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation(libs.play.services.auth)
 
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-crashlytics")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
 
-    implementation("com.github.majorkik:SparkLineLayout:1.0.1")
-    implementation("com.github.BoyzDroizy:SimpleAndroidBarChart:1.0.1")
+    implementation(libs.sparkline)
+    implementation(libs.simpleandroidbarchart)
 
-    implementation("com.github.SimformSolutionsPvtLtd:SSPullToRefresh:1.5.1")
+    implementation(libs.pull.to.refresh)
 
-    implementation("com.airbnb.android:lottie:6.1.0")
+    implementation(libs.lottie)
 
-    implementation("com.patrykandpatrick.vico:core:1.12.0")
-    implementation("com.patrykandpatrick.vico:views:1.12.0")
+    implementation(libs.vico.core)
+    implementation(libs.vico.views)
 
-    testImplementation("junit:junit:4.12")
 
-    implementation("com.github.Dhaval2404:ColorPicker:2.3")
+    implementation(libs.color.picker)
 
-    implementation("com.github.aliab:Persian-Date-Picker-Dialog:1.8.0")
+    implementation(libs.persian.date.picker)
 
-    implementation("me.saket.cascade:cascade:2.3.0")
-    implementation("me.saket.cascade:cascade-compose:2.3.0")
+    implementation(libs.cascade.views)
+    implementation(libs.cascade.compose)
 
-    implementation("com.github.bumptech.glide:glide:4.15.1")
-    kapt("com.github.bumptech.glide:compiler:4.12.0")
+    implementation(libs.glide.runtime)
+    kapt(libs.glide.compiler)
 
-    val roomVersion = "2.5.2"
-    implementation("androidx.room:room-ktx:$roomVersion")
-    implementation("androidx.room:room-runtime:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp.logging.interceptor)
 
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.4")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.4")
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.android.gms:play-services-base:18.2.0")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material.components)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.play.services.base)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

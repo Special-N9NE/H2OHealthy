@@ -19,17 +19,17 @@ abstract class BaseFragment<Repo : Any, B : ViewDataBinding> : Fragment(), Navig
     protected lateinit var b: B
 
     @Inject
-    protected lateinit var apiRepo: Repo
+    lateinit var apiRepo: Repo
 
     @Inject
-    protected lateinit var baseActivity: BaseActivity
+    lateinit var baseActivity: BaseActivity
 
     @Inject
-    protected lateinit var db: AppDatabase
+    lateinit var db: AppDatabase
 
     @LocalRepo
     @Inject
-    protected lateinit var localRepo: Repo
+    lateinit var localRepo: Repo
 
 
     private lateinit var viewModel: BaseViewModel<Repo>

@@ -1,13 +1,13 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.dagger.hilt.android")
-    kotlin("kapt")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
     namespace = "org.n9ne.auth"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24
@@ -26,11 +26,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         viewBinding = true
@@ -42,32 +42,31 @@ kapt {
 }
 dependencies {
 
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
-    api("com.google.android.gms:play-services-auth:20.7.0")
+    api(libs.play.services.auth)
 
-    api("com.github.aliab:Persian-Date-Picker-Dialog:1.8.0")
+    api(libs.persian.date.picker)
 
-    val roomVersion = "2.5.2"
-    api("androidx.room:room-ktx:$roomVersion")
-    api("androidx.room:room-runtime:$roomVersion")
+    api(libs.androidx.room.ktx)
+    api(libs.androidx.room.runtime)
 
-    api("com.squareup.retrofit2:retrofit:2.9.0")
-    api("com.squareup.retrofit2:converter-gson:2.9.0")
-    api("com.squareup.okhttp3:logging-interceptor:4.9.0")
+    api(libs.retrofit.core)
+    api(libs.retrofit.converter.gson)
+    api(libs.okhttp.logging.interceptor)
 
-    api("androidx.navigation:navigation-fragment-ktx:2.7.4")
-    api("androidx.navigation:navigation-ui-ktx:2.7.4")
+    api(libs.androidx.navigation.fragment.ktx)
+    api(libs.androidx.navigation.ui.ktx)
 
 
-    api("androidx.core:core-ktx:1.12.0")
-    api("androidx.appcompat:appcompat:1.6.1")
-    api("com.google.android.material:material:1.10.0")
-    api("androidx.constraintlayout:constraintlayout:2.1.4")
-    testApi("junit:junit:4.13.2")
-    androidTestApi("androidx.test.ext:junit:1.1.5")
-    androidTestApi("androidx.test.espresso:espresso-core:3.5.1")
+    api(libs.androidx.core.ktx)
+    api(libs.androidx.appcompat)
+    api(libs.material.components)
+    api(libs.androidx.constraintlayout)
+    testApi(libs.junit)
+    androidTestApi(libs.androidx.junit)
+    androidTestApi(libs.androidx.espresso.core)
 
     implementation(project(":common"))
 }

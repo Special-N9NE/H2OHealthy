@@ -1,17 +1,15 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("com.google.dagger.hilt.android")
-    kotlin("kapt")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
     namespace = "org.n9ne.h2ohealthy"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "org.n9ne.h2ohealthy"
@@ -35,11 +33,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         viewBinding = true
@@ -51,58 +49,56 @@ kapt {
     correctErrorTypes = true
 }
 dependencies {
-    implementation("io.appmetrica.analytics:analytics:6.2.1")
+    implementation(libs.appmetrica.analytics)
 
 
-    api("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    api(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
-    api("com.github.YarikSOffice:lingver:1.3.0")
+    api(libs.lingver)
 
-    api(platform("com.google.firebase:firebase-bom:32.7.0"))
-    api("com.google.firebase:firebase-analytics")
-    api("com.google.firebase:firebase-crashlytics")
+    api(platform(libs.firebase.bom))
+    api(libs.firebase.analytics)
+    api(libs.firebase.crashlytics)
 
-    api("com.github.majorkik:SparkLineLayout:1.0.1")
-    api("com.github.BoyzDroizy:SimpleAndroidBarChart:1.0.1")
+    api(libs.sparkline)
+    api(libs.simpleandroidbarchart)
 
-    api("com.github.SimformSolutionsPvtLtd:SSPullToRefresh:1.5.1")
+    api(libs.pull.to.refresh)
 
-    api("com.airbnb.android:lottie:6.1.0")
+    api(libs.lottie)
 
-    api("com.patrykandpatrick.vico:core:1.12.0")
-    api("com.patrykandpatrick.vico:views:1.12.0")
+    api(libs.vico.core)
+    api(libs.vico.views)
 
-    testApi("junit:junit:4.12")
 
-    api("com.github.Dhaval2404:ColorPicker:2.3")
+    api(libs.color.picker)
 
-    api("com.github.aliab:Persian-Date-Picker-Dialog:1.8.0")
+    api(libs.persian.date.picker)
 
-    api("me.saket.cascade:cascade:2.3.0")
-    api("me.saket.cascade:cascade-compose:2.3.0")
+    api(libs.cascade.views)
+    api(libs.cascade.compose)
 
-    api("com.github.bumptech.glide:glide:4.15.1")
+    api(libs.glide.runtime)
 
-    val roomVersion = "2.5.2"
-    api("androidx.room:room-ktx:$roomVersion")
-    api("androidx.room:room-runtime:$roomVersion")
+    api(libs.androidx.room.ktx)
+    api(libs.androidx.room.runtime)
 
-    api("com.squareup.retrofit2:retrofit:2.9.0")
-    api("com.squareup.retrofit2:converter-gson:2.9.0")
-    api("com.squareup.okhttp3:logging-interceptor:4.9.0")
+    api(libs.retrofit.core)
+    api(libs.retrofit.converter.gson)
+    api(libs.okhttp.logging.interceptor)
 
-    api("androidx.navigation:navigation-fragment-ktx:2.7.4")
-    api("androidx.navigation:navigation-ui-ktx:2.7.4")
+    api(libs.androidx.navigation.fragment.ktx)
+    api(libs.androidx.navigation.ui.ktx)
 
-    api("androidx.core:core-ktx:1.12.0")
-    api("androidx.appcompat:appcompat:1.6.1")
-    api("com.google.android.material:material:1.10.0")
-    api("androidx.constraintlayout:constraintlayout:2.1.4")
-    api("com.google.android.gms:play-services-base:18.2.0")
-    testApi("junit:junit:4.13.2")
-    androidTestApi("androidx.test.ext:junit:1.1.5")
-    androidTestApi("androidx.test.espresso:espresso-core:3.5.1")
+    api(libs.androidx.core.ktx)
+    api(libs.androidx.appcompat)
+    api(libs.material.components)
+    api(libs.androidx.constraintlayout)
+    api(libs.play.services.base)
+    testApi(libs.junit)
+    androidTestApi(libs.androidx.junit)
+    androidTestApi(libs.androidx.espresso.core)
 
     implementation(project(":common"))
     implementation(project(":home"))

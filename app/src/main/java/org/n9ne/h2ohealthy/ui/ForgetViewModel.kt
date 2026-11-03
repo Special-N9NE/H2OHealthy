@@ -9,13 +9,12 @@ import org.n9ne.common.util.Event
 import org.n9ne.common.util.RepoCallback
 import org.n9ne.common.util.Utils
 import org.n9ne.h2ohealthy.data.MainRepo
-import java.util.Base64
 
 class ForgetViewModel : BaseViewModel<MainRepo>() {
 
     val ldRest = MutableLiveData<Event<String>>()
 
-    fun resetPassword(password: String, email: String) {
+    fun resetPassword(password: String, email: String, token: String) {
         val error = if (Utils.isLocalPersian()) "رمز معتبر نیست" else "invalid password"
         if (password.length < 4) {
             ldError.postValue(Event(error))
@@ -25,7 +24,7 @@ class ForgetViewModel : BaseViewModel<MainRepo>() {
         ldLoading.postValue(Event(true))
 
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.resetPassword(password, email, object : RepoCallback<Unit> {
+            repo?.resetPassword(password, email, token, object : RepoCallback<Unit> {
                 override fun onSuccessful(response: Unit) {
                     ldLoading.postValue(Event(false))
 
@@ -40,8 +39,5 @@ class ForgetViewModel : BaseViewModel<MainRepo>() {
             })
         }
     }
-
-    fun decodeEmail(email: String) =
-        String(Base64.getDecoder().decode(email))
 
 }

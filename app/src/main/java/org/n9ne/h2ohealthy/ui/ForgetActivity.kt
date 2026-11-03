@@ -33,7 +33,9 @@ class ForgetActivity : BaseActivity() {
 
         val data = intent.data
 
-        if (data == null) {
+        if (data == null || data.scheme != "https" || data.host != "h2oforget" || data.path != "/reset" ||
+            data.getQueryParameter("email").isNullOrBlank() ||
+            !Regex("[a-f0-9]{64}").matches(data.getQueryParameter("token") ?: "")) {
 
             val text = if (Utils.isLocalPersian()) "اطلاعات نامعتبر" else "invalid data"
 
@@ -53,10 +55,11 @@ class ForgetActivity : BaseActivity() {
     private fun click() {
         b.bDone.setOnClickListener {
             b.bDone.isEnabled = false
-            val email = viewModel.decodeEmail(intent.data!!.pathSegments[0])
+            val email = intent.data!!.getQueryParameter("email")!!
+            val token = intent.data!!.getQueryParameter("token")!!
             val password = b.etPassword.text.toString().trim()
             val encrypted = Utils.encrypt(password)
-            viewModel.resetPassword(encrypted, email)
+            viewModel.resetPassword(encrypted, email, token)
         }
     }
 

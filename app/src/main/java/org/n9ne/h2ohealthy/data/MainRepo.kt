@@ -13,6 +13,6 @@ interface MainRepo {
 
     suspend fun getCups(token: String? = null, callback: RepoCallback<List<Cup>>)
 
-    suspend fun resetPassword(password: String, email: String, callback: RepoCallback<Unit>) {}
+    suspend fun resetPassword(password: String, email: String, token: String, callback: RepoCallback<Unit>) {}
 
 }

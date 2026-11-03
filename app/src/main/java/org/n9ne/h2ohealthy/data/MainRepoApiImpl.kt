@@ -41,9 +41,10 @@ class MainRepoApiImpl(private val client: Client) : BaseRepoImpl(), MainRepo {
     override suspend fun resetPassword(
         password: String,
         email: String,
+        token: String,
         callback: RepoCallback<Unit>
     ) {
-        val json = Gson().toJson(UpdatePassword(email, password))
+        val json = Gson().toJson(UpdatePassword(email, password, token))
         val call = client.getApiService().updatePassword(json)
         getResponse(call, callback).collect {
             if (it.status) {

@@ -1,7 +1,6 @@
 package org.n9ne.auth.ui.viewModel
 
 import android.content.Context
-import android.os.Build
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -20,7 +19,6 @@ import org.n9ne.common.util.Event
 import org.n9ne.common.util.Mapper.toUserEntity
 import org.n9ne.common.util.RepoCallback
 import org.n9ne.common.util.Utils
-import java.util.Base64
 import javax.inject.Inject
 
 @HiltViewModel
@@ -106,20 +104,9 @@ class LoginViewModel @Inject constructor() : BaseViewModel<AuthRepo>() {
             return
         }
 
-        val encodedEmail = encodeEmail(email)
-        val content = if (Utils.isLocalPersian())
-            "کاربر گرامی\n " +
-                    "برای بازنشانی رمزعبور روی لینک زیر کلیک کنید" +
-                    "\n\n" +
-                    " https://h2oforget/${encodedEmail}"
-        else
-            "Dear user\n " +
-                    "Click link below to reset your password" +
-                    "\n\n" +
-                    "https://h2oforget/${encodedEmail}"
-
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.sendRecovery(email, email.split("@")[0], content, object : RepoCallback<String> {
+            // The server generates the recovery link and email body.
+            repo?.sendRecovery(email, email.split("@")[0], "", object : RepoCallback<String> {
                 override fun onSuccessful(response: String) {
                     ldRecovery.postValue(Event(response))
                 }
@@ -132,14 +119,4 @@ class LoginViewModel @Inject constructor() : BaseViewModel<AuthRepo>() {
         }
     }
 
-    private fun encodeEmail(email: String): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Base64.getEncoder().encodeToString(email.toByteArray());
-        } else {
-            android.util.Base64.encodeToString(
-                email.toByteArray(),
-                android.util.Base64.DEFAULT
-            );
-        }
-    }
 }

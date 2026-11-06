@@ -7,6 +7,15 @@ import androidx.room.Query
 
 @Dao
 interface RoomDao {
+    @Query("SELECT * FROM GoalCacheEntity WHERE userId = :userId LIMIT 1")
+    fun getGoals(userId: Long): GoalCacheEntity?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun cacheGoals(goals: GoalCacheEntity)
+
+    @Query("UPDATE UserEntity SET target = :target WHERE id = :userId")
+    fun updateUserTarget(userId: Long, target: String)
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(user: UserEntity): Long

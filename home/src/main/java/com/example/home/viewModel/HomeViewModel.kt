@@ -3,19 +3,28 @@ package com.example.home.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.home.repo.HomeRepo
+import com.example.home.repo.HomeRepoApiImpl
+import com.example.home.repo.HomeRepoLocalImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.n9ne.common.BaseViewModel
 import org.n9ne.common.model.Activity
+import org.n9ne.common.model.GoalHistoryPage
+import org.n9ne.common.model.GoalMath
+import org.n9ne.common.model.GoalState
+import org.n9ne.common.model.GoalUpdate
 import org.n9ne.common.model.Progress
+import org.n9ne.common.source.local.GoalCacheEntity
 import org.n9ne.common.util.Event
 import org.n9ne.common.util.Mapper.toLiter
 import org.n9ne.common.util.Mapper.toMilliLiter
 import org.n9ne.common.util.Mapper.toWater
 import org.n9ne.common.util.RepoCallback
 import org.n9ne.common.util.Utils
+import java.time.LocalDate
+import java.time.ZoneId
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -27,20 +36,185 @@ class HomeViewModel @Inject constructor() : BaseViewModel<HomeRepo>() {
     val ldDayProgress = MutableLiveData<Int>()
     val ldWeekProgress = MutableLiveData<List<Progress>>()
     val ldActivities = MutableLiveData<List<Activity>>()
+    val ldAllActivities = MutableLiveData<List<Activity>>()
+    val ldGoals = MutableLiveData<GoalState>()
+    val ldGoalsEditable = MutableLiveData(false)
+    val ldGoalSaving = MutableLiveData(false)
+    val ldGoalSaved = MutableLiveData<Event<Unit>>()
+    val ldGoalSaveError = MutableLiveData<Event<String>>()
+    val historyStart = MutableLiveData<LocalDate>()
+    private var pendingGoal: GoalUpdate? = null
+
+    @Volatile
+    private var latestGoals: GoalState? = null
+
+    fun getGoalHistory(
+        token: String?,
+        before: Long?,
+        callback: (GoalHistoryPage?) -> Unit
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentRepo = repo
+            if (currentRepo == null) {
+                withContext(Dispatchers.Main) { callback(null) }; return@launch
+            }
+            currentRepo.getGoalHistory(
+                token,
+                before,
+                object : RepoCallback<GoalHistoryPage> {
+                    override fun onSuccessful(response: GoalHistoryPage) {
+                        viewModelScope.launch(Dispatchers.Main) { callback(response) }
+                    }
+
+                    override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
+                        viewModelScope.launch(Dispatchers.Main) { callback(null) }
+                    }
+                })
+        }
+    }
+
+    fun getActivityHistory(
+        token: String?,
+        start: LocalDate,
+        end: LocalDate,
+        callback: (List<Activity>?) -> Unit
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentRepo = repo
+            if (currentRepo == null) {
+                withContext(Dispatchers.Main) { callback(null) }
+                return@launch
+            }
+            currentRepo.getActivityHistory(
+                token,
+                start,
+                end,
+                object : RepoCallback<List<Activity>> {
+                    override fun onSuccessful(response: List<Activity>) {
+                        viewModelScope.launch(Dispatchers.Main) { callback(response) }
+                    }
+
+                    override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
+                        viewModelScope.launch(Dispatchers.Main) { callback(null) }
+                    }
+                })
+        }
+    }
 
     fun getTarget(token: String?) {
 
         viewModelScope.launch(Dispatchers.IO) {
-            repo?.getTarget(token, object : RepoCallback<Int> {
-                override fun onSuccessful(response: Int) {
-                    syncTarget(response)
+            val online = repo is HomeRepoApiImpl
+            repo?.getGoals(token, object : RepoCallback<GoalState> {
+                override fun onSuccessful(response: GoalState) {
+                    applyGoals(response, online)
                 }
 
                 override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
-                    ldError.postValue(Event(error))
+                    ldGoalsEditable.postValue(false)
+                    viewModelScope.launch(Dispatchers.IO) {
+                        db?.roomDao()?.let { dao ->
+                            HomeRepoLocalImpl(dao).getGoals(
+                                token,
+                                object : RepoCallback<GoalState> {
+                                    override fun onSuccessful(response: GoalState) {
+                                        applyGoals(response, false)
+                                    }
+
+                                    override fun onError(
+                                        error: String,
+                                        isNetwork: Boolean,
+                                        isToken: Boolean
+                                    ) {
+                                        ldError.postValue(Event(error))
+                                    }
+                                })
+                        }
+                    }
                 }
             })
         }
+    }
+
+    fun saveGoal(litres: Int, tomorrow: Boolean, token: String?) {
+        if (ldGoalSaving.value == true) return
+        val state = ldGoals.value ?: return
+        if (ldGoalsEditable.value != true) {
+            ldGoalSaveError.value = Event("goals_unavailable")
+            return
+        }
+        val date = LocalDate.now().plusDays(if (tomorrow) 1 else 0).toString()
+        val previous = pendingGoal
+        val update =
+            if (previous?.target == litres && previous.effectiveDate == date && previous.revision == state.revision) {
+                previous
+            } else GoalUpdate(
+                litres,
+                date,
+                ZoneId.systemDefault().id,
+                state.revision,
+            )
+        pendingGoal = update
+        ldGoalSaving.value = true
+        viewModelScope.launch(Dispatchers.IO) {
+            repo?.saveGoal(token, update, object : RepoCallback<GoalState> {
+                override fun onSuccessful(response: GoalState) {
+                    pendingGoal = null
+                    applyGoals(response, true)
+                    ldGoalSaving.postValue(false)
+                    ldGoalSaved.postValue(Event(Unit))
+                }
+
+                override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
+                    ldGoalSaving.postValue(false)
+                    ldGoalSaveError.postValue(Event(error))
+                    if (error == "goal_conflict" || error == "invalid_goal") {
+                        pendingGoal = null
+                        getTarget(token)
+                    }
+                }
+            })
+        }
+    }
+
+    @Synchronized
+    private fun applyGoals(state: GoalState, editable: Boolean) {
+        ldGoalsEditable.postValue(editable)
+        val previous = latestGoals
+        if (previous?.userId == state.userId && previous.revision > state.revision) return
+        latestGoals = state
+        val today = LocalDate.now()
+        val current = state.targetOn(today)
+        db?.runInTransaction {
+            val dao = db!!.roomDao()
+            val user = dao.getUser().firstOrNull()
+            user?.let { GoalMath.date(it.date)?.let(historyStart::postValue) }
+            if (user?.id == state.userId) {
+                dao.cacheGoals(GoalCacheEntity(state.userId, com.google.gson.Gson().toJson(state)))
+                dao.updateUserTarget(state.userId, current.toString())
+            }
+        }
+        target = current
+        ldGoalsEditable.postValue(editable)
+        ldGoals.postValue(state)
+        ldTarget.postValue(current)
+        ldAllActivities.value?.let { renderProgress(it, state) }
+    }
+
+    private fun renderProgress(activities: List<Activity>, state: GoalState? = latestGoals) {
+        val today = LocalDate.now()
+        ldDayProgress.postValue(
+            GoalMath.percentage(
+                Utils.calculateDayProgress(activities).toDouble(),
+                state?.targetOn(today) ?: target ?: 3
+            )
+        )
+        val week = Utils.calculateWeekProgress(activities)
+        week.forEach {
+            val date = GoalMath.date(it.date) ?: today
+            it.progress = GoalMath.percentage(it.progress.toDouble(), state?.targetOn(date) ?: 3)
+        }
+        ldWeekProgress.postValue(week)
     }
 
     fun getProgress(token: String?) {
@@ -48,19 +222,8 @@ class HomeViewModel @Inject constructor() : BaseViewModel<HomeRepo>() {
             repo?.getProgress(token, object : RepoCallback<List<Activity>> {
                 override fun onSuccessful(response: List<Activity>) {
 
-                    val dayProgress = Utils.calculateDayProgress(response)
-                    val progress = (100 * dayProgress) / (target!!.toDouble().toMilliLiter())
-
-                    ldDayProgress.postValue(progress.toInt())
-
-                    val weekProgress = Utils.calculateWeekProgress(response)
-                    weekProgress.forEach {
-                        it.progress =
-                            (100 * it.progress) / (target!!.toDouble().toMilliLiter().toInt())
-                    }
-
-                    ldWeekProgress.postValue(weekProgress)
-
+                    renderProgress(response)
+                    ldAllActivities.postValue(response)
                     ldActivities.postValue(Utils.calculateActivities(response))
 
                     syncProgress(response)
@@ -108,6 +271,7 @@ class HomeViewModel @Inject constructor() : BaseViewModel<HomeRepo>() {
 
                     ldDayProgress.postValue(progress.roundToInt())
                     ldActivities.postValue(activities)
+                    getProgress(token)
                 }
 
                 override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
@@ -147,6 +311,7 @@ class HomeViewModel @Inject constructor() : BaseViewModel<HomeRepo>() {
                     progress = (100 * progress) / (target!!.toDouble().toMilliLiter().toInt())
                     ldDayProgress.postValue(progress)
                     ldActivities.postValue(activities)
+                    getProgress(token)
                 }
 
                 override fun onError(error: String, isNetwork: Boolean, isToken: Boolean) {
@@ -161,21 +326,6 @@ class HomeViewModel @Inject constructor() : BaseViewModel<HomeRepo>() {
             withContext(Dispatchers.IO) {
                 try {
                     db?.roomDao()!!.updateScore(score.toString())
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
-
-    private fun syncTarget(data: Int) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    db?.roomDao()!!.updateTarget(data)
-
-                    target = data
-                    ldTarget.postValue(data)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -204,10 +354,9 @@ class HomeViewModel @Inject constructor() : BaseViewModel<HomeRepo>() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    db?.roomDao()?.removeProgress()
-
-                    list.forEach {
-                        db?.roomDao()!!.insertWater(it.toWater())
+                    db?.runInTransaction {
+                        db?.roomDao()?.removeProgress()
+                        list.forEach { db?.roomDao()?.insertWater(it.toWater()) }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()

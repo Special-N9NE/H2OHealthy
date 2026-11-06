@@ -1,0 +1,37 @@
+<resources>
+    <string name="goal_edit">Edit goal</string>
+    <string name="goal_history">History</string>
+    <string name="activity_history">Activity history</string>
+    <string name="history_loading">Loading activity history…</string>
+    <string name="history_load_failed">Could not load activity history.</string>
+    <string name="goals_history">Goal history</string>
+    <string name="goal_litres">%1$s L</string>
+    <string name="goal_zero">0 L</string>
+    <string name="goal_today">Today</string>
+    <string name="goal_tomorrow">Tomorrow</string>
+    <string name="goal_effective">Apply from</string>
+    <string name="goal_scheduled">Tomorrow’s goal: %1$s</string>
+    <string name="goal_save">Save goal</string>
+    <string name="goal_saving">Saving…</string>
+    <string name="goal_cancel">Cancel</string>
+    <string name="goal_saved">Goal saved</string>
+    <string name="goal_offline">Connect to the internet to save a goal. Cached history is available offline.</string>
+    <string name="goal_unavailable">Goal editing is unavailable. Refresh and try again.</string>
+    <string name="goal_network">Could not save the goal. Check your connection and retry.</string>
+    <string name="goal_conflict">Your goal changed on another device. Review the refreshed goal, then save again.</string>
+    <string name="goal_invalid">Choose 1–10 whole litres, starting today or tomorrow. Refresh if the date has changed.</string>
+    <string name="history_activities">Activities</string>
+    <string name="history_goals">Goals</string>
+    <string name="goal_previous_month">Previous month</string>
+    <string name="goal_next_month">Next month</string>
+    <string name="goal_daily_row">Goal %1$s · Drank %2$s mL · %3$s%%</string>
+    <string name="goal_change_row">%1$s → %2$s · From %3$s</string>
+    <string name="goal_recorded">Saved %1$s</string>
+    <string name="goal_initial">Initial goal</string>
+    <string name="goal_pending">Scheduled</string>
+    <string name="goal_applied">Applied</string>
+    <string name="goal_superseded">Replaced by a later change</string>
+    <string name="goal_no_changes">No goal changes yet. Earlier days use a 3 L goal.</string>
+    <string name="goal_cached">Showing cached history. Connect and refresh for the latest data.</string>
+    <string name="goal_close">Close</string>
+</resources>

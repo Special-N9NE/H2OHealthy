@@ -49,7 +49,7 @@ object Saver {
     fun getToken(): String? {
         val token = sharedPreferences!!.getString(TOKEN, null)
         return if (!token.isNullOrEmpty()) {
-            "Bearer ${token}}"
+            "Bearer $token"
         } else {
             token
         }

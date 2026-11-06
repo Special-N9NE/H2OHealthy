@@ -1,5 +1,7 @@
 package org.n9ne.common.source.network
 
+import org.n9ne.common.model.GoalHistoryResponse
+import org.n9ne.common.model.GoalResponse
 import org.n9ne.common.source.objects.GetCups
 import org.n9ne.common.source.objects.GetMembers
 import org.n9ne.common.source.objects.GetProgress
@@ -13,6 +15,27 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface ApiService {
+    @FormUrlEncoded
+    @POST("goals.php")
+    fun getGoalHistory(
+        @Header("Authorization") token: String,
+        @Field("getGoalHistory") data: String
+    ): Call<GoalHistoryResponse>
+
+    @FormUrlEncoded
+    @POST("goals.php")
+    fun getGoals(
+        @Header("Authorization") token: String,
+        @Field("getGoals") data: String
+    ): Call<GoalResponse>
+
+    @FormUrlEncoded
+    @POST("goals.php")
+    fun updateGoal(
+        @Header("Authorization") token: String,
+        @Field("updateGoal") data: String
+    ): Call<GoalResponse>
+
     @FormUrlEncoded
     @POST("user.php")
     fun login(@Field("login") data: String): Call<Login>
@@ -86,6 +109,13 @@ interface ApiService {
     fun getProgress(
         @Header("Authorization") token: String,
         @Field("getUserAmout") data: String = ""
+    ): Call<GetProgress>
+
+    @FormUrlEncoded
+    @POST("water.php")
+    fun getActivityHistory(
+        @Header("Authorization") token: String,
+        @Field("getActivityHistory") data: String
     ): Call<GetProgress>
 
     @FormUrlEncoded

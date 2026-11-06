@@ -123,7 +123,7 @@ object Utils {
                 time[Calendar.YEAR],
                 time[Calendar.DAY_OF_YEAR]
             )
-            result.add(Progress(amount.toInt(), displayDay))
+            result.add(Progress(amount.toInt(), displayDay, day))
         }
         return result.reversed()
     }

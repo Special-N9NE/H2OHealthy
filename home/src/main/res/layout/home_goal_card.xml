@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_blue_linear"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/bold"
+                android:text="@string/today_target"
+                android:textColor="@color/blackText"
+                android:textSize="16sp" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnEditGoal"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/goal_edit"
+                android:padding="12dp"
+                android:tooltipText="@string/goal_edit"
+                app:srcCompat="@drawable/ic_edit"
+                app:tint="@color/blackText" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnGoalHistory"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/goal_history"
+                android:padding="12dp"
+                android:tooltipText="@string/goal_history"
+                app:srcCompat="@drawable/ic_goal_history"
+                app:tint="@color/blackText" />
+        </LinearLayout>
+
+        <org.nine.linearprogressbar.LinearProgressBar
+            android:id="@+id/pbTarget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:gradient="true"
+            app:gradientEndColor="@color/linearPurpleEnd"
+            app:gradientStartColor="@color/linearPurpleStart"
+            app:progressBackgroundColor="@color/grayLight"
+            app:radius="20dp"
+            app:textVisibility="gone"
+            app:thickness="20dp"
+            app:trackCornerRadius="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/bold"
+                android:text="@string/goal_zero"
+                android:textColor="@color/blackText" />
+
+            <TextView
+                android:id="@+id/tvTarget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bold"
+                android:textColor="@color/blackText"
+                tools:text="@string/goal_zero" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

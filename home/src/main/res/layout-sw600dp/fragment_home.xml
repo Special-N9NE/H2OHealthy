@@ -50,79 +50,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/_textView4"
                 app:layout_constraintVertical_bias="0.0">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/header"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shape_blue_linear"
-                    android:layoutDirection="ltr">
-
-                    <TextView
-                        android:id="@+id/_textView1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:fontFamily="@font/bold"
-                        android:text="@string/today_target"
-                        android:textColor="@color/blackText"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                    <org.nine.linearprogressbar.LinearProgressBar
-                        android:id="@+id/pbTarget"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        app:gradient="true"
-                        app:gradientEndColor="@color/linearPurpleEnd"
-                        app:gradientStartColor="@color/linearPurpleStart"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/_textView1"
-                        app:layout_constraintVertical_bias="0.0"
-                        app:progressBackgroundColor="@color/grayLight"
-                        app:radius="20dp"
-                        app:textVisibility="gone"
-                        app:thickness="20dp"
-                        app:trackCornerRadius="20dp" />
-
-                    <TextView
-                        android:id="@+id/tvTarget"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:fontFamily="@font/bold"
-                        android:textColor="@color/blackText"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/pbTarget"
-                        app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toStartOf="@+id/pbTarget"
-                        app:layout_constraintTop_toBottomOf="@+id/pbTarget"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginBottom="16dp"
-                        android:fontFamily="@font/bold"
-                        android:text="0L"
-                        android:textColor="@color/blackText"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/pbTarget"
-                        app:layout_constraintTop_toBottomOf="@+id/pbTarget"
-                        app:layout_constraintVertical_bias="0.0" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <include
+                    android:id="@+id/goalCard"
+                    layout="@layout/home_goal_card" />
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -340,11 +270,24 @@
                 android:textColor="@color/blackText"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/gRight"
+                app:layout_constraintEnd_toStartOf="@+id/btnActivityHistory"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/gLeft"
                 app:layout_constraintTop_toBottomOf="@+id/_cardView2"
                 app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnActivityHistory"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/activity_history"
+                android:padding="12dp"
+                app:layout_constraintBottom_toBottomOf="@id/_textView5"
+                app:layout_constraintEnd_toStartOf="@id/gRight"
+                app:layout_constraintTop_toTopOf="@id/_textView5"
+                app:srcCompat="@drawable/ic_goal_history"
+                app:tint="@color/blackText" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvActivity"

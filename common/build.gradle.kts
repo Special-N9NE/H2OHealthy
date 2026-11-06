@@ -1,3 +1,5 @@
+import java.net.URI
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -11,12 +13,29 @@ android {
 
     defaultConfig {
         minSdk = 26
+        buildConfigField("String", "API_BASE_URL", "\"https://kaizen-team.ir/h2oHealthy/\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
+        debug {
+            val localBackendUrl = providers.gradleProperty("localBackendUrl").orNull
+            if (!localBackendUrl.isNullOrBlank()) {
+                val uri = URI(localBackendUrl)
+                require(
+                    uri.scheme in listOf(
+                        "http",
+                        "https"
+                    ) && uri.host != null && localBackendUrl.endsWith('/')
+                ) {
+                    "localBackendUrl must be an HTTP(S) URL ending in /"
+                }
+                require(uri.userInfo == null && uri.query == null && uri.fragment == null)
+                buildConfigField("String", "API_BASE_URL", "\"$localBackendUrl\"")
+            }
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -33,6 +52,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        buildConfig = true
         viewBinding = true
         dataBinding = true
     }

@@ -3,6 +3,7 @@ package org.n9ne.common.source.network
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.n9ne.common.BuildConfig
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -21,7 +22,7 @@ class Client private constructor() {
     }
 
     init {
-        val base = "https://kaizen-team.ir/h2oHealthy/"
+        val base = BuildConfig.API_BASE_URL
 
         val interceptor = HttpLoggingInterceptor()
             .setLevel(HttpLoggingInterceptor.Level.BODY)

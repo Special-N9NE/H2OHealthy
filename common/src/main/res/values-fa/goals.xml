@@ -1,0 +1,37 @@
+<resources>
+    <string name="goal_edit">ویرایش هدف</string>
+    <string name="goal_history">تاریخچه</string>
+    <string name="activity_history">تاریخچه فعالیت‌ها</string>
+    <string name="history_loading">در حال دریافت تاریخچه فعالیت‌ها…</string>
+    <string name="history_load_failed">دریافت تاریخچه فعالیت‌ها ناموفق بود.</string>
+    <string name="goals_history">تاریخچه اهداف</string>
+    <string name="goal_litres">%1$s لیتر</string>
+    <string name="goal_zero">۰ لیتر</string>
+    <string name="goal_today">امروز</string>
+    <string name="goal_tomorrow">فردا</string>
+    <string name="goal_effective">اعمال از</string>
+    <string name="goal_scheduled">هدف فردا: %1$s</string>
+    <string name="goal_save">ذخیره هدف</string>
+    <string name="goal_saving">در حال ذخیره…</string>
+    <string name="goal_cancel">انصراف</string>
+    <string name="goal_saved">هدف ذخیره شد</string>
+    <string name="goal_offline">برای ذخیره هدف به اینترنت وصل شوید. تاریخچه ذخیره‌شده آفلاین در دسترس است.</string>
+    <string name="goal_unavailable">ویرایش هدف در دسترس نیست. صفحه را تازه‌سازی کنید و دوباره تلاش کنید.</string>
+    <string name="goal_network">هدف ذخیره نشد. اتصال اینترنت را بررسی کنید و دوباره تلاش کنید.</string>
+    <string name="goal_conflict">هدف شما در دستگاه دیگری تغییر کرده است. هدف به‌روز را بررسی کنید و دوباره ذخیره کنید.</string>
+    <string name="goal_invalid">هدف را از ۱ تا ۱۰ لیتر کامل و زمان شروع را امروز یا فردا انتخاب کنید. اگر تاریخ تغییر کرده، صفحه را تازه‌سازی کنید.</string>
+    <string name="history_activities">فعالیت‌ها</string>
+    <string name="history_goals">اهداف</string>
+    <string name="goal_previous_month">ماه قبل</string>
+    <string name="goal_next_month">ماه بعد</string>
+    <string name="goal_daily_row">هدف %1$s · مصرف %2$s میلی‌لیتر · %3$s٪</string>
+    <string name="goal_change_row">%1$s ← %2$s · از %3$s</string>
+    <string name="goal_recorded">ثبت در %1$s</string>
+    <string name="goal_initial">هدف اولیه</string>
+    <string name="goal_pending">برنامه‌ریزی‌شده</string>
+    <string name="goal_applied">اعمال‌شده</string>
+    <string name="goal_superseded">با تغییر بعدی جایگزین شده</string>
+    <string name="goal_no_changes">هنوز هدفی تغییر نکرده است. هدف روزهای قبل ۳ لیتر در نظر گرفته می‌شود.</string>
+    <string name="goal_cached">تاریخچه ذخیره‌شده نمایش داده می‌شود. برای دریافت اطلاعات جدید، وصل شوید و صفحه را تازه‌سازی کنید.</string>
+    <string name="goal_close">بستن</string>
+</resources>

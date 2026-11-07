@@ -1,0 +1,10 @@
+<resources>
+    <string name="update_required_title">Update required</string>
+    <string name="update_required_message">Please update H2O Healthy to continue using the app.</string>
+    <string name="update_available_title">Update available</string>
+    <string name="update_available_message">A newer version of H2O Healthy is available.</string>
+    <string name="update_button">Update</string>
+    <string name="update_later">Later</string>
+    <string name="update_dont_show">Don’t show again for this version</string>
+    <string name="update_open_failed">Unable to open the Myket page.</string>
+</resources>

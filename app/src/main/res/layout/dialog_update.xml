@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="32dp">
+
+    <ImageView
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_logo_round" />
+
+    <TextView
+        android:id="@+id/updateTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/bold"
+        android:gravity="center"
+        android:textColor="@color/blackText"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/updateMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/regular"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:textColor="@color/gray"
+        android:textSize="14sp" />
+
+    <CheckBox
+        android:id="@+id/updateDontShow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/regular"
+        android:padding="8dp"
+        android:minHeight="48dp"
+        android:text="@string/update_dont_show"
+        android:textColor="@color/blackText"
+        android:textSize="14sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/updateAction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/semi_bold"
+        android:minHeight="56dp"
+        android:text="@string/update_button"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:backgroundTint="@color/linearBlueStart" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/updateLater"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/semi_bold"
+        android:minHeight="48dp"
+        android:text="@string/update_later"
+        android:textAllCaps="false"
+        android:textColor="@color/linearBlueEnd"
+        android:textSize="14sp" />
+</LinearLayout>

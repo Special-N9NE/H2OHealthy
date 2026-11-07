@@ -1,0 +1,10 @@
+<resources>
+    <string name="update_required_title">به‌روزرسانی ضروری است</string>
+    <string name="update_required_message">برای ادامه استفاده از برنامه، لطفاً آن را به‌روزرسانی کنید.</string>
+    <string name="update_available_title">نسخه جدید موجود است</string>
+    <string name="update_available_message">نسخه جدیدی از H2O Healthy در دسترس است.</string>
+    <string name="update_button">به‌روزرسانی</string>
+    <string name="update_later">بعداً</string>
+    <string name="update_dont_show">برای این نسخه دوباره نمایش نده</string>
+    <string name="update_open_failed">صفحه مایکت باز نشد.</string>
+</resources>

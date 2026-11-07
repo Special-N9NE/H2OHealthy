@@ -30,5 +30,7 @@ class App : Application() {
 
 
         Lingver.init(this, Utils.getLocal().language)
+
+        UpdateChecker(this).start()
     }
 }
